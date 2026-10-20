@@ -1,152 +1,1306 @@
-# 🧑‍💻 JSP CRUD Application (User Management System)
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primum PG Management - Enterprise Co-Living Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e1e7fe',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                            950: '#0f0e26'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.6);
+        }
+    </style>
+</head>
+<body class="h-full antialiased text-slate-200 bg-slate-950 overflow-x-hidden custom-scrollbar">
 
-A simple and dynamic **CRUD (Create, Read, Update, Delete)** web application built using **JSP, Servlets, JDBC, and MySQL**. This project demonstrates the fundamentals of Java web development by performing complete CRUD operations on user data through a clean and structured architecture.
+    <!-- Auth Protection Wrapper -->
+    <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md">
+        <div class="w-full max-w-md p-8 glass-panel rounded-2xl shadow-2xl border border-slate-800">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-400 text-white shadow-lg shadow-brand-500/30 mb-4">
+                    <i class="fa-solid me-0 fa-building-user text-2xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">PRIMUM PG MANAGER</h1>
+                <p class="text-xs text-slate-400 mt-1">Enterprise Co-Living & Asset Operating System</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Username</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-500"></i>
+                        <input type="text" id="loginUsername" required value="owner" placeholder="Owner Username" 
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-500"></i>
+                        <input type="password" id="loginPassword" required value="admin123" placeholder="••••••••" 
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-sm">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 transition-all text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Authenticate Console</span>
+                </button>
+            </form>
+            <div class="mt-6 text-center text-xs text-slate-500">
+                Default Credentials: <span class="text-slate-300 font-mono">owner</span> / <span class="text-slate-300 font-mono">admin123</span>
+            </div>
+        </div>
+    </div>
 
----
+    <!-- Main Layout Container -->
+    <div id="appContainer" class="hidden min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 px-4 lg:px-8 py-3">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-building-shield text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-extrabold text-white text-lg tracking-tight">PRIMUM</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">LUXURY PG</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 hidden sm:block">Enterprise Operations & Tenant Engine</p>
+                    </div>
+                </div>
 
-## 🚀 Features
+                <!-- Sync & Quick Status Bar -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openCloudModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium hover:border-brand-500/50 transition-all">
+                        <span id="syncIndicator" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="syncStatusText" class="text-slate-300 text-xs">Offline Local Engine</span>
+                        <i class="fa-solid fa-cloud text-brand-400 text-xs ml-1"></i>
+                    </button>
+                    <button onclick="handleLogout()" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition-all border border-slate-800" title="Logout">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-* ➕ Add new users
-* 📋 View all users
-* ✏️ Edit user details
-* ❌ Delete users
-* 🔄 Real-time database updates
-* 💡 Clean and user-friendly interface
+        <!-- Main Body Grid -->
+        <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+            <!-- Sidebar Navigation -->
+            <aside class="w-full md:w-64 glass-panel border-r border-slate-800/80 p-4 shrink-0">
+                <nav class="space-y-1">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-chart-pie w-5 text-brand-400"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="switchTab('matrix')" id="nav-matrix" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-cubes w-5 text-indigo-400"></i>
+                        <span>Rooms & Beds</span>
+                    </button>
+                    <button onclick="switchTab('residents')" id="nav-residents" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-users w-5 text-emerald-400"></i>
+                        <span>Residents</span>
+                    </button>
+                    <button onclick="switchTab('ledger')" id="nav-ledger" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-file-invoice-dollar w-5 text-cyan-400"></i>
+                        <span>Rent Ledger</span>
+                    </button>
+                    <button onclick="switchTab('complaints')" id="nav-complaints" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-triangle-exclamation w-5 text-amber-400"></i>
+                        <span class="flex-1 text-left">Complaints</span>
+                        <span id="openComplaintsBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">0</span>
+                    </button>
+                    <button onclick="switchTab('notices')" id="nav-notices" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-bullhorn w-5 text-purple-400"></i>
+                        <span>Notice Board</span>
+                    </button>
+                    <button onclick="switchTab('expenses')" id="nav-expenses" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-receipt w-5 text-rose-400"></i>
+                        <span>Expenses Log</span>
+                    </button>
+                </nav>
 
----
+                <div class="mt-8 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                    <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">System Quick Stats</div>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Total Capacity</span>
+                            <span id="sidebarCap" class="font-semibold text-slate-200">0 Beds</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Active Dues</span>
+                            <span id="sidebarDues" class="font-semibold text-rose-400">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
 
-## 🛠️ Technologies Used
+            <!-- Main Content Area -->
+            <main class="flex-1 p-4 lg:p-8 overflow-y-auto custom-scrollbar">
 
-### Backend
+                <!-- 1. DASHBOARD TAB -->
+                <section id="tab-dashboard" class="tab-content space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Executive Dashboard</h2>
+                            <p class="text-xs text-slate-400">Real-time revenue metrics, occupancy rates, and operational health.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="openModal('addResidentModal')" class="px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow-lg shadow-brand-600/30 flex items-center gap-2">
+                                <i class="fa-solid fa-user-plus"></i> Add Resident
+                            </button>
+                            <button onclick="openModal('recordPaymentModal')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/30 flex items-center gap-2">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> Collect Rent
+                            </button>
+                        </div>
+                    </div>
 
-* Java (JDK 8+)
-* JSP (Java Server Pages)
-* Servlets (Jakarta EE)
-* JDBC (Java Database Connectivity)
+                    <!-- Metrics Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="glass-card p-4 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+                                <span>Occupancy</span>
+                                <i class="fa-solid fa-bed text-brand-400"></i>
+                            </div>
+                            <div id="statOccupancy" class="text-2xl font-black text-white">0%</div>
+                            <p id="statOccupancySub" class="text-[11px] text-slate-400 mt-1">0 occupied / 0 total</p>
+                        </div>
 
-### Database
+                        <div class="glass-card p-4 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+                                <span>Collected (Month)</span>
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            </div>
+                            <div id="statCollected" class="text-2xl font-black text-emerald-400">₹0</div>
+                            <p class="text-[11px] text-emerald-500/80 mt-1">Cleared invoices</p>
+                        </div>
 
-* MySQL
+                        <div class="glass-card p-4 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+                                <span>Pending Dues</span>
+                                <i class="fa-solid fa-clock text-rose-400"></i>
+                            </div>
+                            <div id="statPending" class="text-2xl font-black text-rose-400">₹0</div>
+                            <p id="statDefaultersCount" class="text-[11px] text-rose-400/80 mt-1">0 residents pending</p>
+                        </div>
 
-### Server
+                        <div class="glass-card p-4 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+                                <span>Total Expenses</span>
+                                <i class="fa-solid fa-arrow-trend-down text-amber-400"></i>
+                            </div>
+                            <div id="statExpenses" class="text-2xl font-black text-amber-400">₹0</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Operating costs</p>
+                        </div>
 
-* Apache Tomcat 10.1
+                        <div class="glass-card p-4 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+                                <span>Net Operating Income</span>
+                                <i class="fa-solid fa-chart-line text-cyan-400"></i>
+                            </div>
+                            <div id="statNOI" class="text-2xl font-black text-cyan-400">₹0</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Revenue - Expenses</p>
+                        </div>
+                    </div>
 
-### Frontend
+                    <!-- Dashboard Sections Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left 2 Cols: Activity & Defaulters -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Pending Dues & WhatsApp Quick Action -->
+                            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-bell text-rose-400"></i> Defaulters & Dues Alert
+                                    </h3>
+                                    <span class="text-xs text-slate-400">Instant WhatsApp Reminders</span>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-xs">
+                                        <thead class="text-slate-400 border-b border-slate-800 bg-slate-900/50">
+                                            <tr>
+                                                <th class="p-2.5">Resident</th>
+                                                <th class="p-2.5">Room/Bed</th>
+                                                <th class="p-2.5">Rent Due</th>
+                                                <th class="p-2.5 text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dashboardDuesTable" class="divide-y divide-slate-800/50">
+                                            <!-- Dynamic Rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-* HTML
-* CSS
+                            <!-- Recent Transaction Activity -->
+                            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                                <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-brand-400"></i> Recent Financial Transactions
+                                </h3>
+                                <div id="dashboardRecentActivity" class="space-y-2">
+                                    <!-- Dynamic Feed -->
+                                </div>
+                            </div>
+                        </div>
 
----
+                        <!-- Right 1 Col: Quick Noticeboard & Complaints -->
+                        <div class="space-y-6">
+                            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Open Complaints
+                                    </h3>
+                                    <button onclick="openModal('addComplaintModal')" class="text-xs text-brand-400 hover:underline">+ Log</button>
+                                </div>
+                                <div id="dashboardComplaintsList" class="space-y-2 text-xs">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
 
-## 📁 Project Structure
+                            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-bullhorn text-purple-400"></i> Live Broadcasts
+                                    </h3>
+                                    <button onclick="openModal('addNoticeModal')" class="text-xs text-brand-400 hover:underline">+ Notice</button>
+                                </div>
+                                <div id="dashboardNoticesList" class="space-y-3 text-xs">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-```text
-jspCURDdemo/
-│
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/demo/
-│       │       ├── DBConnection.java
-│       │       └── UserServlet.java
-│       │
-│       └── webapp/
-│           ├── index.jsp
-│           ├── adduser.jsp
-│           └── edituser.jsp
-│
-└── README.md
-```
+                <!-- 2. ROOMS & BEDS MATRIX TAB -->
+                <section id="tab-matrix" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Rooms & Beds Matrix</h2>
+                            <p class="text-xs text-slate-400">Visual floor plan with real-time occupancy and bed assignments.</p>
+                        </div>
+                    </div>
 
----
+                    <div id="roomsMatrixContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamic Rooms & Beds Grid -->
+                    </div>
+                </section>
 
-## ⚙️ Setup Instructions
+                <!-- 3. RESIDENTS DIRECTORY TAB -->
+                <section id="tab-residents" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Resident Directory</h2>
+                            <p class="text-xs text-slate-400">Full profiles, contact numbers, assigned rooms, rent agreements.</p>
+                        </div>
+                        <button onclick="openModal('addResidentModal')" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-brand-600/30 flex items-center gap-2">
+                            <i class="fa-solid fa-user-plus"></i> Onboard New Resident
+                        </button>
+                    </div>
 
-### 1️⃣ Clone the Repository
+                    <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-500 text-xs"></i>
+                            <input type="text" id="residentSearch" oninput="renderResidents()" placeholder="Search resident name, phone, room..." 
+                                class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
 
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-```
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3.5">Resident Name</th>
+                                        <th class="p-3.5">Phone Number</th>
+                                        <th class="p-3.5">Room & Bed</th>
+                                        <th class="p-3.5">Monthly Rent</th>
+                                        <th class="p-3.5">Deposit</th>
+                                        <th class="p-3.5">Join Date</th>
+                                        <th class="p-3.5 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="residentsTableBody" class="divide-y divide-slate-800/50">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
 
-### 2️⃣ Import into Eclipse
+                <!-- 4. RENT LEDGER TAB -->
+                <section id="tab-ledger" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Rent & Payment Ledger</h2>
+                            <p class="text-xs text-slate-400">Complete transaction history, receipt logs, and pending balance tracking.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="exportToCSV()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold border border-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-download"></i> Export CSV
+                            </button>
+                            <button onclick="openModal('recordPaymentModal')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-emerald-600/30 flex items-center gap-2">
+                                <i class="fa-solid fa-receipt"></i> Record Payment
+                            </button>
+                        </div>
+                    </div>
 
-* Open **Eclipse IDE**
-* Go to **File → Import**
-* Select **Existing Project into Workspace**
-* Finish the import
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3.5">Date</th>
+                                        <th class="p-3.5">Resident</th>
+                                        <th class="p-3.5">Type</th>
+                                        <th class="p-3.5">Method</th>
+                                        <th class="p-3.5">Reference / Notes</th>
+                                        <th class="p-3.5 text-right">Amount (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ledgerTableBody" class="divide-y divide-slate-800/50">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
 
-### 3️⃣ Configure MySQL Database
+                <!-- 5. COMPLAINTS SYSTEM TAB -->
+                <section id="tab-complaints" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Complaints & Maintenance Portal</h2>
+                            <p class="text-xs text-slate-400">Real-time tenant tickets, priority resolution tracking, plumbing & wifi maintenance.</p>
+                        </div>
+                        <button onclick="openModal('addComplaintModal')" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-amber-600/30 flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Log Ticket
+                        </button>
+                    </div>
 
-Create a database and the required table.
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="complaintsGrid">
+                        <!-- Dynamic Complaint Cards -->
+                    </div>
+                </section>
 
-```sql
-CREATE DATABASE your_db_name;
+                <!-- 6. NOTICE BOARD TAB -->
+                <section id="tab-notices" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Tenant Noticeboard & Communication</h2>
+                            <p class="text-xs text-slate-400">Broadcast maintenance schedules, policy updates, or send direct WhatsApp chats.</p>
+                        </div>
+                        <button onclick="openModal('addNoticeModal')" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-purple-600/30 flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn"></i> New Broadcast
+                        </button>
+                    </div>
 
-USE your_db_name;
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="noticesFullContainer">
+                        <!-- Dynamic Notices -->
+                    </div>
+                </section>
 
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
-    email VARCHAR(100),
-    address VARCHAR(255)
-);
-```
+                <!-- 7. EXPENSES LOG TAB -->
+                <section id="tab-expenses" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white tracking-tight">Operational Expense Tracker</h2>
+                            <p class="text-xs text-slate-400">Log utility bills, staff salaries, repairs, catering, and property overheads.</p>
+                        </div>
+                        <button onclick="openModal('addExpenseModal')" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-rose-600/30 flex items-center gap-2">
+                            <i class="fa-solid fa-minus-circle"></i> Log Expense
+                        </button>
+                    </div>
 
-### 4️⃣ Update Database Credentials
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3.5">Date</th>
+                                        <th class="p-3.5">Category</th>
+                                        <th class="p-3.5">Description</th>
+                                        <th class="p-3.5 text-right">Amount (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expensesTableBody" class="divide-y divide-slate-800/50">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
 
-Modify the database connection in **DBConnection.java**.
+            </main>
+        </div>
+    </div>
 
-```java
-DriverManager.getConnection(
-    "jdbc:mysql://localhost:3306/your_db_name",
-    "root",
-    "your_password"
-);
-```
+    <!-- MODALS SECTION -->
 
-### 5️⃣ Add MySQL JDBC Driver
+    <!-- 1. Cloud Config Modal -->
+    <div id="cloudModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="w-full max-w-lg p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cloud text-brand-400"></i> Cloud Integration (Supabase)
+                </h3>
+                <button onclick="closeModal('cloudModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-slate-400 mb-4">
+                Enter your live Supabase database URL and Anon Key below to enable instant real-time sync across all devices. If left empty, the system seamlessly operates on offline LocalStorage integer engine.
+            </p>
+            <form onsubmit="saveCloudConfig(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Supabase URL</label>
+                    <input type="url" id="cfgSupabaseUrl" placeholder="https://xyz.supabase.co" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Supabase Anon Key</label>
+                    <input type="password" id="cfgSupabaseKey" placeholder="eyJhbGciOi..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div class="flex justify-between items-center pt-2">
+                    <button type="button" onclick="resetLocalData()" class="text-xs text-rose-400 hover:underline">Reset Demo Data</button>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeModal('cloudModal')" class="px-4 py-2 bg-slate-800 text-xs font-semibold rounded-xl text-slate-300">Close</button>
+                        <button type="submit" class="px-4 py-2 bg-brand-600 text-xs font-semibold rounded-xl text-white shadow-lg shadow-brand-600/30">Save Cloud Config</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-Add the **mysql-connector-j.jar** file to your project's build path.
+    <!-- 2. Add Resident Modal -->
+    <div id="addResidentModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-brand-400"></i> Onboard New Resident
+                </h3>
+                <button onclick="closeModal('addResidentModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleAddResident(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="resName" required placeholder="e.g. Rahul Sharma" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Phone Number (10 Digit)</label>
+                    <input type="tel" id="resPhone" required placeholder="9876543210" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Assign Bed</label>
+                    <select id="resBedSelect" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <!-- Dynamic options -->
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Monthly Rent (₹)</label>
+                        <input type="number" id="resRent" required placeholder="12000" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Deposit (₹)</label>
+                        <input type="number" id="resDeposit" required placeholder="20000" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-brand-600/30">Confirm & Onboard</button>
+            </form>
+        </div>
+    </div>
 
-### 6️⃣ Run the Project
+    <!-- 3. Record Payment Modal -->
+    <div id="recordPaymentModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-receipt text-emerald-400"></i> Record Rent Collection
+                </h3>
+                <button onclick="closeModal('recordPaymentModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleRecordPayment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Select Resident</label>
+                    <select id="payResidentSelect" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <!-- Dynamic -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Amount Paid (₹)</label>
+                    <input type="number" id="payAmount" required placeholder="12000" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Payment Method</label>
+                    <select id="payMethod" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <option value="UPI">UPI / GPay / PhonePe</option>
+                        <option value="CASH">Cash Collection</option>
+                        <option value="BANK_TRANSFER">Bank IMPS / NEFT</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Reference / Transaction ID</label>
+                    <input type="text" id="payRef" placeholder="e.g. UPI/329103921" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-emerald-600/30">Save Transaction</button>
+            </form>
+        </div>
+    </div>
 
-* Configure **Apache Tomcat 10.1**
-* Start the server
-* Open your browser and visit:
+    <!-- 4. Add Complaint Modal -->
+    <div id="addComplaintModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Log Maintenance Ticket
+                </h3>
+                <button onclick="closeModal('addComplaintModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleAddComplaint(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Resident</label>
+                    <select id="compResidentSelect" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <!-- Dynamic -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                    <select id="compCategory" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <option value="Plumbing">Plumbing / Water</option>
+                        <option value="Electrical">Electrical / Appliances</option>
+                        <option value="WiFi">WiFi & Internet</option>
+                        <option value="Cleaning">Housekeeping & Cleaning</option>
+                        <option value="Food">Food / Mess Quality</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Issue Description</label>
+                    <textarea id="compDesc" required rows="3" placeholder="Describe the problem..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-amber-600/30">Submit Complaint</button>
+            </form>
+        </div>
+    </div>
 
-```text
-http://localhost:8080/jspCURDdemo/
-```
+    <!-- 5. Add Notice Modal -->
+    <div id="addNoticeModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-purple-400"></i> Post Tenant Notice
+                </h3>
+                <button onclick="closeModal('addNoticeModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleAddNotice(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notice Title</label>
+                    <input type="text" id="noticeTitle" required placeholder="e.g. Tank Cleaning Schedule" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notice Message</label>
+                    <textarea id="noticeMsg" required rows="3" placeholder="Write message for tenants..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-purple-600/30">Publish Broadcast</button>
+            </form>
+        </div>
+    </div>
 
----
+    <!-- 6. Add Expense Modal -->
+    <div id="addExpenseModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-minus-circle text-rose-400"></i> Log Operating Expense
+                </h3>
+                <button onclick="closeModal('addExpenseModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleAddExpense(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                    <select id="expCategory" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <option value="Electricity">Electricity Bill</option>
+                        <option value="Water">Water Tankers</option>
+                        <option value="Maintenance">Repairs & Maintenance</option>
+                        <option value="WiFi">Commercial Broadband</option>
+                        <option value="Staff">Staff Salary / Cook</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+                    <input type="text" id="expDesc" required placeholder="e.g. October EB Bill" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Amount (₹)</label>
+                    <input type="number" id="expAmount" required placeholder="4500" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-rose-600/30">Record Expense</button>
+            </form>
+        </div>
+    </div>
 
-## 📸 Screenshots
 
-Add screenshots of the following pages:
+    <!-- APP LOGIC SCRIPT -->
+    <script>
+        // Default Mock Data Starter Setup
+        const INITIAL_STATE = {
+            rooms: [
+                { id: 'r1', number: '101', beds: [{ id: 'b1', code: '101-A' }, { id: 'b2', code: '101-B' }] },
+                { id: 'r2', number: '102', beds: [{ id: 'b3', code: '102-A' }, { id: 'b4', code: '102-B' }] },
+                { id: 'r3', number: '201', beds: [{ id: 'b5', code: '201-A' }, { id: 'b6', code: '201-B' }] },
+                { id: 'r4', number: '202', beds: [{ id: 'b7', code: '202-A' }, { id: 'b8', code: '202-B' }] }
+            ],
+            residents: [
+                { id: 'res1', bedId: 'b1', name: 'Aarav Patel', phone: '9876543210', rentPaise: 1200000, depositPaise: 2000000, joinDate: '2026-01-10' },
+                { id: 'res2', bedId: 'b3', name: 'Vikram Malhotra', phone: '9812345678', rentPaise: 1400000, depositPaise: 2500000, joinDate: '2026-02-15' }
+            ],
+            transactions: [
+                { id: 'tx1', residentId: 'res1', type: 'PAYMENT', amountPaise: 1200000, method: 'UPI', ref: 'UPI/9839102', date: '2026-10-01' }
+            ],
+            expenses: [
+                { id: 'ex1', category: 'Electricity', desc: 'Main EB Bill Oct', amountPaise: 450000, date: '2026-10-05' }
+            ],
+            complaints: [
+                { id: 'c1', residentId: 'res2', category: 'WiFi', desc: 'Slow connection on 2nd floor', status: 'Open', date: '2026-10-18' }
+            ],
+            notices: [
+                { id: 'n1', title: 'Water Tank Maintenance', msg: 'Water supply will be paused from 10 AM to 1 PM on Sunday.', date: '2026-10-19' }
+            ]
+        };
 
-* 🏠 Home Page (User List)
-* ➕ Add User Page
-* ✏️ Edit User Page
+        // State Store
+        let state = { ...INITIAL_STATE };
+        let supabaseClient = null;
 
----
+        // Initialize on Load
+        window.onload = function() {
+            checkAuthSession();
+            initCloudConfig();
+            loadState();
+        };
 
-## 📌 Future Improvements
+        // Authentication logic
+        function checkAuthSession() {
+            if (sessionStorage.getItem('primum_auth') === 'true') {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('appContainer').classList.remove('hidden');
+            }
+        }
 
-* 🔐 User Login & Authentication
-* 🎨 Modern UI using Bootstrap
-* 🧩 Implement MVC Architecture (DAO Layer)
-* 🔍 Search & Pagination
-* ☁️ Cloud Deployment (AWS / Render)
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUsername').value;
+            const p = document.getElementById('loginPassword').value;
 
----
+            if (u === 'owner' && p === 'admin123') {
+                sessionStorage.setItem('primum_auth', 'true');
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('appContainer').classList.remove('hidden');
+                renderAll();
+            } else {
+                alert('Invalid Username or Password');
+            }
+        }
 
-## 🙋‍♂️ Author
+        function handleLogout() {
+            sessionStorage.removeItem('primum_auth');
+            location.reload();
+        }
 
-**Mihir Somwanshi**
+        // Dual Storage Engine
+        function initCloudConfig() {
+            const url = localStorage.getItem('primum_sp_url');
+            const key = localStorage.getItem('primum_sp_key');
 
----
+            if (url && key && window.supabase) {
+                try {
+                    supabaseClient = window.supabase.createClient(url, key);
+                    document.getElementById('syncIndicator').className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                    document.getElementById('syncStatusText').innerText = 'Supabase Cloud Connected';
+                } catch (err) {
+                    console.error('Supabase Init Error:', err);
+                }
+            }
+        }
 
-## ⭐ Support
+        function openCloudModal() {
+            document.getElementById('cfgSupabaseUrl').value = localStorage.getItem('primum_sp_url') || '';
+            document.getElementById('cfgSupabaseKey').value = localStorage.getItem('primum_sp_key') || '';
+            openModal('cloudModal');
+        }
 
-If you found this project helpful, consider giving it a **⭐ Star** on GitHub!
+        function saveCloudConfig(e) {
+            e.preventDefault();
+            const url = document.getElementById('cfgSupabaseUrl').value.trim();
+            const key = document.getElementById('cfgSupabaseKey').value.trim();
+
+            if (url && key) {
+                localStorage.setItem('primum_sp_url', url);
+                localStorage.setItem('primum_sp_key', key);
+            } else {
+                localStorage.removeItem('primum_sp_url');
+                localStorage.removeItem('primum_sp_key');
+            }
+            closeModal('cloudModal');
+            location.reload();
+        }
+
+        function loadState() {
+            const localData = localStorage.getItem('primum_state_v2');
+            if (localData) {
+                try {
+                    state = JSON.parse(localData);
+                } catch (e) {
+                    state = { ...INITIAL_STATE };
+                }
+            } else {
+                saveState();
+            }
+            renderAll();
+        }
+
+        function saveState() {
+            localStorage.setItem('primum_state_v2', JSON.stringify(state));
+            renderAll();
+        }
+
+        function resetLocalData() {
+            if (confirm('Reset to initial demo data?')) {
+                localStorage.removeItem('primum_state_v2');
+                state = { ...INITIAL_STATE };
+                saveState();
+                closeModal('cloudModal');
+            }
+        }
+
+        // Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('bg-brand-600/20', 'text-brand-400', 'border-l-4', 'border-brand-500'));
+            
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) {
+                activeNav.classList.add('bg-brand-600/20', 'text-brand-400', 'border-l-4', 'border-brand-500');
+            }
+        }
+
+        // Modal Helpers
+        function openModal(id) {
+            populateSelectOptions();
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function populateSelectOptions() {
+            // Bed options
+            const bedSelect = document.getElementById('resBedSelect');
+            if (bedSelect) {
+                bedSelect.innerHTML = '';
+                const occupiedBedIds = state.residents.map(r => r.bedId);
+                state.rooms.forEach(room => {
+                    room.beds.forEach(bed => {
+                        const isOccupied = occupiedBedIds.includes(bed.id);
+                        if (!isOccupied) {
+                            const opt = document.createElement('option');
+                            opt.value = bed.id;
+                            opt.textContent = `Room ${room.number} - Bed ${bed.code}`;
+                            bedSelect.appendChild(opt);
+                        }
+                    });
+                });
+            }
+
+            // Resident options for payments & complaints
+            const resSelects = [document.getElementById('payResidentSelect'), document.getElementById('compResidentSelect')];
+            resSelects.forEach(sel => {
+                if (sel) {
+                    sel.innerHTML = '';
+                    state.residents.forEach(res => {
+                        const opt = document.createElement('option');
+                        opt.value = res.id;
+                        opt.textContent = `${res.name} (Phone: ${res.phone})`;
+                        sel.appendChild(opt);
+                    });
+                }
+            });
+        }
+
+        // Formatters
+        function formatRupee(paise) {
+            return '₹' + (paise / 100).toLocaleString('en-IN');
+        }
+
+        // Handlers
+        function handleAddResident(e) {
+            e.preventDefault();
+            const name = document.getElementById('resName').value;
+            const phone = document.getElementById('resPhone').value;
+            const bedId = document.getElementById('resBedSelect').value;
+            const rent = parseInt(document.getElementById('resRent').value) * 100;
+            const deposit = parseInt(document.getElementById('resDeposit').value) * 100;
+
+            const newRes = {
+                id: 'res_' + Date.now(),
+                bedId,
+                name,
+                phone,
+                rentPaise: rent,
+                depositPaise: deposit,
+                joinDate: new Date().toISOString().split('T')[0]
+            };
+
+            state.residents.push(newRes);
+            saveState();
+            closeModal('addResidentModal');
+        }
+
+        function handleRecordPayment(e) {
+            e.preventDefault();
+            const residentId = document.getElementById('payResidentSelect').value;
+            const amountPaise = parseInt(document.getElementById('payAmount').value) * 100;
+            const method = document.getElementById('payMethod').value;
+            const ref = document.getElementById('payRef').value || 'Manual Record';
+
+            const newTx = {
+                id: 'tx_' + Date.now(),
+                residentId,
+                type: 'PAYMENT',
+                amountPaise,
+                method,
+                ref,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            state.transactions.push(newTx);
+            saveState();
+            closeModal('recordPaymentModal');
+        }
+
+        function handleAddComplaint(e) {
+            e.preventDefault();
+            const residentId = document.getElementById('compResidentSelect').value;
+            const category = document.getElementById('compCategory').value;
+            const desc = document.getElementById('compDesc').value;
+
+            state.complaints.push({
+                id: 'c_' + Date.now(),
+                residentId,
+                category,
+                desc,
+                status: 'Open',
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            saveState();
+            closeModal('addComplaintModal');
+        }
+
+        function handleAddNotice(e) {
+            e.preventDefault();
+            const title = document.getElementById('noticeTitle').value;
+            const msg = document.getElementById('noticeMsg').value;
+
+            state.notices.unshift({
+                id: 'n_' + Date.now(),
+                title,
+                msg,
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            saveState();
+            closeModal('addNoticeModal');
+        }
+
+        function handleAddExpense(e) {
+            e.preventDefault();
+            const category = document.getElementById('expCategory').value;
+            const desc = document.getElementById('expDesc').value;
+            const amountPaise = parseInt(document.getElementById('expAmount').value) * 100;
+
+            state.expenses.push({
+                id: 'ex_' + Date.now(),
+                category,
+                desc,
+                amountPaise,
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            saveState();
+            closeModal('addExpenseModal');
+        }
+
+        function resolveComplaint(id) {
+            const comp = state.complaints.find(c => c.id === id);
+            if (comp) {
+                comp.status = 'Resolved';
+                saveState();
+            }
+        }
+
+        function exportToCSV() {
+            let csv = 'Date,Resident,Method,Ref,Amount\n';
+            state.transactions.forEach(t => {
+                const res = state.residents.find(r => r.id === t.residentId);
+                csv += `${t.date},"${res ? res.name : 'N/A'}",${t.method},"${t.ref}",${t.amountPaise / 100}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `rent_ledger_${new Date().toISOString().split('T')[0]}.csv`);
+            a.click();
+        }
+
+        // Render Functions
+        function renderAll() {
+            renderDashboard();
+            renderMatrix();
+            renderResidents();
+            renderLedger();
+            renderComplaints();
+            renderNotices();
+            renderExpenses();
+        }
+
+        function renderDashboard() {
+            let totalBeds = 0;
+            state.rooms.forEach(r => totalBeds += r.beds.length);
+            const occupiedBeds = state.residents.length;
+            const occPct = totalBeds > 0 ? Math.round((occupiedBeds / totalBeds) * 100) : 0;
+
+            document.getElementById('statOccupancy').innerText = `${occPct}%`;
+            document.getElementById('statOccupancySub').innerText = `${occupiedBeds} occupied / ${totalBeds} total`;
+            document.getElementById('sidebarCap').innerText = `${totalBeds} Beds`;
+
+            // Revenue Calculations
+            let totalCollectedPaise = 0;
+            state.transactions.forEach(t => totalCollectedPaise += t.amountPaise);
+
+            let totalRentExpectedPaise = 0;
+            state.residents.forEach(r => totalRentExpectedPaise += r.rentPaise);
+
+            let totalPendingPaise = Math.max(0, totalRentExpectedPaise - totalCollectedPaise);
+
+            let totalExpensesPaise = 0;
+            state.expenses.forEach(e => totalExpensesPaise += e.amountPaise);
+
+            let noiPaise = totalCollectedPaise - totalExpensesPaise;
+
+            document.getElementById('statCollected').innerText = formatRupee(totalCollectedPaise);
+            document.getElementById('statPending').innerText = formatRupee(totalPendingPaise);
+            document.getElementById('statExpenses').innerText = formatRupee(totalExpensesPaise);
+            document.getElementById('statNOI').innerText = formatRupee(noiPaise);
+            document.getElementById('sidebarDues').innerText = formatRupee(totalPendingPaise);
+
+            // Dues & Reminders Table
+            const duesTbody = document.getElementById('dashboardDuesTable');
+            duesTbody.innerHTML = '';
+            let pendingCount = 0;
+
+            state.residents.forEach(r => {
+                const paidTx = state.transactions.filter(t => t.residentId === r.id);
+                let paid = 0;
+                paidTx.forEach(t => paid += t.amountPaise);
+                let due = r.rentPaise - paid;
+
+                if (due > 0) {
+                    pendingCount++;
+                    const room = state.rooms.find(rm => rm.beds.some(b => b.id === r.bedId));
+                    const bed = room ? room.beds.find(b => b.id === r.bedId) : null;
+                    const roomBedCode = room && bed ? `${room.number} (${bed.code})` : 'Unassigned';
+
+                    const msg = encodeURIComponent(`Hi ${r.name}, your rent payment of ${formatRupee(due)} for Room ${roomBedCode} is pending. Please pay via UPI at your earliest.`);
+                    const waLink = `https://wa.me/91${r.phone}?text=${msg}`;
+
+                    duesTbody.innerHTML += `
+                        <tr>
+                            <td class="p-2.5 font-medium text-slate-200">${r.name}</td>
+                            <td class="p-2.5 text-slate-400">${roomBedCode}</td>
+                            <td class="p-2.5 font-bold text-rose-400">${formatRupee(due)}</td>
+                            <td class="p-2.5 text-right">
+                                <a href="${waLink}" target="_blank" class="px-2.5 py-1 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded-lg hover:bg-emerald-600/40 inline-flex items-center gap-1 text-[11px]">
+                                    <i class="fa-brands fa-whatsapp"></i> Remind
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            document.getElementById('statDefaultersCount').innerText = `${pendingCount} residents pending`;
+
+            // Recent Feed
+            const activityContainer = document.getElementById('dashboardRecentActivity');
+            activityContainer.innerHTML = '';
+            state.transactions.slice(-4).reverse().forEach(t => {
+                const res = state.residents.find(r => r.id === t.residentId);
+                activityContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            <div>
+                                <div class="font-semibold text-slate-200">${res ? res.name : 'Tenant'}</div>
+                                <div class="text-[10px] text-slate-400">${t.method} • ${t.date}</div>
+                            </div>
+                        </div>
+                        <div class="font-bold text-emerald-400">+${formatRupee(t.amountPaise)}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderMatrix() {
+            const container = document.getElementById('roomsMatrixContainer');
+            container.innerHTML = '';
+
+            state.rooms.forEach(room => {
+                let bedsHtml = '';
+                room.beds.forEach(bed => {
+                    const resident = state.residents.find(r => r.bedId === bed.id);
+                    const isOccupied = !!resident;
+
+                    bedsHtml += `
+                        <div class="p-3 rounded-xl ${isOccupied ? 'bg-brand-950/40 border border-brand-500/30' : 'bg-slate-900/40 border border-slate-800'} flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg ${isOccupied ? 'bg-brand-600/20 text-brand-400' : 'bg-slate-800 text-slate-500'} flex items-center justify-center font-bold text-xs">
+                                    <i class="fa-solid fa-bed"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-slate-200 text-xs">${bed.code}</div>
+                                    <div class="text-[11px] ${isOccupied ? 'text-slate-300 font-medium' : 'text-slate-500'}">
+                                        ${isOccupied ? resident.name : 'Vacant Bed'}
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 text-[10px] rounded-full font-semibold ${isOccupied ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-500'}">
+                                ${isOccupied ? 'Occupied' : 'Vacant'}
+                            </span>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML += `
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-white text-base">Room ${room.number}</h3>
+                            <span class="text-xs text-slate-400">${room.beds.length} Beds Total</span>
+                        </div>
+                        <div class="space-y-2.5">
+                            ${bedsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderResidents() {
+            const tbody = document.getElementById('residentsTableBody');
+            tbody.innerHTML = '';
+            const search = (document.getElementById('residentSearch')?.value || '').toLowerCase();
+
+            state.residents.forEach(r => {
+                if (search && !r.name.toLowerCase().includes(search) && !r.phone.includes(search)) return;
+
+                const room = state.rooms.find(rm => rm.beds.some(b => b.id === r.bedId));
+                const bed = room ? room.beds.find(b => b.id === r.bedId) : null;
+                const roomBedCode = room && bed ? `${room.number} / ${bed.code}` : 'N/A';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3.5 font-bold text-slate-200">${r.name}</td>
+                        <td class="p-3.5 text-slate-300">${r.phone}</td>
+                        <td class="p-3.5 text-slate-300">${roomBedCode}</td>
+                        <td class="p-3.5 font-semibold text-emerald-400">${formatRupee(r.rentPaise)}</td>
+                        <td class="p-3.5 text-slate-400">${formatRupee(r.depositPaise)}</td>
+                        <td class="p-3.5 text-slate-400">${r.joinDate}</td>
+                        <td class="p-3.5 text-right">
+                            <button onclick="removeResident('${r.id}')" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function removeResident(id) {
+            if (confirm('Checkout and archive resident?')) {
+                state.residents = state.residents.filter(r => r.id !== id);
+                saveState();
+            }
+        }
+
+        function renderLedger() {
+            const tbody = document.getElementById('ledgerTableBody');
+            tbody.innerHTML = '';
+
+            state.transactions.slice().reverse().forEach(t => {
+                const res = state.residents.find(r => r.id === t.residentId);
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3.5 text-slate-400">${t.date}</td>
+                        <td class="p-3.5 font-bold text-slate-200">${res ? res.name : 'Unknown Tenant'}</td>
+                        <td class="p-3.5 text-slate-300"><span class="px-2 py-0.5 rounded-full text-[10px] bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">${t.type}</span></td>
+                        <td class="p-3.5 text-slate-300">${t.method}</td>
+                        <td class="p-3.5 text-slate-400">${t.ref}</td>
+                        <td class="p-3.5 text-right font-bold text-emerald-400">+${formatRupee(t.amountPaise)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderComplaints() {
+            const grid = document.getElementById('complaintsGrid');
+            const dashList = document.getElementById('dashboardComplaintsList');
+            grid.innerHTML = '';
+            dashList.innerHTML = '';
+
+            let openCount = 0;
+
+            state.complaints.forEach(c => {
+                const res = state.residents.find(r => r.id === c.residentId);
+                const isOpen = c.status === 'Open';
+                if (isOpen) openCount++;
+
+                grid.innerHTML += `
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${isOpen ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
+                                ${c.status}
+                            </span>
+                            <span class="text-[11px] text-slate-500">${c.date}</span>
+                        </div>
+                        <div>
+                            <div class="font-bold text-slate-200 text-sm">${c.category}</div>
+                            <p class="text-xs text-slate-400 mt-1">${c.desc}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800/60 flex justify-between items-center text-xs">
+                            <span class="text-slate-400 font-medium">${res ? res.name : 'Tenant'}</span>
+                            ${isOpen ? `<button onclick="resolveComplaint('${c.id}')" class="px-3 py-1 bg-emerald-600 text-white font-semibold rounded-lg text-[11px]">Mark Resolved</button>` : '<span class="text-emerald-400 text-[11px]">Resolved</span>'}
+                        </div>
+                    </div>
+                `;
+
+                if (isOpen) {
+                    dashList.innerHTML += `
+                        <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <div class="font-semibold text-slate-200">${c.category}</div>
+                                <div class="text-[10px] text-slate-400">${res ? res.name : 'Tenant'}</div>
+                            </div>
+                            <button onclick="resolveComplaint('${c.id}')" class="text-emerald-400 text-[11px] font-semibold hover:underline">Resolve</button>
+                        </div>
+                    `;
+                }
+            });
+
+            document.getElementById('openComplaintsBadge').innerText = openCount;
+        }
+
+        function renderNotices() {
+            const container = document.getElementById('noticesFullContainer');
+            const dashList = document.getElementById('dashboardNoticesList');
+            container.innerHTML = '';
+            dashList.innerHTML = '';
+
+            state.notices.forEach(n => {
+                container.innerHTML += `
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-white text-sm">${n.title}</h4>
+                            <span class="text-[10px] text-slate-500">${n.date}</span>
+                        </div>
+                        <p class="text-xs text-slate-300">${n.msg}</p>
+                    </div>
+                `;
+
+                dashList.innerHTML += `
+                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+                        <div class="font-semibold text-slate-200">${n.title}</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">${n.msg}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderExpenses() {
+            const tbody = document.getElementById('expensesTableBody');
+            tbody.innerHTML = '';
+
+            state.expenses.slice().reverse().forEach(e => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3.5 text-slate-400">${e.date}</td>
+                        <td class="p-3.5 font-bold text-slate-200"><span class="px-2 py-0.5 rounded-full text-[10px] bg-rose-500/10 text-rose-400 font-semibold border border-rose-500/20">${e.category}</span></td>
+                        <td class="p-3.5 text-slate-300">${e.desc}</td>
+                        <td class="p-3.5 text-right font-bold text-rose-400">-${formatRupee(e.amountPaise)}</td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
