@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PG Manager - Enterprise PG & Accountability System</title>
+    <title>PG Manager - Owner Portal & Accountability System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-stone-50 font-sans text-stone-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+
+    <!-- LOGIN SCREEN MODAL (Shown when not authenticated) -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6 border border-stone-100">
+            <div class="text-center space-y-2">
+                <div class="inline-flex bg-indigo-600 text-white p-3 rounded-2xl shadow-lg shadow-indigo-200">
+                    <i class="fa-solid fa-building-shield text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-stone-900">PG Manager Login</h2>
+                <p class="text-sm text-stone-500">Enter your credentials to access property analytics</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Username / Phone</label>
+                    <input type="text" id="login-username" required value="owner" placeholder="Owner Username" class="w-full border border-stone-300 p-3 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Password</label>
+                    <input type="password" id="login-password" required value="admin123" placeholder="••••••••" class="w-full border border-stone-300 p-3 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div class="bg-amber-50 border border-amber-200 text-amber-800 text-xs p-3 rounded-xl flex gap-2 items-center">
+                    <i class="fa-solid fa-circle-info text-amber-600"></i>
+                    <span>Default Login: Username: <b>owner</b> | Password: <b>admin123</b></span>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-md shadow-indigo-100">
+                    Sign In to Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-wrapper" class="flex h-screen overflow-hidden hidden">
         <!-- Sidebar -->
         <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col hidden md:flex border-r border-slate-800">
             <div class="p-6 flex items-center gap-3 border-b border-slate-800">
@@ -24,15 +56,14 @@
                 <a href="#buildings" onclick="switchTab('buildings')" id="nav-buildings" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-building w-5"></i> Buildings & Floors</a>
                 <a href="#rooms" onclick="switchTab('rooms')" id="nav-rooms" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-door-open w-5"></i> Rooms & Beds</a>
                 <a href="#residents" onclick="switchTab('residents')" id="nav-residents" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-users w-5"></i> Residents Directory</a>
-                <a href="#billing" onclick="switchTab('billing')" id="nav-billing" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-file-invoice-dollar w-5"></i> Rent Invoices</a>
                 <a href="#payments" onclick="switchTab('payments')" id="nav-payments" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-credit-card w-5"></i> Payments & Ledger</a>
                 <a href="#pending" onclick="switchTab('pending')" id="nav-pending" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-triangle-exclamation w-5 text-amber-400"></i> Pending Rent & WhatsApp</a>
-                <a href="#deposits" onclick="switchTab('deposits')" id="nav-deposits" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-vault w-5"></i> Security Deposits</a>
                 <a href="#expenses" onclick="switchTab('expenses')" id="nav-expenses" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-wallet w-5"></i> Expenses & P&L</a>
-                <a href="#reports" onclick="switchTab('reports')" id="nav-reports" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-chart-line w-5"></i> Reports & Exports</a>
             </nav>
-            <div class="p-4 border-t border-slate-800">
-                <button onclick="resetDemoData()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg transition font-medium">Reset Demo Data</button>
+            <div class="p-4 border-t border-slate-800 space-y-2">
+                <button onclick="handleLogout()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white text-xs py-2 px-3 rounded-lg transition font-medium flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout Owner
+                </button>
             </div>
         </aside>
 
@@ -50,6 +81,9 @@
                     <button onclick="openModal('residentModal')" class="bg-stone-900 hover:bg-stone-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-xs flex items-center gap-2">
                         <i class="fa-solid fa-user-plus"></i> Add Resident
                     </button>
+                    <button onclick="openModal('expenseModal')" class="bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-xs flex items-center gap-2">
+                        <i class="fa-solid fa-receipt"></i> Log Expense
+                    </button>
                 </div>
             </header>
 
@@ -59,23 +93,23 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                             <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Occupancy Rate</p>
-                            <h3 id="stat-occupancy" class="text-2xl font-bold text-stone-900 mt-1">25 / 36 <span class="text-sm font-medium text-emerald-600">(69%)</span></h3>
-                            <p class="text-xs text-stone-500 mt-2">11 Vacant Beds Available</p>
+                            <h3 id="stat-occupancy" class="text-2xl font-bold text-stone-900 mt-1">2 / 36 <span class="text-sm font-medium text-emerald-600">(6%)</span></h3>
+                            <p class="text-xs text-stone-500 mt-2">Active Beds Assigned</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
-                            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Rent Collected (Oct)</p>
-                            <h3 id="stat-collected" class="text-2xl font-bold text-emerald-600 mt-1">₹1,65,000</h3>
-                            <p class="text-xs text-stone-500 mt-2">Expected: ₹2,10,000</p>
+                            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Total Revenue Collected</p>
+                            <h3 id="stat-collected" class="text-2xl font-bold text-emerald-600 mt-1">₹0</h3>
+                            <p class="text-xs text-stone-500 mt-2">Total Verified Ledger Payments</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
-                            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Outstanding Receivables</p>
-                            <h3 id="stat-pending" class="text-2xl font-bold text-rose-600 mt-1">₹45,000</h3>
-                            <p class="text-xs text-stone-500 mt-2">Active Defaulters Tracked</p>
+                            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Total Expenses Logged</p>
+                            <h3 id="stat-expenses" class="text-2xl font-bold text-amber-600 mt-1">₹0</h3>
+                            <p class="text-xs text-stone-500 mt-2">Maintenance & Utility Costs</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                             <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Net Operating Income</p>
-                            <h3 id="stat-noi" class="text-2xl font-bold text-indigo-600 mt-1">₹53,000</h3>
-                            <p class="text-xs text-stone-500 mt-2">Income - Operating Expenses</p>
+                            <h3 id="stat-noi" class="text-2xl font-bold text-indigo-600 mt-1">₹0</h3>
+                            <p class="text-xs text-stone-500 mt-2">Total Income - Expenses</p>
                         </div>
                     </div>
 
@@ -88,9 +122,7 @@
                             <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
                                 <tr><th class="p-3.5">Date</th><th class="p-3.5">Resident</th><th class="p-3.5">Method</th><th class="p-3.5 text-right">Amount</th></tr>
                             </thead>
-                            <tbody id="recent-payments-table" class="divide-y divide-stone-100">
-                                <tr><td class="p-3.5 text-stone-500">27/05/2026</td><td class="p-3.5 font-medium">Mariant Namar</td><td class="p-3.5"><span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">UPI</span></td><td class="p-3.5 text-right font-bold text-stone-900">₹8,000</td></tr>
-                            </tbody>
+                            <tbody id="recent-payments-table" class="divide-y divide-stone-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -106,9 +138,7 @@
                             <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
                                 <tr><th class="p-4">Name</th><th class="p-4">Phone</th><th class="p-4">Room</th><th class="p-4">Monthly Rent</th><th class="p-4 text-center">Status</th></tr>
                             </thead>
-                            <tbody id="residents-table-body" class="divide-y divide-stone-100">
-                                <!-- Populated dynamically -->
-                            </tbody>
+                            <tbody id="residents-table-body" class="divide-y divide-stone-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -124,9 +154,23 @@
                             <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
                                 <tr><th class="p-4">Date</th><th class="p-4">Resident</th><th class="p-4">Method</th><th class="p-4">Reference</th><th class="p-4 text-right">Amount</th></tr>
                             </thead>
-                            <tbody id="payments-ledger-body" class="divide-y divide-stone-100">
-                                <!-- Populated dynamically -->
-                            </tbody>
+                            <tbody id="payments-ledger-body" class="divide-y divide-stone-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- EXPENSES TAB -->
+                <div id="tab-expenses" class="space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-stone-900">Expenses Log</h3>
+                        <button onclick="openModal('expenseModal')" class="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Log New Expense</button>
+                    </div>
+                    <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
+                                <tr><th class="p-4">Category</th><th class="p-4">Description</th><th class="p-4 text-right">Amount</th></tr>
+                            </thead>
+                            <tbody id="expenses-table-body" class="divide-y divide-stone-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -135,40 +179,34 @@
                 <div id="tab-pending" class="space-y-6 hidden">
                     <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs">
                         <h3 class="text-lg font-bold text-stone-900">Pending Rent & WhatsApp Reminders</h3>
-                        <p class="text-sm text-stone-500">Click WhatsApp reminder to open pre-filled messages instantly.</p>
+                        <p class="text-sm text-stone-500">Send WhatsApp payment reminders directly to residents.</p>
                     </div>
                     <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
                         <table class="w-full text-left text-sm">
                             <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
-                                <tr><th class="p-4">Resident</th><th class="p-4">Phone</th><th class="p-4 text-right">Due Amount</th><th class="p-4 text-center">Action</th></tr>
+                                <tr><th class="p-4">Resident</th><th class="p-4">Phone</th><th class="p-4 text-right">Due Rent</th><th class="p-4 text-center">Action</th></tr>
                             </thead>
-                            <tbody id="pending-table-body" class="divide-y divide-stone-100">
-                                <tr><td class="p-4 font-medium">Mariant Namar</td><td class="p-4 text-stone-500">+91 98765 43210</td><td class="p-4 text-right font-bold text-rose-600">₹8,000</td><td class="p-4 text-center"><button onclick="sendWhatsApp('Mariant Namar', 'Room 101', '8,000')" class="bg-emerald-50 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg text-xs"><i class="fa-brands fa-whatsapp"></i> WhatsApp Reminder</button></td></tr>
-                            </tbody>
+                            <tbody id="pending-table-body" class="divide-y divide-stone-100"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- OTHER TABS PLACEHOLDERS -->
-                <div id="tab-buildings" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Buildings & Floor Management</h3><p class="text-stone-500 mt-2">1 Building, 3 Floors, 12 Rooms operational.</p></div></div>
-                <div id="tab-rooms" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Rooms & Beds Visual Matrix</h3><p class="text-stone-500 mt-2">All beds mapped and occupancy tracked.</p></div></div>
-                <div id="tab-billing" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Rent Billing Engine</h3><p class="text-stone-500 mt-2">Invoices generated for October 2026.</p></div></div>
-                <div id="tab-deposits" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Security Deposit Register</h3><p class="text-stone-500 mt-2">Total security deposits held: ₹1,25,000.</p></div></div>
-                <div id="tab-expenses" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Expense Management & P&L</h3><p class="text-stone-500 mt-2">Total operating expenses: ₹1,12,000.</p></div></div>
-                <div id="tab-reports" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Reports & CSV Exports</h3><p class="text-stone-500 mt-2">Download monthly audits and collection registers.</p></div></div>
+                <!-- BUILDINGS & ROOMS PLACEHOLDERS -->
+                <div id="tab-buildings" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Main Property - Building 1</h3><p class="text-stone-500 mt-2">Ground Floor, Floor 1, Floor 2 (12 Rooms Total)</p></div></div>
+                <div id="tab-rooms" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Room Matrix</h3><p class="text-stone-500 mt-2">36 total capacity beds across all floors.</p></div></div>
             </div>
         </main>
     </div>
 
     <!-- MODALS -->
     <div id="residentModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4 shadow-xl">
             <h3 class="font-bold text-lg">Add New Resident</h3>
-            <input type="text" id="resName" placeholder="Full Name" class="w-full border p-2 rounded-lg text-sm">
-            <input type="text" id="resPhone" placeholder="Phone Number" class="w-full border p-2 rounded-lg text-sm">
-            <input type="text" id="resRoom" placeholder="Room Number (e.g. Room 101)" class="w-full border p-2 rounded-lg text-sm">
-            <input type="number" id="resRent" placeholder="Monthly Rent (₹)" class="w-full border p-2 rounded-lg text-sm">
-            <div class="flex justify-end gap-2">
+            <input type="text" id="resName" placeholder="Full Name" class="w-full border p-2.5 rounded-lg text-sm">
+            <input type="text" id="resPhone" placeholder="Phone Number (e.g. +91 9876543210)" class="w-full border p-2.5 rounded-lg text-sm">
+            <input type="text" id="resRoom" placeholder="Room Number (e.g. Room 101)" class="w-full border p-2.5 rounded-lg text-sm">
+            <input type="number" id="resRent" placeholder="Monthly Rent (₹)" class="w-full border p-2.5 rounded-lg text-sm">
+            <div class="flex justify-end gap-2 pt-2">
                 <button onclick="closeModal('residentModal')" class="px-4 py-2 text-sm text-stone-600">Cancel</button>
                 <button onclick="saveResident()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Save Resident</button>
             </div>
@@ -176,39 +214,91 @@
     </div>
 
     <div id="paymentModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4 shadow-xl">
             <h3 class="font-bold text-lg">Record Payment</h3>
-            <input type="text" id="payName" placeholder="Resident Name" class="w-full border p-2 rounded-lg text-sm">
-            <input type="number" id="payAmount" placeholder="Amount Paid (₹)" class="w-full border p-2 rounded-lg text-sm">
-            <select id="payMethod" class="w-full border p-2 rounded-lg text-sm">
+            <input type="text" id="payName" placeholder="Resident Name" class="w-full border p-2.5 rounded-lg text-sm">
+            <input type="number" id="payAmount" placeholder="Amount Paid (₹)" class="w-full border p-2.5 rounded-lg text-sm">
+            <select id="payMethod" class="w-full border p-2.5 rounded-lg text-sm">
                 <option value="UPI">UPI</option>
                 <option value="Cash">Cash</option>
                 <option value="Bank Transfer">Bank Transfer</option>
             </select>
-            <div class="flex justify-end gap-2">
+            <div class="flex justify-end gap-2 pt-2">
                 <button onclick="closeModal('paymentModal')" class="px-4 py-2 text-sm text-stone-600">Cancel</button>
                 <button onclick="savePayment()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Save Payment</button>
             </div>
         </div>
     </div>
 
+    <div id="expenseModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4 shadow-xl">
+            <h3 class="font-bold text-lg">Log Expense</h3>
+            <select id="expCategory" class="w-full border p-2.5 rounded-lg text-sm">
+                <option value="Electricity Bill">Electricity Bill</option>
+                <option value="Water Supply">Water Supply</option>
+                <option value="Maintenance / Repairs">Maintenance / Repairs</option>
+                <option value="WiFi / Internet">WiFi / Internet</option>
+            </select>
+            <input type="text" id="expDesc" placeholder="Description / Note" class="w-full border p-2.5 rounded-lg text-sm">
+            <input type="number" id="expAmount" placeholder="Amount (₹)" class="w-full border p-2.5 rounded-lg text-sm">
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeModal('expenseModal')" class="px-4 py-2 text-sm text-stone-600">Cancel</button>
+                <button onclick="saveExpense()" class="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Save Expense</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Authentication System
+        function checkAuth() {
+            if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-wrapper').classList.remove('hidden');
+                renderData();
+            } else {
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('app-wrapper').classList.add('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('login-username').value;
+            const p = document.getElementById('login-password').value;
+            if (u === 'owner' && p === 'admin123') {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                checkAuth();
+            } else {
+                alert('Invalid Username or Password! Use owner / admin123');
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('isLoggedIn');
+            checkAuth();
+        }
+
+        // Persistent Data Engine
         let residents = JSON.parse(localStorage.getItem('pg_residents')) || [
-            { name: 'Mariant Namar', phone: '+91 98765 43210', room: 'Room 101', rent: 8000, status: 'Active' },
-            { name: 'Anvid Namar', phone: '+91 91234 56789', room: 'Room 102', rent: 8000, status: 'Active' }
+            { name: 'Mariant Namar', phone: '+919876543210', room: 'Room 101', rent: 8000, status: 'Active' },
+            { name: 'Anvid Namar', phone: '+919123456789', room: 'Room 102', rent: 8000, status: 'Active' }
         ];
 
         let payments = JSON.parse(localStorage.getItem('pg_payments')) || [
-            { date: '27/05/2026', name: 'Mariant Namar', method: 'UPI', ref: 'UPI/12345', amount: 8000 }
+            { date: '27/10/2026', name: 'Mariant Namar', method: 'UPI', ref: 'UPI/884920', amount: 8000 }
+        ];
+
+        let expenses = JSON.parse(localStorage.getItem('pg_expenses')) || [
+            { category: 'Electricity Bill', desc: 'Ground Floor Meter', amount: 4500 }
         ];
 
         function switchTab(tabId) {
-            ['dashboard', 'buildings', 'rooms', 'residents', 'billing', 'payments', 'pending', 'deposits', 'expenses', 'reports'].forEach(t => {
-                document.getElementById('tab-' + t).classList.add('hidden');
+            ['dashboard', 'buildings', 'rooms', 'residents', 'payments', 'pending', 'expenses'].forEach(t => {
+                document.getElementById('tab-' + t)?.classList.add('hidden');
                 document.getElementById('nav-' + t)?.classList.remove('bg-indigo-600', 'text-white');
                 document.getElementById('nav-' + t)?.classList.add('text-stone-400', 'hover:bg-slate-800', 'hover:text-white');
             });
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId)?.classList.remove('hidden');
             const activeNav = document.getElementById('nav-' + tabId);
             if(activeNav) {
                 activeNav.classList.remove('text-stone-400', 'hover:bg-slate-800', 'hover:text-white');
@@ -225,7 +315,7 @@
             const phone = document.getElementById('resPhone').value;
             const room = document.getElementById('resRoom').value;
             const rent = document.getElementById('resRent').value;
-            if(!name || !room) return alert('Please fill required fields.');
+            if(!name || !room) return alert('Fill required fields.');
             residents.push({ name, phone, room, rent: Number(rent), status: 'Active' });
             localStorage.setItem('pg_residents', JSON.stringify(residents));
             closeModal('residentModal');
@@ -236,17 +326,27 @@
             const name = document.getElementById('payName').value;
             const amount = document.getElementById('payAmount').value;
             const method = document.getElementById('payMethod').value;
-            if(!name || !amount) return alert('Please fill required fields.');
+            if(!name || !amount) return alert('Fill required fields.');
             payments.unshift({ date: new Date().toLocaleDateString('en-GB'), name, method, ref: 'TXN-' + Math.floor(Math.random()*100000), amount: Number(amount) });
             localStorage.setItem('pg_payments', JSON.stringify(payments));
             closeModal('paymentModal');
             renderData();
         }
 
+        function saveExpense() {
+            const category = document.getElementById('expCategory').value;
+            const desc = document.getElementById('expDesc').value;
+            const amount = document.getElementById('expAmount').value;
+            if(!amount) return alert('Fill amount.');
+            expenses.unshift({ category, desc, amount: Number(amount) });
+            localStorage.setItem('pg_expenses', JSON.stringify(expenses));
+            closeModal('expenseModal');
+            renderData();
+        }
+
         function renderData() {
-            // Residents table
-            const resBody = document.getElementById('residents-table-body');
-            resBody.innerHTML = residents.map(r => `
+            // Render Residents
+            document.getElementById('residents-table-body').innerHTML = residents.map(r => `
                 <tr>
                     <td class="p-4 font-medium">${r.name}</td>
                     <td class="p-4 text-stone-500">${r.phone || 'N/A'}</td>
@@ -256,9 +356,7 @@
                 </tr>
             `).join('');
 
-            // Payments ledger
-            const payBody = document.getElementById('payments-ledger-body');
-            const recentBody = document.getElementById('recent-payments-table');
+            // Render Payments
             const payHtml = payments.map(p => `
                 <tr>
                     <td class="p-4 text-stone-500">${p.date}</td>
@@ -268,27 +366,49 @@
                     <td class="p-4 text-right font-bold text-stone-900">₹${p.amount.toLocaleString()}</td>
                 </tr>
             `).join('');
-            payBody.innerHTML = payHtml;
-            recentBody.innerHTML = payHtml;
+            document.getElementById('payments-ledger-body').innerHTML = payHtml;
+            document.getElementById('recent-payments-table').innerHTML = payHtml;
 
-            // Total collected calc
+            // Render Pending Rent
+            document.getElementById('pending-table-body').innerHTML = residents.map(r => `
+                <tr>
+                    <td class="p-4 font-medium">${r.name}</td>
+                    <td class="p-4 text-stone-500">${r.phone}</td>
+                    <td class="p-4 text-right font-bold text-rose-600">₹${r.rent.toLocaleString()}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="sendWhatsApp('${r.name}', '${r.room}', '${r.rent}')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg text-xs transition inline-flex items-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp Reminder
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Render Expenses
+            document.getElementById('expenses-table-body').innerHTML = expenses.map(e => `
+                <tr>
+                    <td class="p-4 font-medium">${e.category}</td>
+                    <td class="p-4 text-stone-500">${e.desc || '-'}</td>
+                    <td class="p-4 text-right font-bold text-amber-600">₹${e.amount.toLocaleString()}</td>
+                </tr>
+            `).join('');
+
+            // Totals and NOI Calculation
             const totalCollected = payments.reduce((sum, p) => sum + p.amount, 0);
-            document.getElementById('stat-collected').innerText = '₹' + totalCollected.toLocaleString();
-        }
+            const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+            const noi = totalCollected - totalExpenses;
 
-        function resetDemoData() {
-            if(confirm('Reset all demo data?')) {
-                localStorage.clear();
-                location.reload();
-            }
+            document.getElementById('stat-occupancy').innerText = `${residents.length} / 36`;
+            document.getElementById('stat-collected').innerText = '₹' + totalCollected.toLocaleString();
+            document.getElementById('stat-expenses').innerText = '₹' + totalExpenses.toLocaleString();
+            document.getElementById('stat-noi').innerText = '₹' + noi.toLocaleString();
         }
 
         function sendWhatsApp(name, room, amount) {
-            const message = `Hello ${name}, your PG rent for October 2026 is pending. Outstanding amount: ₹${amount}. Please clear your dues at the earliest. Thank you - PG Manager`;
+            const message = `Hello ${name}, your PG rent for ${room} is due. Outstanding amount: ₹${amount}. Please remit payment at your earliest convenience.`;
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        window.onload = renderData;
+        window.onload = checkAuth;
     </script>
 </body>
 </html>
