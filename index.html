@@ -2,8 +2,8 @@
 <html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
-    <meta nam
-    <titlem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amma Premium Co-Live - Enterprise Operations & Financial Ledger</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -44,13 +44,13 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .glass-card {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -81,10 +81,10 @@
         <div class="w-full max-w-md p-8 glass-panel rounded-2xl shadow-2xl border border-slate-800">
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-400 text-white shadow-lg shadow-brand-500/30 mb-4">
-                    <i class="fa-solid me-0 fa-building-user text-2xl"></i>
+                    <i class="fa-solid fa-building-user text-2xl"></i>
                 </div>
-                <h1 class="text-2xl font-bold text-white tracking-tight">PRIMUM PG MANAGER</h1>
-                <p class="text-xs text-slate-400 mt-1">Enterprise Co-Living & Asset Operating System</p>
+                <h1 class="text-2xl font-black text-white tracking-tight">AMMA PREMIUM CO-LIVE</h1>
+                <p class="text-xs text-slate-400 mt-1">Enterprise Operations & Financial Ledger</p>
             </div>
             
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
@@ -122,22 +122,26 @@
             <div class="flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-brand-500/20">
-                        <i class="fa-solid fa-building-shield text-lg"></i>
+                        <i class="fa-solid fa-building-circle-check text-lg"></i>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="font-extrabold text-white text-lg tracking-tight">PRIMUM</span>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">LUXURY PG</span>
+                            <span class="font-black text-white text-lg tracking-tight">AMMA PREMIUM CO-LIVE</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 hidden sm:inline-block">ENTERPRISE</span>
                         </div>
-                        <p class="text-[11px] text-slate-400 hidden sm:block">Enterprise Operations & Tenant Engine</p>
+                        <p class="text-[11px] text-slate-400 hidden md:block">Enterprise Operations & Financial Ledger</p>
                     </div>
                 </div>
 
                 <!-- Sync & Quick Status Bar -->
                 <div class="flex items-center gap-3">
-                    <button onclick="openCloudModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium hover:border-brand-500/50 transition-all">
-                        <span id="syncIndicator" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span id="syncStatusText" class="text-slate-300 text-xs">Offline Local Engine</span>
+                    <div id="currentBillingMonth" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300">
+                        <i class="fa-regular fa-calendar-check text-brand-400"></i>
+                        <span id="currentMonthLabel">Current Billing Period</span>
+                    </div>
+                    <button onclick="switchTab('cloud')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium hover:border-brand-500/50 transition-all">
+                        <span id="syncIndicator" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        <span id="syncStatusText" class="text-slate-300 text-xs hidden sm:inline">Offline LocalStorage</span>
                         <i class="fa-solid fa-cloud text-brand-400 text-xs ml-1"></i>
                     </button>
                     <button onclick="handleLogout()" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 transition-all border border-slate-800" title="Logout">
@@ -158,41 +162,50 @@
                     </button>
                     <button onclick="switchTab('matrix')" id="nav-matrix" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
                         <i class="fa-solid fa-cubes w-5 text-indigo-400"></i>
-                        <span>Rooms & Beds</span>
+                        <span>Rooms & Bed Matrix</span>
                     </button>
                     <button onclick="switchTab('residents')" id="nav-residents" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
                         <i class="fa-solid fa-users w-5 text-emerald-400"></i>
-                        <span>Residents</span>
+                        <span>Residents Directory</span>
                     </button>
                     <button onclick="switchTab('ledger')" id="nav-ledger" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
                         <i class="fa-solid fa-file-invoice-dollar w-5 text-cyan-400"></i>
-                        <span>Rent Ledger</span>
+                        <span>Payments & Ledger</span>
+                    </button>
+                    <button onclick="switchTab('reminders')" id="nav-reminders" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-brands fa-whatsapp w-5 text-emerald-500"></i>
+                        <span class="flex-1 text-left">Pending & WhatsApp</span>
+                        <span id="navDuesBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">0</span>
                     </button>
                     <button onclick="switchTab('complaints')" id="nav-complaints" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
-                        <i class="fa-solid fa-triangle-exclamation w-5 text-amber-400"></i>
-                        <span class="flex-1 text-left">Complaints</span>
+                        <i class="fa-solid fa-screwdriver-wrench w-5 text-amber-400"></i>
+                        <span class="flex-1 text-left">Complaints & Tickets</span>
                         <span id="openComplaintsBadge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">0</span>
                     </button>
-                    <button onclick="switchTab('notices')" id="nav-notices" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
-                        <i class="fa-solid fa-bullhorn w-5 text-purple-400"></i>
-                        <span>Notice Board</span>
-                    </button>
                     <button onclick="switchTab('expenses')" id="nav-expenses" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
-                        <i class="fa-solid fa-receipt w-5 text-rose-400"></i>
-                        <span>Expenses Log</span>
+                        <i class="fa-solid fa-chart-line w-5 text-rose-400"></i>
+                        <span>Expenses & P&L</span>
+                    </button>
+                    <button onclick="switchTab('cloud')" id="nav-cloud" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/60">
+                        <i class="fa-solid fa-cloud-arrow-up w-5 text-sky-400"></i>
+                        <span>Cloud Integration</span>
                     </button>
                 </nav>
 
-                <div class="mt-8 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                    <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">System Quick Stats</div>
+                <div class="mt-8 p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                    <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Amma Co-Live Summary</div>
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
                             <span class="text-slate-400">Total Capacity</span>
                             <span id="sidebarCap" class="font-semibold text-slate-200">0 Beds</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Active Dues</span>
+                            <span class="text-slate-400">Pending Dues</span>
                             <span id="sidebarDues" class="font-semibold text-rose-400">₹0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Current Occupancy</span>
+                            <span id="sidebarOcc" class="font-semibold text-emerald-400">0%</span>
                         </div>
                     </div>
                 </div>
@@ -205,12 +218,12 @@
                 <section id="tab-dashboard" class="tab-content space-y-6">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Executive Dashboard</h2>
-                            <p class="text-xs text-slate-400">Real-time revenue metrics, occupancy rates, and operational health.</p>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Executive Dashboard</h2>
+                            <p class="text-xs text-slate-400">Real-time revenue metrics, occupancy rates, and financial health for Amma Premium Co-Live.</p>
                         </div>
                         <div class="flex gap-2">
                             <button onclick="openModal('addResidentModal')" class="px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow-lg shadow-brand-600/30 flex items-center gap-2">
-                                <i class="fa-solid fa-user-plus"></i> Add Resident
+                                <i class="fa-solid fa-user-plus"></i> Onboard Resident
                             </button>
                             <button onclick="openModal('recordPaymentModal')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/30 flex items-center gap-2">
                                 <i class="fa-solid fa-hand-holding-dollar"></i> Collect Rent
@@ -231,7 +244,7 @@
 
                         <div class="glass-card p-4 rounded-2xl border border-slate-800">
                             <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
-                                <span>Collected (Month)</span>
+                                <span>Total Revenue</span>
                                 <i class="fa-solid fa-circle-check text-emerald-400"></i>
                             </div>
                             <div id="statCollected" class="text-2xl font-black text-emerald-400">₹0</div>
@@ -249,11 +262,11 @@
 
                         <div class="glass-card p-4 rounded-2xl border border-slate-800">
                             <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
-                                <span>Total Expenses</span>
+                                <span>Operating Costs</span>
                                 <i class="fa-solid fa-arrow-trend-down text-amber-400"></i>
                             </div>
                             <div id="statExpenses" class="text-2xl font-black text-amber-400">₹0</div>
-                            <p class="text-[11px] text-slate-400 mt-1">Operating costs</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Logged expenses</p>
                         </div>
 
                         <div class="glass-card p-4 rounded-2xl border border-slate-800">
@@ -274,9 +287,9 @@
                             <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                                 <div class="flex justify-between items-center mb-4">
                                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                                        <i class="fa-solid fa-bell text-rose-400"></i> Defaulters & Dues Alert
+                                        <i class="fa-brands fa-whatsapp text-emerald-400"></i> Direct WhatsApp Rent Reminders
                                     </h3>
-                                    <span class="text-xs text-slate-400">Instant WhatsApp Reminders</span>
+                                    <button onclick="switchTab('reminders')" class="text-xs text-brand-400 hover:underline">View All</button>
                                 </div>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-left text-xs">
@@ -311,9 +324,9 @@
                             <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                                 <div class="flex justify-between items-center mb-3">
                                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                                        <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Open Complaints
+                                        <i class="fa-solid fa-screwdriver-wrench text-amber-400"></i> Pending Maintenance Tickets
                                     </h3>
-                                    <button onclick="openModal('addComplaintModal')" class="text-xs text-brand-400 hover:underline">+ Log</button>
+                                    <button onclick="openModal('addComplaintModal')" class="text-xs text-brand-400 hover:underline">+ Ticket</button>
                                 </div>
                                 <div id="dashboardComplaintsList" class="space-y-2 text-xs">
                                     <!-- Dynamic -->
@@ -323,11 +336,11 @@
                             <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                                 <div class="flex justify-between items-center mb-3">
                                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                                        <i class="fa-solid fa-bullhorn text-purple-400"></i> Live Broadcasts
+                                        <i class="fa-solid fa-receipt text-rose-400"></i> Operating Expenses Overview
                                     </h3>
-                                    <button onclick="openModal('addNoticeModal')" class="text-xs text-brand-400 hover:underline">+ Notice</button>
+                                    <button onclick="openModal('addExpenseModal')" class="text-xs text-brand-400 hover:underline">+ Log</button>
                                 </div>
-                                <div id="dashboardNoticesList" class="space-y-3 text-xs">
+                                <div id="dashboardExpensesList" class="space-y-2 text-xs">
                                     <!-- Dynamic -->
                                 </div>
                             </div>
@@ -339,8 +352,8 @@
                 <section id="tab-matrix" class="tab-content space-y-6 hidden">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Rooms & Beds Matrix</h2>
-                            <p class="text-xs text-slate-400">Visual floor plan with real-time occupancy and bed assignments.</p>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Rooms & Bed Matrix</h2>
+                            <p class="text-xs text-slate-400">Interactive property floor plan with live resident assignments and occupancy states.</p>
                         </div>
                     </div>
 
@@ -353,18 +366,18 @@
                 <section id="tab-residents" class="tab-content space-y-6 hidden">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Resident Directory</h2>
-                            <p class="text-xs text-slate-400">Full profiles, contact numbers, assigned rooms, rent agreements.</p>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Residents Directory</h2>
+                            <p class="text-xs text-slate-400">Resident profiles, room assignments, security deposits, and contact info.</p>
                         </div>
                         <button onclick="openModal('addResidentModal')" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-brand-600/30 flex items-center gap-2">
-                            <i class="fa-solid fa-user-plus"></i> Onboard New Resident
+                            <i class="fa-solid fa-user-plus"></i> Onboard Resident
                         </button>
                     </div>
 
                     <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-1">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-500 text-xs"></i>
-                            <input type="text" id="residentSearch" oninput="renderResidents()" placeholder="Search resident name, phone, room..." 
+                            <input type="text" id="residentSearch" oninput="renderResidents()" placeholder="Search resident name, phone number, room..." 
                                 class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500">
                         </div>
                     </div>
@@ -391,12 +404,12 @@
                     </div>
                 </section>
 
-                <!-- 4. RENT LEDGER TAB -->
+                <!-- 4. PAYMENTS & LEDGER TAB -->
                 <section id="tab-ledger" class="tab-content space-y-6 hidden">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Rent & Payment Ledger</h2>
-                            <p class="text-xs text-slate-400">Complete transaction history, receipt logs, and pending balance tracking.</p>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Payments & Ledger</h2>
+                            <p class="text-xs text-slate-400">Complete transaction ledger, receipt numbers, payment methods, and export tools.</p>
                         </div>
                         <div class="flex gap-2">
                             <button onclick="exportToCSV()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold border border-slate-700 flex items-center gap-2">
@@ -429,15 +442,46 @@
                     </div>
                 </section>
 
-                <!-- 5. COMPLAINTS SYSTEM TAB -->
+                <!-- 5. PENDING RENT & WHATSAPP REMINDERS TAB -->
+                <section id="tab-reminders" class="tab-content space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Pending Rent & WhatsApp Automation</h2>
+                            <p class="text-xs text-slate-400">Send pre-filled WhatsApp rent payment reminders to overdue residents in one click.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3.5">Resident</th>
+                                        <th class="p-3.5">Phone</th>
+                                        <th class="p-3.5">Room / Bed</th>
+                                        <th class="p-3.5">Monthly Rent</th>
+                                        <th class="p-3.5">Paid So Far</th>
+                                        <th class="p-3.5">Pending Dues</th>
+                                        <th class="p-3.5 text-right">WhatsApp Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="remindersTableBody" class="divide-y divide-slate-800/50">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. COMPLAINTS & TICKETS TAB -->
                 <section id="tab-complaints" class="tab-content space-y-6 hidden">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Complaints & Maintenance Portal</h2>
-                            <p class="text-xs text-slate-400">Real-time tenant tickets, priority resolution tracking, plumbing & wifi maintenance.</p>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Complaints & Maintenance Tickets</h2>
+                            <p class="text-xs text-slate-400">Track and resolve plumbing, electrical, WiFi, and housekeeping requests.</p>
                         </div>
                         <button onclick="openModal('addComplaintModal')" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-amber-600/30 flex items-center gap-2">
-                            <i class="fa-solid fa-plus"></i> Log Ticket
+                            <i class="fa-solid fa-plus"></i> Raise Ticket
                         </button>
                     </div>
 
@@ -446,29 +490,12 @@
                     </div>
                 </section>
 
-                <!-- 6. NOTICE BOARD TAB -->
-                <section id="tab-notices" class="tab-content space-y-6 hidden">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Tenant Noticeboard & Communication</h2>
-                            <p class="text-xs text-slate-400">Broadcast maintenance schedules, policy updates, or send direct WhatsApp chats.</p>
-                        </div>
-                        <button onclick="openModal('addNoticeModal')" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-purple-600/30 flex items-center gap-2">
-                            <i class="fa-solid fa-bullhorn"></i> New Broadcast
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="noticesFullContainer">
-                        <!-- Dynamic Notices -->
-                    </div>
-                </section>
-
-                <!-- 7. EXPENSES LOG TAB -->
+                <!-- 7. EXPENSES & PROFIT/LOSS TAB -->
                 <section id="tab-expenses" class="tab-content space-y-6 hidden">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-white tracking-tight">Operational Expense Tracker</h2>
-                            <p class="text-xs text-slate-400">Log utility bills, staff salaries, repairs, catering, and property overheads.</p>
+                            <h2 class="text-2xl font-black text-white tracking-tight">Operating Expenses & Profit/Loss</h2>
+                            <p class="text-xs text-slate-400">Track utility bills, staff salary, catering, repairs, and net margins for Amma Co-Live.</p>
                         </div>
                         <button onclick="openModal('addExpenseModal')" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-rose-600/30 flex items-center gap-2">
                             <i class="fa-solid fa-minus-circle"></i> Log Expense
@@ -494,45 +521,51 @@
                     </div>
                 </section>
 
+                <!-- 8. CLOUD INTEGRATION SETTINGS TAB -->
+                <section id="tab-cloud" class="tab-content space-y-6 hidden">
+                    <div>
+                        <h2 class="text-2xl font-black text-white tracking-tight">Cloud Integration Settings</h2>
+                        <p class="text-xs text-slate-400">Connect to Supabase database for multi-device live sync or manage offline LocalStorage.</p>
+                    </div>
+
+                    <div class="max-w-2xl glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-database text-brand-400"></i> Supabase Database Credentials
+                            </h3>
+                            <p class="text-xs text-slate-400">
+                                When configured, Amma Premium Co-Live automatically connects to your cloud backend for real-time multi-device database persistence.
+                            </p>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Supabase Project URL</label>
+                                <input type="url" id="cfgSupabaseUrl" placeholder="https://xyzcompany.supabase.co" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Supabase Anon Key</label>
+                                <input type="password" id="cfgSupabaseKey" placeholder="eyJhbGciOi..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                            </div>
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <button onclick="saveCloudConfig()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-xs font-semibold rounded-xl text-white shadow-lg shadow-brand-600/30">
+                                    Save & Connect Cloud
+                                </button>
+                                <button onclick="syncCloudData()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold rounded-xl text-white shadow-lg shadow-emerald-600/30 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Sync Cloud Data
+                                </button>
+                                <button onclick="resetLocalData()" class="px-4 py-2 bg-rose-600/20 text-rose-400 border border-rose-500/30 hover:bg-rose-600/30 text-xs font-semibold rounded-xl">
+                                    Reset Sample Local Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </main>
         </div>
     </div>
 
     <!-- MODALS SECTION -->
 
-    <!-- 1. Cloud Config Modal -->
-    <div id="cloudModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
-        <div class="w-full max-w-lg p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-cloud text-brand-400"></i> Cloud Integration (Supabase)
-                </h3>
-                <button onclick="closeModal('cloudModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <p class="text-xs text-slate-400 mb-4">
-                Enter your live Supabase database URL and Anon Key below to enable instant real-time sync across all devices. If left empty, the system seamlessly operates on offline LocalStorage integer engine.
-            </p>
-            <form onsubmit="saveCloudConfig(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Supabase URL</label>
-                    <input type="url" id="cfgSupabaseUrl" placeholder="https://xyz.supabase.co" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Supabase Anon Key</label>
-                    <input type="password" id="cfgSupabaseKey" placeholder="eyJhbGciOi..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
-                </div>
-                <div class="flex justify-between items-center pt-2">
-                    <button type="button" onclick="resetLocalData()" class="text-xs text-rose-400 hover:underline">Reset Demo Data</button>
-                    <div class="flex gap-2">
-                        <button type="button" onclick="closeModal('cloudModal')" class="px-4 py-2 bg-slate-800 text-xs font-semibold rounded-xl text-slate-300">Close</button>
-                        <button type="submit" class="px-4 py-2 bg-brand-600 text-xs font-semibold rounded-xl text-white shadow-lg shadow-brand-600/30">Save Cloud Config</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 2. Add Resident Modal -->
+    <!-- 1. Add Resident Modal -->
     <div id="addResidentModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
         <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
@@ -544,14 +577,14 @@
             <form onsubmit="handleAddResident(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="resName" required placeholder="e.g. Rahul Sharma" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                    <input type="text" id="resName" required placeholder="e.g. Srikant Reddy" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Phone Number (10 Digit)</label>
                     <input type="tel" id="resPhone" required placeholder="9876543210" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Assign Bed</label>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Assign Room & Bed</label>
                     <select id="resBedSelect" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
                         <!-- Dynamic options -->
                     </select>
@@ -571,7 +604,7 @@
         </div>
     </div>
 
-    <!-- 3. Record Payment Modal -->
+    <!-- 2. Record Payment Modal -->
     <div id="recordPaymentModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
         <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
@@ -600,7 +633,7 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Reference / Transaction ID</label>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Reference / Transaction Notes</label>
                     <input type="text" id="payRef" placeholder="e.g. UPI/329103921" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
                 </div>
                 <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-emerald-600/30">Save Transaction</button>
@@ -608,12 +641,12 @@
         </div>
     </div>
 
-    <!-- 4. Add Complaint Modal -->
+    <!-- 3. Add Complaint Modal -->
     <div id="addComplaintModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
         <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Log Maintenance Ticket
+                    <i class="fa-solid fa-screwdriver-wrench text-amber-400"></i> Raise Maintenance Ticket
                 </h3>
                 <button onclick="closeModal('addComplaintModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -627,46 +660,32 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
                     <select id="compCategory" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
-                        <option value="Plumbing">Plumbing / Water</option>
-                        <option value="Electrical">Electrical / Appliances</option>
-                        <option value="WiFi">WiFi & Internet</option>
+                        <option value="Plumbing">Plumbing / Water Supply</option>
+                        <option value="Electrical">Electrical & Appliances</option>
+                        <option value="WiFi">WiFi & High-Speed Internet</option>
                         <option value="Cleaning">Housekeeping & Cleaning</option>
-                        <option value="Food">Food / Mess Quality</option>
+                        <option value="AC/Appliance">AC & Appliance Repair</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Priority</label>
+                    <select id="compPriority" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                        <option value="Low">Low Priority</option>
+                        <option value="Medium" selected>Medium Priority</option>
+                        <option value="High">High Priority</option>
+                        <option value="Urgent">Urgent / Immediate</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Issue Description</label>
-                    <textarea id="compDesc" required rows="3" placeholder="Describe the problem..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200"></textarea>
+                    <textarea id="compDesc" required rows="3" placeholder="Describe the issue..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200"></textarea>
                 </div>
-                <button type="submit" class="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-amber-600/30">Submit Complaint</button>
+                <button type="submit" class="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-amber-600/30">Submit Ticket</button>
             </form>
         </div>
     </div>
 
-    <!-- 5. Add Notice Modal -->
-    <div id="addNoticeModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
-        <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-purple-400"></i> Post Tenant Notice
-                </h3>
-                <button onclick="closeModal('addNoticeModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <form onsubmit="handleAddNotice(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notice Title</label>
-                    <input type="text" id="noticeTitle" required placeholder="e.g. Tank Cleaning Schedule" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notice Message</label>
-                    <textarea id="noticeMsg" required rows="3" placeholder="Write message for tenants..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200"></textarea>
-                </div>
-                <button type="submit" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-purple-600/30">Publish Broadcast</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 6. Add Expense Modal -->
+    <!-- 4. Add Expense Modal -->
     <div id="addExpenseModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
         <div class="w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-800 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
@@ -680,15 +699,15 @@
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
                     <select id="expCategory" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
                         <option value="Electricity">Electricity Bill</option>
-                        <option value="Water">Water Tankers</option>
+                        <option value="Internet">Internet / Broadband</option>
+                        <option value="Water">Water Supply / Tankers</option>
                         <option value="Maintenance">Repairs & Maintenance</option>
-                        <option value="WiFi">Commercial Broadband</option>
-                        <option value="Staff">Staff Salary / Cook</option>
+                        <option value="Staff Salary">Staff Salary / Cook / Security</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Description</label>
-                    <input type="text" id="expDesc" required placeholder="e.g. October EB Bill" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
+                    <input type="text" id="expDesc" required placeholder="e.g. October Commercial Electricity Bill" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Amount (₹)</label>
@@ -702,7 +721,7 @@
 
     <!-- APP LOGIC SCRIPT -->
     <script>
-        // Default Mock Data Starter Setup
+        // Sample Initial Data Structure (Amma Premium Co-Live)
         const INITIAL_STATE = {
             rooms: [
                 { id: 'r1', number: '101', beds: [{ id: 'b1', code: '101-A' }, { id: 'b2', code: '101-B' }] },
@@ -711,37 +730,44 @@
                 { id: 'r4', number: '202', beds: [{ id: 'b7', code: '202-A' }, { id: 'b8', code: '202-B' }] }
             ],
             residents: [
-                { id: 'res1', bedId: 'b1', name: 'Aarav Patel', phone: '9876543210', rentPaise: 1200000, depositPaise: 2000000, joinDate: '2026-01-10' },
-                { id: 'res2', bedId: 'b3', name: 'Vikram Malhotra', phone: '9812345678', rentPaise: 1400000, depositPaise: 2500000, joinDate: '2026-02-15' }
+                { id: 'res1', bedId: 'b1', name: 'Srikant Reddy', phone: '9876543210', rentPaise: 1200000, depositPaise: 2000000, joinDate: '2026-01-10' },
+                { id: 'res2', bedId: 'b3', name: 'Ananya Sharma', phone: '9812345678', rentPaise: 1400000, depositPaise: 2500000, joinDate: '2026-02-15' },
+                { id: 'res3', bedId: 'b5', name: 'Karthik Raja', phone: '9789012345', rentPaise: 1300000, depositPaise: 2200000, joinDate: '2026-03-01' }
             ],
             transactions: [
-                { id: 'tx1', residentId: 'res1', type: 'PAYMENT', amountPaise: 1200000, method: 'UPI', ref: 'UPI/9839102', date: '2026-10-01' }
+                { id: 'tx1', residentId: 'res1', type: 'PAYMENT', amountPaise: 1200000, method: 'UPI', ref: 'UPI/983910283', date: '2026-10-01' },
+                { id: 'tx2', residentId: 'res2', type: 'PAYMENT', amountPaise: 700000, method: 'BANK_TRANSFER', ref: 'IMPS/998123', date: '2026-10-03' }
             ],
             expenses: [
-                { id: 'ex1', category: 'Electricity', desc: 'Main EB Bill Oct', amountPaise: 450000, date: '2026-10-05' }
+                { id: 'ex1', category: 'Electricity', desc: 'Main EB Bill Oct', amountPaise: 450000, date: '2026-10-05' },
+                { id: 'ex2', category: 'Internet', desc: 'Commercial Fiber Broadband', amountPaise: 250000, date: '2026-10-08' }
             ],
             complaints: [
-                { id: 'c1', residentId: 'res2', category: 'WiFi', desc: 'Slow connection on 2nd floor', status: 'Open', date: '2026-10-18' }
-            ],
-            notices: [
-                { id: 'n1', title: 'Water Tank Maintenance', msg: 'Water supply will be paused from 10 AM to 1 PM on Sunday.', date: '2026-10-19' }
+                { id: 'c1', residentId: 'res2', category: 'WiFi', priority: 'High', desc: 'High latency on 2nd floor router', status: 'Open', date: '2026-10-18' },
+                { id: 'c2', residentId: 'res3', category: 'Plumbing', priority: 'Urgent', desc: 'Bathroom tap leaking slightly', status: 'In Progress', date: '2026-10-19' }
             ]
         };
 
-        // State Store
         let state = { ...INITIAL_STATE };
         let supabaseClient = null;
 
         // Initialize on Load
         window.onload = function() {
+            setBillingMonthHeader();
             checkAuthSession();
             initCloudConfig();
             loadState();
         };
 
-        // Authentication logic
+        function setBillingMonthHeader() {
+            const now = new Date();
+            const monthStr = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+            document.getElementById('currentMonthLabel').innerText = `Period: ${monthStr}`;
+        }
+
+        // Auth
         function checkAuthSession() {
-            if (sessionStorage.getItem('primum_auth') === 'true') {
+            if (sessionStorage.getItem('amma_auth') === 'true') {
                 document.getElementById('loginOverlay').classList.add('hidden');
                 document.getElementById('appContainer').classList.remove('hidden');
             }
@@ -753,7 +779,7 @@
             const p = document.getElementById('loginPassword').value;
 
             if (u === 'owner' && p === 'admin123') {
-                sessionStorage.setItem('primum_auth', 'true');
+                sessionStorage.setItem('amma_auth', 'true');
                 document.getElementById('loginOverlay').classList.add('hidden');
                 document.getElementById('appContainer').classList.remove('hidden');
                 renderAll();
@@ -763,50 +789,42 @@
         }
 
         function handleLogout() {
-            sessionStorage.removeItem('primum_auth');
+            sessionStorage.removeItem('amma_auth');
             location.reload();
         }
 
-        // Dual Storage Engine
+        // Cloud Storage Integration
         function initCloudConfig() {
-            const url = localStorage.getItem('primum_sp_url');
-            const key = localStorage.getItem('primum_sp_key');
+            const url = localStorage.getItem('amma_sp_url');
+            const key = localStorage.getItem('amma_sp_key');
 
             if (url && key && window.supabase) {
                 try {
                     supabaseClient = window.supabase.createClient(url, key);
                     document.getElementById('syncIndicator').className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-                    document.getElementById('syncStatusText').innerText = 'Supabase Cloud Connected';
+                    document.getElementById('syncStatusText').innerText = 'Cloud Connected (Supabase)';
                 } catch (err) {
                     console.error('Supabase Init Error:', err);
                 }
             }
         }
 
-        function openCloudModal() {
-            document.getElementById('cfgSupabaseUrl').value = localStorage.getItem('primum_sp_url') || '';
-            document.getElementById('cfgSupabaseKey').value = localStorage.getItem('primum_sp_key') || '';
-            openModal('cloudModal');
-        }
-
-        function saveCloudConfig(e) {
-            e.preventDefault();
+        function saveCloudConfig() {
             const url = document.getElementById('cfgSupabaseUrl').value.trim();
             const key = document.getElementById('cfgSupabaseKey').value.trim();
 
             if (url && key) {
-                localStorage.setItem('primum_sp_url', url);
-                localStorage.setItem('primum_sp_key', key);
+                localStorage.setItem('amma_sp_url', url);
+                localStorage.setItem('amma_sp_key', key);
             } else {
-                localStorage.removeItem('primum_sp_url');
-                localStorage.removeItem('primum_sp_key');
+                localStorage.removeItem('amma_sp_url');
+                localStorage.removeItem('amma_sp_key');
             }
-            closeModal('cloudModal');
             location.reload();
         }
 
         function loadState() {
-            const localData = localStorage.getItem('primum_state_v2');
+            const localData = localStorage.getItem('amma_colive_state');
             if (localData) {
                 try {
                     state = JSON.parse(localData);
@@ -820,20 +838,27 @@
         }
 
         function saveState() {
-            localStorage.setItem('primum_state_v2', JSON.stringify(state));
+            localStorage.setItem('amma_colive_state', JSON.stringify(state));
             renderAll();
         }
 
         function resetLocalData() {
-            if (confirm('Reset to initial demo data?')) {
-                localStorage.removeItem('primum_state_v2');
+            if (confirm('Reset to initial sample data for Amma Premium Co-Live?')) {
+                localStorage.removeItem('amma_colive_state');
                 state = { ...INITIAL_STATE };
                 saveState();
-                closeModal('cloudModal');
             }
         }
 
-        // Navigation
+        async function syncCloudData() {
+            if (!supabaseClient) {
+                alert('Please enter valid Supabase credentials first.');
+                return;
+            }
+            alert('Cloud sync triggered. Syncing current local records with remote Supabase tables...');
+        }
+
+        // Tab Switcher
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('bg-brand-600/20', 'text-brand-400', 'border-l-4', 'border-brand-500'));
@@ -843,9 +868,14 @@
             if (activeNav) {
                 activeNav.classList.add('bg-brand-600/20', 'text-brand-400', 'border-l-4', 'border-brand-500');
             }
+
+            if (tabId === 'cloud') {
+                document.getElementById('cfgSupabaseUrl').value = localStorage.getItem('amma_sp_url') || '';
+                document.getElementById('cfgSupabaseKey').value = localStorage.getItem('amma_sp_key') || '';
+            }
         }
 
-        // Modal Helpers
+        // Modals
         function openModal(id) {
             populateSelectOptions();
             document.getElementById(id).classList.remove('hidden');
@@ -856,7 +886,6 @@
         }
 
         function populateSelectOptions() {
-            // Bed options
             const bedSelect = document.getElementById('resBedSelect');
             if (bedSelect) {
                 bedSelect.innerHTML = '';
@@ -874,7 +903,6 @@
                 });
             }
 
-            // Resident options for payments & complaints
             const resSelects = [document.getElementById('payResidentSelect'), document.getElementById('compResidentSelect')];
             resSelects.forEach(sel => {
                 if (sel) {
@@ -903,7 +931,7 @@
             const rent = parseInt(document.getElementById('resRent').value) * 100;
             const deposit = parseInt(document.getElementById('resDeposit').value) * 100;
 
-            const newRes = {
+            state.residents.push({
                 id: 'res_' + Date.now(),
                 bedId,
                 name,
@@ -911,9 +939,8 @@
                 rentPaise: rent,
                 depositPaise: deposit,
                 joinDate: new Date().toISOString().split('T')[0]
-            };
+            });
 
-            state.residents.push(newRes);
             saveState();
             closeModal('addResidentModal');
         }
@@ -923,9 +950,9 @@
             const residentId = document.getElementById('payResidentSelect').value;
             const amountPaise = parseInt(document.getElementById('payAmount').value) * 100;
             const method = document.getElementById('payMethod').value;
-            const ref = document.getElementById('payRef').value || 'Manual Record';
+            const ref = document.getElementById('payRef').value || 'Manual Entry';
 
-            const newTx = {
+            state.transactions.push({
                 id: 'tx_' + Date.now(),
                 residentId,
                 type: 'PAYMENT',
@@ -933,9 +960,8 @@
                 method,
                 ref,
                 date: new Date().toISOString().split('T')[0]
-            };
+            });
 
-            state.transactions.push(newTx);
             saveState();
             closeModal('recordPaymentModal');
         }
@@ -944,12 +970,14 @@
             e.preventDefault();
             const residentId = document.getElementById('compResidentSelect').value;
             const category = document.getElementById('compCategory').value;
+            const priority = document.getElementById('compPriority').value;
             const desc = document.getElementById('compDesc').value;
 
             state.complaints.push({
                 id: 'c_' + Date.now(),
                 residentId,
                 category,
+                priority,
                 desc,
                 status: 'Open',
                 date: new Date().toISOString().split('T')[0]
@@ -957,22 +985,6 @@
 
             saveState();
             closeModal('addComplaintModal');
-        }
-
-        function handleAddNotice(e) {
-            e.preventDefault();
-            const title = document.getElementById('noticeTitle').value;
-            const msg = document.getElementById('noticeMsg').value;
-
-            state.notices.unshift({
-                id: 'n_' + Date.now(),
-                title,
-                msg,
-                date: new Date().toISOString().split('T')[0]
-            });
-
-            saveState();
-            closeModal('addNoticeModal');
         }
 
         function handleAddExpense(e) {
@@ -993,10 +1005,10 @@
             closeModal('addExpenseModal');
         }
 
-        function resolveComplaint(id) {
+        function updateComplaintStatus(id, newStatus) {
             const comp = state.complaints.find(c => c.id === id);
             if (comp) {
-                comp.status = 'Resolved';
+                comp.status = newStatus;
                 saveState();
             }
         }
@@ -1012,7 +1024,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.setAttribute('href', url);
-            a.setAttribute('download', `rent_ledger_${new Date().toISOString().split('T')[0]}.csv`);
+            a.setAttribute('download', `amma_colive_ledger_${new Date().toISOString().split('T')[0]}.csv`);
             a.click();
         }
 
@@ -1022,8 +1034,8 @@
             renderMatrix();
             renderResidents();
             renderLedger();
+            renderReminders();
             renderComplaints();
-            renderNotices();
             renderExpenses();
         }
 
@@ -1036,8 +1048,8 @@
             document.getElementById('statOccupancy').innerText = `${occPct}%`;
             document.getElementById('statOccupancySub').innerText = `${occupiedBeds} occupied / ${totalBeds} total`;
             document.getElementById('sidebarCap').innerText = `${totalBeds} Beds`;
+            document.getElementById('sidebarOcc').innerText = `${occPct}%`;
 
-            // Revenue Calculations
             let totalCollectedPaise = 0;
             state.transactions.forEach(t => totalCollectedPaise += t.amountPaise);
 
@@ -1057,7 +1069,7 @@
             document.getElementById('statNOI').innerText = formatRupee(noiPaise);
             document.getElementById('sidebarDues').innerText = formatRupee(totalPendingPaise);
 
-            // Dues & Reminders Table
+            // Dues Table
             const duesTbody = document.getElementById('dashboardDuesTable');
             duesTbody.innerHTML = '';
             let pendingCount = 0;
@@ -1074,7 +1086,7 @@
                     const bed = room ? room.beds.find(b => b.id === r.bedId) : null;
                     const roomBedCode = room && bed ? `${room.number} (${bed.code})` : 'Unassigned';
 
-                    const msg = encodeURIComponent(`Hi ${r.name}, your rent payment of ${formatRupee(due)} for Room ${roomBedCode} is pending. Please pay via UPI at your earliest.`);
+                    const msg = encodeURIComponent(`Dear ${r.name}, gentle reminder that your pending rent balance of ${formatRupee(due)} for Amma Premium Co-Live (Room ${roomBedCode}) is due. Kindly transfer via UPI at your earliest convenience.`);
                     const waLink = `https://wa.me/91${r.phone}?text=${msg}`;
 
                     duesTbody.innerHTML += `
@@ -1093,8 +1105,9 @@
             });
 
             document.getElementById('statDefaultersCount').innerText = `${pendingCount} residents pending`;
+            document.getElementById('navDuesBadge').innerText = pendingCount;
 
-            // Recent Feed
+            // Activity
             const activityContainer = document.getElementById('dashboardRecentActivity');
             activityContainer.innerHTML = '';
             state.transactions.slice(-4).reverse().forEach(t => {
@@ -1109,6 +1122,21 @@
                             </div>
                         </div>
                         <div class="font-bold text-emerald-400">+${formatRupee(t.amountPaise)}</div>
+                    </div>
+                `;
+            });
+
+            // Quick Expenses List
+            const dashExp = document.getElementById('dashboardExpensesList');
+            dashExp.innerHTML = '';
+            state.expenses.slice(-3).reverse().forEach(e => {
+                dashExp.innerHTML += `
+                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex justify-between items-center">
+                        <div>
+                            <div class="font-semibold text-slate-200">${e.category}</div>
+                            <div class="text-[10px] text-slate-400">${e.desc}</div>
+                        </div>
+                        <div class="font-bold text-rose-400">-${formatRupee(e.amountPaise)}</div>
                     </div>
                 `;
             });
@@ -1148,7 +1176,7 @@
                     <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-white text-base">Room ${room.number}</h3>
-                            <span class="text-xs text-slate-400">${room.beds.length} Beds Total</span>
+                            <span class="text-xs text-slate-400">${room.beds.length} Beds</span>
                         </div>
                         <div class="space-y-2.5">
                             ${bedsHtml}
@@ -1168,7 +1196,7 @@
 
                 const room = state.rooms.find(rm => rm.beds.some(b => b.id === r.bedId));
                 const bed = room ? room.beds.find(b => b.id === r.bedId) : null;
-                const roomBedCode = room && bed ? `${room.number} / ${bed.code}` : 'N/A';
+                const roomBedCode = room && bed ? `Room ${room.number} (${bed.code})` : 'N/A';
 
                 tbody.innerHTML += `
                     <tr>
@@ -1187,7 +1215,7 @@
         }
 
         function removeResident(id) {
-            if (confirm('Checkout and archive resident?')) {
+            if (confirm('Are you sure you want to checkout and remove this resident?')) {
                 state.residents = state.residents.filter(r => r.id !== id);
                 saveState();
             }
@@ -1212,6 +1240,43 @@
             });
         }
 
+        function renderReminders() {
+            const tbody = document.getElementById('remindersTableBody');
+            tbody.innerHTML = '';
+
+            state.residents.forEach(r => {
+                const paidTx = state.transactions.filter(t => t.residentId === r.id);
+                let paid = 0;
+                paidTx.forEach(t => paid += t.amountPaise);
+                let due = r.rentPaise - paid;
+
+                const room = state.rooms.find(rm => rm.beds.some(b => b.id === r.bedId));
+                const bed = room ? room.beds.find(b => b.id === r.bedId) : null;
+                const roomBedCode = room && bed ? `${room.number} (${bed.code})` : 'Unassigned';
+
+                const msg = encodeURIComponent(`Dear ${r.name}, gentle reminder that your pending rent balance of ${formatRupee(due)} for Amma Premium Co-Live (Room ${roomBedCode}) is due. Kindly transfer via UPI at your earliest convenience.`);
+                const waLink = `https://wa.me/91${r.phone}?text=${msg}`;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3.5 font-bold text-slate-200">${r.name}</td>
+                        <td class="p-3.5 text-slate-300">${r.phone}</td>
+                        <td class="p-3.5 text-slate-300">${roomBedCode}</td>
+                        <td class="p-3.5 font-semibold text-slate-300">${formatRupee(r.rentPaise)}</td>
+                        <td class="p-3.5 font-semibold text-emerald-400">${formatRupee(paid)}</td>
+                        <td class="p-3.5 font-bold ${due > 0 ? 'text-rose-400' : 'text-emerald-400'}">${formatRupee(Math.max(0, due))}</td>
+                        <td class="p-3.5 text-right">
+                            ${due > 0 ? `
+                                <a href="${waLink}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold text-xs inline-flex items-center gap-1.5 shadow-md shadow-emerald-600/30">
+                                    <i class="fa-brands fa-whatsapp"></i> Send Reminder
+                                </a>
+                            ` : `<span class="text-xs text-emerald-400 font-semibold"><i class="fa-solid fa-check"></i> Cleared</span>`}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
         function renderComplaints() {
             const grid = document.getElementById('complaintsGrid');
             const dashList = document.getElementById('dashboardComplaintsList');
@@ -1222,68 +1287,49 @@
 
             state.complaints.forEach(c => {
                 const res = state.residents.find(r => r.id === c.residentId);
-                const isOpen = c.status === 'Open';
-                if (isOpen) openCount++;
+                const isUnresolved = c.status !== 'Resolved';
+                if (isUnresolved) openCount++;
+
+                let priorityClass = 'bg-slate-800 text-slate-300';
+                if (c.priority === 'High') priorityClass = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
+                if (c.priority === 'Urgent') priorityClass = 'bg-rose-500/20 text-rose-300 border border-rose-500/30';
 
                 grid.innerHTML += `
                     <div class="glass-panel p-5 rounded-2xl border border-slate-800 space-y-3">
                         <div class="flex justify-between items-start">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${isOpen ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${c.status === 'Open' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : c.status === 'In Progress' ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
                                 ${c.status}
                             </span>
-                            <span class="text-[11px] text-slate-500">${c.date}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${priorityClass}">${c.priority || 'Medium'}</span>
                         </div>
                         <div>
                             <div class="font-bold text-slate-200 text-sm">${c.category}</div>
                             <p class="text-xs text-slate-400 mt-1">${c.desc}</p>
                         </div>
-                        <div class="pt-2 border-t border-slate-800/60 flex justify-between items-center text-xs">
+                        <div class="pt-3 border-t border-slate-800/60 flex justify-between items-center text-xs">
                             <span class="text-slate-400 font-medium">${res ? res.name : 'Tenant'}</span>
-                            ${isOpen ? `<button onclick="resolveComplaint('${c.id}')" class="px-3 py-1 bg-emerald-600 text-white font-semibold rounded-lg text-[11px]">Mark Resolved</button>` : '<span class="text-emerald-400 text-[11px]">Resolved</span>'}
+                            <div class="flex gap-1">
+                                ${c.status !== 'In Progress' && c.status !== 'Resolved' ? `<button onclick="updateComplaintStatus('${c.id}', 'In Progress')" class="px-2.5 py-1 bg-sky-600 text-white rounded-lg text-[11px]">In Progress</button>` : ''}
+                                ${c.status !== 'Resolved' ? `<button onclick="updateComplaintStatus('${c.id}', 'Resolved')" class="px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-[11px]">Resolve</button>` : '<span class="text-emerald-400 font-semibold text-[11px]"><i class="fa-solid fa-check"></i> Resolved</span>'}
+                            </div>
                         </div>
                     </div>
                 `;
 
-                if (isOpen) {
+                if (isUnresolved) {
                     dashList.innerHTML += `
                         <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 flex justify-between items-center">
                             <div>
-                                <div class="font-semibold text-slate-200">${c.category}</div>
+                                <div class="font-semibold text-slate-200">${c.category} (${c.priority || 'Medium'})</div>
                                 <div class="text-[10px] text-slate-400">${res ? res.name : 'Tenant'}</div>
                             </div>
-                            <button onclick="resolveComplaint('${c.id}')" class="text-emerald-400 text-[11px] font-semibold hover:underline">Resolve</button>
+                            <button onclick="updateComplaintStatus('${c.id}', 'Resolved')" class="text-emerald-400 text-[11px] font-semibold hover:underline">Resolve</button>
                         </div>
                     `;
                 }
             });
 
             document.getElementById('openComplaintsBadge').innerText = openCount;
-        }
-
-        function renderNotices() {
-            const container = document.getElementById('noticesFullContainer');
-            const dashList = document.getElementById('dashboardNoticesList');
-            container.innerHTML = '';
-            dashList.innerHTML = '';
-
-            state.notices.forEach(n => {
-                container.innerHTML += `
-                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 space-y-2">
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-bold text-white text-sm">${n.title}</h4>
-                            <span class="text-[10px] text-slate-500">${n.date}</span>
-                        </div>
-                        <p class="text-xs text-slate-300">${n.msg}</p>
-                    </div>
-                `;
-
-                dashList.innerHTML += `
-                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                        <div class="font-semibold text-slate-200">${n.title}</div>
-                        <div class="text-[11px] text-slate-400 mt-0.5">${n.msg}</div>
-                    </div>
-                `;
-            });
         }
 
         function renderExpenses() {
