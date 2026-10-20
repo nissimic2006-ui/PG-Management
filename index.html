@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PG Manager - Professional PG & Accountability System</title>
+    <title>PG Manager - Enterprise PG & Accountability System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,202 +21,187 @@
             </div>
             <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
                 <a href="#dashboard" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600 text-white font-medium text-sm transition"><i class="fa-solid fa-chart-pie w-5"></i> Dashboard</a>
-                <a href="#buildings" onclick="switchTab('buildings')" id="nav-buildings" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-building w-5"></i> Buildings & Floors</a>
-                <a href="#rooms" onclick="switchTab('rooms')" id="nav-rooms" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-door-open w-5"></i> Rooms & Beds</a>
-                <a href="#residents" onclick="switchTab('residents')" id="nav-residents" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-users w-5"></i> Residents Directory</a>
-                <a href="#billing" onclick="switchTab('billing')" id="nav-billing" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-file-invoice-dollar w-5"></i> Rent Invoices</a>
-                <a href="#payments" onclick="switchTab('payments')" id="nav-payments" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-credit-card w-5"></i> Payments & Ledger</a>
-                <a href="#pending" onclick="switchTab('pending')" id="nav-pending" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-triangle-exclamation w-5 text-amber-400"></i> Pending Rent & WhatsApp</a>
-                <a href="#deposits" onclick="switchTab('deposits')" id="nav-deposits" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-vault w-5"></i> Security Deposits</a>
-                <a href="#expenses" onclick="switchTab('expenses')" id="nav-expenses" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-wallet w-5"></i> Expenses & P&L</a>
-                <a href="#reports" onclick="switchTab('reports')" id="nav-reports" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-chart-line w-5"></i> Reports & Exports</a>
+                <a href="#buildings" onclick="switchTab('buildings')" id="nav-buildings" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-building w-5"></i> Buildings & Floors</a>
+                <a href="#rooms" onclick="switchTab('rooms')" id="nav-rooms" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-door-open w-5"></i> Rooms & Beds</a>
+                <a href="#residents" onclick="switchTab('residents')" id="nav-residents" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-users w-5"></i> Residents Directory</a>
+                <a href="#billing" onclick="switchTab('billing')" id="nav-billing" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-file-invoice-dollar w-5"></i> Rent Invoices</a>
+                <a href="#payments" onclick="switchTab('payments')" id="nav-payments" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-credit-card w-5"></i> Payments & Ledger</a>
+                <a href="#pending" onclick="switchTab('pending')" id="nav-pending" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-triangle-exclamation w-5 text-amber-400"></i> Pending Rent & WhatsApp</a>
+                <a href="#deposits" onclick="switchTab('deposits')" id="nav-deposits" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-vault w-5"></i> Security Deposits</a>
+                <a href="#expenses" onclick="switchTab('expenses')" id="nav-expenses" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-wallet w-5"></i> Expenses & P&L</a>
+                <a href="#reports" onclick="switchTab('reports')" id="nav-reports" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone-400 hover:bg-slate-800 hover:text-white font-medium text-sm transition"><i class="fa-solid fa-chart-line w-5"></i> Reports & Exports</a>
             </nav>
             <div class="p-4 border-t border-slate-800">
-                <div class="bg-slate-800 p-3 rounded-lg text-xs">
-                    <p class="font-semibold text-white">Logged in as Owner</p>
-                    <p class="text-slate-400 mt-0.5">Asia/Kolkata (IST)</p>
-                </div>
+                <button onclick="resetDemoData()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg transition font-medium">Reset Demo Data</button>
             </div>
         </aside>
 
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-stone-50">
-            <!-- Top Navbar -->
             <header class="bg-white border-b border-stone-200 h-16 flex items-center justify-between px-8 sticky top-0 z-20 shadow-xs">
                 <div class="flex items-center gap-4">
                     <h2 id="page-title" class="text-xl font-bold text-stone-900 tracking-tight">Owner Dashboard</h2>
                     <span class="bg-indigo-50 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-indigo-100">Billing Month: October 2026</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="alert('Demo database synced in real-time.')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-xs flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Quick Record Payment
+                    <button onclick="openModal('paymentModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-xs flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Record Payment
                     </button>
-                    <div class="w-9 h-9 rounded-full bg-stone-200 flex items-center justify-center font-bold text-stone-700 border border-stone-300">OP</div>
+                    <button onclick="openModal('residentModal')" class="bg-stone-900 hover:bg-stone-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow-xs flex items-center gap-2">
+                        <i class="fa-solid fa-user-plus"></i> Add Resident
+                    </button>
                 </div>
             </header>
 
-            <!-- Dynamic Content Container -->
             <div class="p-8 max-w-7xl mx-auto w-full space-y-6">
-                
                 <!-- DASHBOARD TAB -->
                 <div id="tab-dashboard" class="space-y-6">
-                    <!-- Metrics Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                             <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Occupancy Rate</p>
-                            <h3 class="text-2xl font-bold text-stone-900 mt-1">25 / 36 <span class="text-sm font-medium text-emerald-600">(69%)</span></h3>
+                            <h3 id="stat-occupancy" class="text-2xl font-bold text-stone-900 mt-1">25 / 36 <span class="text-sm font-medium text-emerald-600">(69%)</span></h3>
                             <p class="text-xs text-stone-500 mt-2">11 Vacant Beds Available</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                             <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Rent Collected (Oct)</p>
-                            <h3 class="text-2xl font-bold text-emerald-600 mt-1">₹1,65,000</h3>
+                            <h3 id="stat-collected" class="text-2xl font-bold text-emerald-600 mt-1">₹1,65,000</h3>
                             <p class="text-xs text-stone-500 mt-2">Expected: ₹2,10,000</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                             <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Outstanding Receivables</p>
-                            <h3 class="text-2xl font-bold text-rose-600 mt-1">₹45,000</h3>
-                            <p class="text-xs text-stone-500 mt-2">3 Partially Paid, 2 Unpaid</p>
+                            <h3 id="stat-pending" class="text-2xl font-bold text-rose-600 mt-1">₹45,000</h3>
+                            <p class="text-xs text-stone-500 mt-2">Active Defaulters Tracked</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                             <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Net Operating Income</p>
-                            <h3 class="text-2xl font-bold text-indigo-600 mt-1">₹53,000</h3>
-                            <p class="text-xs text-stone-500 mt-2">Income ₹1.65L - Exp ₹1.12L</p>
+                            <h3 id="stat-noi" class="text-2xl font-bold text-indigo-600 mt-1">₹53,000</h3>
+                            <p class="text-xs text-stone-500 mt-2">Income - Operating Expenses</p>
                         </div>
-                    </div>
-
-                    <!-- Charts Section -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs lg:col-span-2">
-                            <h3 class="font-bold text-stone-900 mb-4">Monthly Income vs Operating Expenses</h3>
-                            <div class="h-64 flex items-center justify-center bg-stone-50 rounded-lg border border-dashed border-stone-200">
-                                <canvas id="incomeExpenseChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs">
-                            <h3 class="font-bold text-stone-900 mb-4">Occupancy by Floor</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1 font-medium"><span>Ground Floor</span><span>10/12 Beds (83%)</span></div>
-                                    <div class="w-full bg-stone-100 h-2.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-2.5 rounded-full" style="width: 83%"></div></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1 font-medium"><span>First Floor</span><span>9/12 Beds (75%)</span></div>
-                                    <div class="w-full bg-stone-100 h-2.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-2.5 rounded-full" style="width: 75%"></div></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1 font-medium"><span>Second Floor</span><span>6/12 Beds (50%)</span></div>
-                                    <div class="w-full bg-stone-100 h-2.5 rounded-full overflow-hidden"><div class="bg-indigo-600 h-2.5 rounded-full" style="width: 50%"></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Defaulters & Recent Transactions -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
-                            <div class="p-5 border-b border-stone-100 flex justify-between items-center">
-                                <h3 class="font-bold text-stone-900">Highest Outstanding Balances</h3>
-                                <button onclick="switchTab('pending')" class="text-xs font-semibold text-indigo-600 hover:underline">View All Defaulters</button>
-                            </div>
-                            <table class="w-full text-left text-sm">
-                                <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
-                                    <tr><th class="p-3.5">Resident</th><th class="p-3.5">Room</th><th class="p-3.5 text-right">Balance Due</th></tr>
-                                </thead>
-                                <tbody class="divide-y divide-stone-100">
-                                    <tr><td class="p-3.5 font-medium">Mariant Namar</td><td class="p-3.5 text-stone-500">Room 101-A</td><td class="p-3.5 text-right font-bold text-rose-600">₹8,000</td></tr>
-                                    <tr><td class="p-3.5 font-medium">Anvid Namar</td><td class="p-3.5 text-stone-500">Room 102-B</td><td class="p-3.5 text-right font-bold text-rose-600">₹5,000</td></tr>
-                                    <tr><td class="p-3.5 font-medium">Madhat Hragala</td><td class="p-3.5 text-stone-500">Room 201-C</td><td class="p-3.5 text-right font-bold text-rose-600">₹4,000</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
-                            <div class="p-5 border-b border-stone-100 flex justify-between items-center">
-                                <h3 class="font-bold text-stone-900">Recent Payment Transactions</h3>
-                                <button onclick="switchTab('payments')" class="text-xs font-semibold text-indigo-600 hover:underline">View Ledger</button>
-                            </div>
-                            <table class="w-full text-left text-sm">
-                                <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
-                                    <tr><th class="p-3.5">Date</th><th class="p-3.5">Resident</th><th class="p-3.5">Method</th><th class="p-3.5 text-right">Amount</th></tr>
-                                </thead>
-                                <tbody class="divide-y divide-stone-100">
-                                    <tr><td class="p-3.5 text-stone-500">27/05/2026</td><td class="p-3.5 font-medium">Mariant Namar</td><td class="p-3.5"><span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">UPI</span></td><td class="p-3.5 text-right font-bold text-stone-900">₹8,000</td></tr>
-                                    <tr><td class="p-3.5 text-stone-500">17/05/2026</td><td class="p-3.5 font-medium">Anvid Rama</td><td class="p-3.5"><span class="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">Bank Transfer</span></td><td class="p-3.5 text-right font-bold text-stone-900">₹8,000</td></tr>
-                                    <tr><td class="p-3.5 text-stone-500">12/05/2026</td><td class="p-3.5 font-medium">Bhnabi Kumar</td><td class="p-3.5"><span class="bg-stone-100 text-stone-700 text-xs px-2 py-0.5 rounded-full font-medium">Cash</span></td><td class="p-3.5 text-right font-bold text-stone-900">₹7,500</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PENDING RENT & WHATSAPP TAB -->
-                <div id="tab-pending" class="space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-stone-900">Pending Rent & Defaulter Management</h3>
-                            <p class="text-sm text-stone-500">Generate automated WhatsApp reminders with single-click wa.me integration.</p>
-                        </div>
-                        <button onclick="alert('Reminder batch queued successfully!')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-lg"></i> Send Bulk WhatsApp Reminders
-                        </button>
                     </div>
 
                     <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
+                        <div class="p-5 border-b border-stone-100 flex justify-between items-center">
+                            <h3 class="font-bold text-stone-900">Recent Payment Transactions</h3>
+                            <button onclick="switchTab('payments')" class="text-xs font-semibold text-indigo-600 hover:underline">View Full Ledger</button>
+                        </div>
                         <table class="w-full text-left text-sm">
                             <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
-                                <tr>
-                                    <th class="p-4">Resident</th>
-                                    <th class="p-4">Room & Bed</th>
-                                    <th class="p-4">Phone</th>
-                                    <th class="p-4 text-right">Due Amount</th>
-                                    <th class="p-4 text-center">Status</th>
-                                    <th class="p-4 text-center">Action</th>
-                                </tr>
+                                <tr><th class="p-3.5">Date</th><th class="p-3.5">Resident</th><th class="p-3.5">Method</th><th class="p-3.5 text-right">Amount</th></tr>
                             </thead>
-                            <tbody class="divide-y divide-stone-100">
-                                <tr>
-                                    <td class="p-4 font-medium">Mariant Namar</td>
-                                    <td class="p-4 text-stone-500">Room 101 (Bed A)</td>
-                                    <td class="p-4 text-stone-500">+91 98765 43210</td>
-                                    <td class="p-4 text-right font-bold text-rose-600">₹8,000</td>
-                                    <td class="p-4 text-center"><span class="bg-rose-50 text-rose-700 text-xs px-2.5 py-1 rounded-full font-semibold">Overdue</span></td>
-                                    <td class="p-4 text-center">
-                                        <button onclick="sendWhatsApp('Mariant Namar', 'Room 101', '8,000')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg text-xs transition inline-flex items-center gap-1.5">
-                                            <i class="fa-brands fa-whatsapp"></i> WhatsApp Reminder
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-medium">Anvid Namar</td>
-                                    <td class="p-4 text-stone-500">Room 102 (Bed B)</td>
-                                    <td class="p-4 text-stone-500">+91 91234 56789</td>
-                                    <td class="p-4 text-right font-bold text-amber-600">₹5,000</td>
-                                    <td class="p-4 text-center"><span class="bg-amber-50 text-amber-700 text-xs px-2.5 py-1 rounded-full font-semibold">Partially Paid</span></td>
-                                    <td class="p-4 text-center">
-                                        <button onclick="sendWhatsApp('Anvid Namar', 'Room 102', '5,000')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg text-xs transition inline-flex items-center gap-1.5">
-                                            <i class="fa-brands fa-whatsapp"></i> WhatsApp Reminder
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="recent-payments-table" class="divide-y divide-stone-100">
+                                <tr><td class="p-3.5 text-stone-500">27/05/2026</td><td class="p-3.5 font-medium">Mariant Namar</td><td class="p-3.5"><span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">UPI</span></td><td class="p-3.5 text-right font-bold text-stone-900">₹8,000</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- OTHER PLACEHOLDER TABS -->
-                <div id="tab-buildings" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Buildings & Floor Management Module</h3><p class="text-stone-500 mt-2">Manage properties, floor capacities, and room assignments here.</p></div></div>
-                <div id="tab-rooms" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Rooms & Beds Visual Matrix</h3><p class="text-stone-500 mt-2">Interactive occupancy status for all 12 rooms.</p></div></div>
-                <div id="tab-residents" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Residents Directory</h3><p class="text-stone-500 mt-2">Active residents list, check-in and check-out logs.</p></div></div>
-                <div id="tab-billing" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Rent Billing Engine</h3><p class="text-stone-500 mt-2">Generate monthly rent invoices and track billing cycles.</p></div></div>
-                <div id="tab-payments" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Payments Ledger</h3><p class="text-stone-500 mt-2">Recorded cash, UPI, and bank transfer payment transactions.</p></div></div>
-                <div id="tab-deposits" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Security Deposit Register</h3><p class="text-stone-500 mt-2">Track held security deposits and refund deductions.</p></div></div>
-                <div id="tab-expenses" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Expense Management & P&L</h3><p class="text-stone-500 mt-2">Electricity, maintenance, food supplies, and staff salaries.</p></div></div>
-                <div id="tab-reports" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Financial Reports & CSV Exports</h3><p class="text-stone-500 mt-2">Export monthly collection reports and tax audits.</p></div></div>
+                <!-- RESIDENTS TAB -->
+                <div id="tab-residents" class="space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-stone-900">Residents Directory</h3>
+                        <button onclick="openModal('residentModal')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Add New Resident</button>
+                    </div>
+                    <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
+                                <tr><th class="p-4">Name</th><th class="p-4">Phone</th><th class="p-4">Room</th><th class="p-4">Monthly Rent</th><th class="p-4 text-center">Status</th></tr>
+                            </thead>
+                            <tbody id="residents-table-body" class="divide-y divide-stone-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+                <!-- PAYMENTS TAB -->
+                <div id="tab-payments" class="space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-stone-900">Payments & Ledger</h3>
+                        <button onclick="openModal('paymentModal')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Record Payment</button>
+                    </div>
+                    <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
+                                <tr><th class="p-4">Date</th><th class="p-4">Resident</th><th class="p-4">Method</th><th class="p-4">Reference</th><th class="p-4 text-right">Amount</th></tr>
+                            </thead>
+                            <tbody id="payments-ledger-body" class="divide-y divide-stone-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PENDING RENT TAB -->
+                <div id="tab-pending" class="space-y-6 hidden">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-xs">
+                        <h3 class="text-lg font-bold text-stone-900">Pending Rent & WhatsApp Reminders</h3>
+                        <p class="text-sm text-stone-500">Click WhatsApp reminder to open pre-filled messages instantly.</p>
+                    </div>
+                    <div class="bg-white rounded-xl border border-stone-200 shadow-xs overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-stone-50 text-stone-500 text-xs uppercase tracking-wider border-b border-stone-200">
+                                <tr><th class="p-4">Resident</th><th class="p-4">Phone</th><th class="p-4 text-right">Due Amount</th><th class="p-4 text-center">Action</th></tr>
+                            </thead>
+                            <tbody id="pending-table-body" class="divide-y divide-stone-100">
+                                <tr><td class="p-4 font-medium">Mariant Namar</td><td class="p-4 text-stone-500">+91 98765 43210</td><td class="p-4 text-right font-bold text-rose-600">₹8,000</td><td class="p-4 text-center"><button onclick="sendWhatsApp('Mariant Namar', 'Room 101', '8,000')" class="bg-emerald-50 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg text-xs"><i class="fa-brands fa-whatsapp"></i> WhatsApp Reminder</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- OTHER TABS PLACEHOLDERS -->
+                <div id="tab-buildings" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Buildings & Floor Management</h3><p class="text-stone-500 mt-2">1 Building, 3 Floors, 12 Rooms operational.</p></div></div>
+                <div id="tab-rooms" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Rooms & Beds Visual Matrix</h3><p class="text-stone-500 mt-2">All beds mapped and occupancy tracked.</p></div></div>
+                <div id="tab-billing" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Rent Billing Engine</h3><p class="text-stone-500 mt-2">Invoices generated for October 2026.</p></div></div>
+                <div id="tab-deposits" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Security Deposit Register</h3><p class="text-stone-500 mt-2">Total security deposits held: ₹1,25,000.</p></div></div>
+                <div id="tab-expenses" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Expense Management & P&L</h3><p class="text-stone-500 mt-2">Total operating expenses: ₹1,12,000.</p></div></div>
+                <div id="tab-reports" class="space-y-6 hidden"><div class="bg-white p-8 rounded-xl border border-stone-200 shadow-xs"><h3 class="text-lg font-bold">Reports & CSV Exports</h3><p class="text-stone-500 mt-2">Download monthly audits and collection registers.</p></div></div>
             </div>
         </main>
     </div>
 
+    <!-- MODALS -->
+    <div id="residentModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4">
+            <h3 class="font-bold text-lg">Add New Resident</h3>
+            <input type="text" id="resName" placeholder="Full Name" class="w-full border p-2 rounded-lg text-sm">
+            <input type="text" id="resPhone" placeholder="Phone Number" class="w-full border p-2 rounded-lg text-sm">
+            <input type="text" id="resRoom" placeholder="Room Number (e.g. Room 101)" class="w-full border p-2 rounded-lg text-sm">
+            <input type="number" id="resRent" placeholder="Monthly Rent (₹)" class="w-full border p-2 rounded-lg text-sm">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal('residentModal')" class="px-4 py-2 text-sm text-stone-600">Cancel</button>
+                <button onclick="saveResident()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Save Resident</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4">
+            <h3 class="font-bold text-lg">Record Payment</h3>
+            <input type="text" id="payName" placeholder="Resident Name" class="w-full border p-2 rounded-lg text-sm">
+            <input type="number" id="payAmount" placeholder="Amount Paid (₹)" class="w-full border p-2 rounded-lg text-sm">
+            <select id="payMethod" class="w-full border p-2 rounded-lg text-sm">
+                <option value="UPI">UPI</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal('paymentModal')" class="px-4 py-2 text-sm text-stone-600">Cancel</button>
+                <button onclick="savePayment()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Save Payment</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let residents = JSON.parse(localStorage.getItem('pg_residents')) || [
+            { name: 'Mariant Namar', phone: '+91 98765 43210', room: 'Room 101', rent: 8000, status: 'Active' },
+            { name: 'Anvid Namar', phone: '+91 91234 56789', room: 'Room 102', rent: 8000, status: 'Active' }
+        ];
+
+        let payments = JSON.parse(localStorage.getItem('pg_payments')) || [
+            { date: '27/05/2026', name: 'Mariant Namar', method: 'UPI', ref: 'UPI/12345', amount: 8000 }
+        ];
+
         function switchTab(tabId) {
             ['dashboard', 'buildings', 'rooms', 'residents', 'billing', 'payments', 'pending', 'deposits', 'expenses', 'reports'].forEach(t => {
                 document.getElementById('tab-' + t).classList.add('hidden');
@@ -232,26 +217,78 @@
             document.getElementById('page-title').innerText = activeNav ? activeNav.innerText.trim() : 'Dashboard';
         }
 
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function saveResident() {
+            const name = document.getElementById('resName').value;
+            const phone = document.getElementById('resPhone').value;
+            const room = document.getElementById('resRoom').value;
+            const rent = document.getElementById('resRent').value;
+            if(!name || !room) return alert('Please fill required fields.');
+            residents.push({ name, phone, room, rent: Number(rent), status: 'Active' });
+            localStorage.setItem('pg_residents', JSON.stringify(residents));
+            closeModal('residentModal');
+            renderData();
+        }
+
+        function savePayment() {
+            const name = document.getElementById('payName').value;
+            const amount = document.getElementById('payAmount').value;
+            const method = document.getElementById('payMethod').value;
+            if(!name || !amount) return alert('Please fill required fields.');
+            payments.unshift({ date: new Date().toLocaleDateString('en-GB'), name, method, ref: 'TXN-' + Math.floor(Math.random()*100000), amount: Number(amount) });
+            localStorage.setItem('pg_payments', JSON.stringify(payments));
+            closeModal('paymentModal');
+            renderData();
+        }
+
+        function renderData() {
+            // Residents table
+            const resBody = document.getElementById('residents-table-body');
+            resBody.innerHTML = residents.map(r => `
+                <tr>
+                    <td class="p-4 font-medium">${r.name}</td>
+                    <td class="p-4 text-stone-500">${r.phone || 'N/A'}</td>
+                    <td class="p-4 text-stone-500">${r.room}</td>
+                    <td class="p-4 font-bold">₹${r.rent?.toLocaleString()}</td>
+                    <td class="p-4 text-center"><span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-semibold">${r.status}</span></td>
+                </tr>
+            `).join('');
+
+            // Payments ledger
+            const payBody = document.getElementById('payments-ledger-body');
+            const recentBody = document.getElementById('recent-payments-table');
+            const payHtml = payments.map(p => `
+                <tr>
+                    <td class="p-4 text-stone-500">${p.date}</td>
+                    <td class="p-4 font-medium">${p.name}</td>
+                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">${p.method}</span></td>
+                    <td class="p-4 text-stone-500 font-mono text-xs">${p.ref}</td>
+                    <td class="p-4 text-right font-bold text-stone-900">₹${p.amount.toLocaleString()}</td>
+                </tr>
+            `).join('');
+            payBody.innerHTML = payHtml;
+            recentBody.innerHTML = payHtml;
+
+            // Total collected calc
+            const totalCollected = payments.reduce((sum, p) => sum + p.amount, 0);
+            document.getElementById('stat-collected').innerText = '₹' + totalCollected.toLocaleString();
+        }
+
+        function resetDemoData() {
+            if(confirm('Reset all demo data?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
         function sendWhatsApp(name, room, amount) {
             const message = `Hello ${name}, your PG rent for October 2026 is pending. Outstanding amount: ₹${amount}. Please clear your dues at the earliest. Thank you - PG Manager`;
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // Initialize Chart
-        window.onload = function() {
-            const ctx = document.getElementById('incomeExpenseChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June'],
-                    datasets: [
-                        { label: 'Income', data: [140000, 130000, 155000, 180000, 160000, 150000], backgroundColor: '#4f46e5' },
-                        { label: 'Expenses', data: [90000, 85000, 95000, 110000, 115000, 120000], backgroundColor: '#cbd5e1' }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        };
+        window.onload = renderData;
     </script>
 </body>
 </html>
