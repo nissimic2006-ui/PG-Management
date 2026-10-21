@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amma Premium Co-Live — Enterprise PG Management</title>
+    <title>Amma Premium Co-Live | Smart PG & Co-Living Platform</title>
+    <meta name="description" content="Amma Premium Co-Live — Modern PG management platform with real-time bed allocations, fee collections, meal tracking, and complaint workflows.">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,9 +16,6 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
         tailwind.config = {
@@ -48,6 +46,9 @@
                         },
                         border: 'hsl(var(--border) / <alpha-value>)',
                         ring: 'hsl(var(--ring) / <alpha-value>)',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
                     },
                     borderRadius: {
                         lg: 'var(--radius)',
@@ -79,7 +80,6 @@
             --shadow-dashboard: 0 25px 80px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
         }
 
-        /* Framer Motion Keyframe Replications */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -98,296 +98,238 @@
         }
 
         .dashboard-glass {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: var(--shadow-dashboard);
-        }
-
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 99px;
         }
     </style>
 </head>
-<body class="h-screen flex flex-col bg-background font-body overflow-hidden text-foreground antialiased selection:bg-accent selection:text-white">
+<body class="bg-background font-body text-foreground antialiased selection:bg-accent selection:text-white relative">
 
-    <!-- Fullscreen Autoplay Background Motion Video -->
-    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-90">
-        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4" type="video/mp4">
-    </video>
+    <!-- Background Motion Video Container -->
+    <div class="fixed top-0 left-0 w-full h-screen z-0 overflow-hidden pointer-events-none">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-80">
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4" type="video/mp4">
+        </video>
+    </div>
 
-    <!-- Main Content Layout -->
-    <div class="relative z-10 flex flex-col h-full w-full">
+    <!-- Main Wrapper -->
+    <div class="relative z-10 flex flex-col min-h-screen w-full">
 
-        <!-- Navbar -->
-        <header class="flex items-center justify-between px-6 md:px-12 lg:px-20 py-4 font-body w-full shrink-0">
-            <a href="#" class="text-xl font-semibold tracking-tight text-foreground flex items-center gap-2">
-                <span class="text-accent text-2xl">✦</span>
-                <span class="font-display text-2xl tracking-normal">Amma Premium Co-Live</span>
+        <!-- Top Header Navigation -->
+        <header class="flex items-center justify-between px-6 md:px-12 lg:px-20 py-5 font-body w-full bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-40">
+            <a href="#" class="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                <span class="text-accent">✦</span>
+                <span>Amma Premium Co-Live</span>
             </a>
 
             <nav class="hidden md:flex items-center gap-8">
-                <a href="#" onclick="switchTab('overview')" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Overview</a>
-                <a href="#" onclick="switchTab('residents')" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Residents</a>
-                <a href="#" onclick="switchTab('complaints')" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Helpdesk</a>
-                <a href="#" onclick="switchTab('ledger')" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Ledger</a>
+                <a href="#hero" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Home</a>
+                <a href="#dashboard" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Dashboard</a>
+                <a href="#testimonials" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Testimonials</a>
+                <a href="#contact" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</a>
             </nav>
 
-            <div class="flex items-center gap-3">
-                <button onclick="openModal('cloud-modal')" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-background/80 text-xs font-medium text-muted-foreground hover:text-foreground transition-all">
-                    <span id="cloud-indicator" class="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span id="cloud-status-label">Local Storage</span>
-                </button>
-                <button onclick="openModal('add-resident-modal')" class="rounded-full px-5 py-2 text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity shadow-sm">
-                    + Add Resident
-                </button>
-            </div>
+            <button onclick="scrollToDashboard()" class="rounded-full px-5 py-2 text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
+                Book a Tour
+            </button>
         </header>
 
-        <!-- Hero & App Dashboard Area -->
-        <main class="flex-1 flex flex-col items-center w-full px-4 overflow-hidden">
+        <!-- Hero Section -->
+        <main id="hero" class="flex flex-col items-center w-full px-4 pt-8 pb-12">
             
-            <!-- Hero Badge -->
-            <div class="animate-fade-up mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 backdrop-blur-sm px-4 py-1 text-xs md:text-sm text-muted-foreground font-body shadow-sm" style="--fade-y: 10px; --fade-duration: 0.5s; --fade-delay: 0s;">
-                <span>Now with Supabase Cloud Sync ✨</span>
+            <!-- Badge -->
+            <div class="animate-fade-up mb-6 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/90 backdrop-blur-sm px-4 py-1.5 text-sm text-muted-foreground font-body shadow-sm" style="--fade-y: 10px; --fade-duration: 0.5s; --fade-delay: 0s;">
+                <span>Automated Co-Living & PG Management ✨</span>
             </div>
 
-            <!-- Hero Headline -->
-            <h1 class="animate-fade-up text-center font-display text-4xl md:text-5xl lg:text-[4.2rem] leading-[0.95] tracking-tight text-foreground max-w-3xl" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.1s;">
+            <!-- Headline -->
+            <h1 class="animate-fade-up text-center font-display text-5xl md:text-6xl lg:text-[5rem] leading-[0.95] tracking-tight text-foreground max-w-3xl" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.1s;">
                 The Future of <em class="font-display italic font-normal">Smarter</em> Co-Living
             </h1>
 
-            <!-- Hero Subheadline -->
-            <p class="animate-fade-up mt-2 text-center text-xs md:text-sm text-muted-foreground max-w-[620px] leading-relaxed font-body" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.2s;">
-                Automate resident onboarding, rent collections, ledger accounting, and maintenance complaints—all synchronized in real-time.
+            <!-- Subheadline -->
+            <p class="animate-fade-up mt-4 text-center text-base md:text-lg text-muted-foreground max-w-[680px] leading-relaxed font-body" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.2s;">
+                Automate your busywork with intelligent bed allocations, automated rent reminders, maintenance ticketing, and dining headcount tracking—so your wardens can focus on what matters most.
             </p>
 
-            <!-- CTA Row -->
-            <div class="animate-fade-up mt-3 flex items-center gap-3 shrink-0" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.3s;">
-                <button onclick="openModal('add-resident-modal')" class="rounded-full px-5 py-2.5 text-xs font-medium font-body bg-primary text-primary-foreground hover:opacity-90 transition-opacity shadow-md">
-                    Book Room / Resident
+            <!-- CTA Buttons -->
+            <div class="animate-fade-up mt-5 flex items-center gap-3" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.3s;">
+                <button onclick="scrollToDashboard()" class="rounded-full px-6 py-3 text-sm font-medium font-body bg-primary text-primary-foreground hover:opacity-90 transition-opacity shadow-md">
+                    Explore Live Dashboard
                 </button>
-                <button onclick="switchTab('overview')" class="h-9 w-9 rounded-full border-0 bg-background shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:bg-background/90 flex items-center justify-center transition-transform hover:scale-105 active:scale-95" title="Interactive Operational View">
-                    <i data-lucide="play" class="h-3.5 w-3.5 fill-foreground text-foreground ml-0.5"></i>
+                <button onclick="scrollToTestimonials()" class="h-11 px-5 rounded-full border-0 bg-background shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:bg-background/90 flex items-center gap-2 text-xs font-semibold transition-transform hover:scale-105 active:scale-95">
+                    <i data-lucide="star" class="h-4 w-4 fill-amber-500 text-amber-500"></i>
+                    <span>Read Warden Stories</span>
                 </button>
             </div>
 
-            <!-- Functional Application Glass Window -->
-            <div class="animate-fade-up mt-5 w-full max-w-6xl flex-1 min-h-0 overflow-hidden pb-2" style="--fade-y: 30px; --fade-duration: 0.8s; --fade-delay: 0.4s;">
-                <div class="dashboard-glass rounded-t-2xl p-3 md:p-4 text-[11px] h-full flex flex-col">
+            <!-- Interactive PG Dashboard Section -->
+            <div id="dashboard" class="animate-fade-up mt-8 w-full max-w-5xl" style="--fade-y: 30px; --fade-duration: 0.8s; --fade-delay: 0.5s;">
+                <div class="dashboard-glass rounded-2xl p-3 md:p-4 text-[11px] select-none">
                     
-                    <!-- App Top Header Bar -->
-                    <div class="bg-background/90 rounded-xl px-4 py-2 flex items-center justify-between border border-border shadow-sm mb-3 shrink-0">
-                        <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded-md bg-accent text-accent-foreground font-bold flex items-center justify-center text-xs">A</div>
-                            <span class="font-semibold text-foreground text-xs font-display tracking-tight">Amma Co-Live Engine</span>
-                            <span class="bg-emerald-100 text-emerald-800 text-[9px] font-semibold px-2 py-0.5 rounded-full border border-emerald-200">LIVE SYNC</span>
-                        </div>
-
-                        <!-- Search Bar -->
-                        <div class="hidden sm:flex items-center gap-2 bg-secondary/80 border border-border px-3 py-1 rounded-md w-64 justify-between text-muted-foreground">
-                            <div class="flex items-center gap-1.5">
-                                <i data-lucide="search" class="w-3.5 h-3.5"></i>
-                                <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search residents, rooms..." class="bg-transparent border-none outline-none text-[11px] text-foreground w-full placeholder:text-muted-foreground">
+                    <!-- Top Bar -->
+                    <div class="bg-background/95 rounded-xl px-4 py-2.5 flex items-center justify-between border border-border shadow-sm mb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-6 h-6 rounded-md bg-accent text-accent-foreground flex items-center justify-center font-bold text-xs shadow-xs">
+                                <i data-lucide="building" class="w-3.5 h-3.5"></i>
                             </div>
-                            <kbd class="bg-background border border-border rounded px-1 text-[9px]">⌘K</kbd>
+                            
+                            <div class="relative">
+                                <button onclick="toggleBranchDropdown()" class="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity">
+                                    <span class="font-semibold text-foreground text-xs tracking-tight">Amma Premium Co-Live</span>
+                                    <span id="current-branch-text" class="text-[10px] bg-secondary text-muted-foreground px-1.5 py-0.5 rounded font-medium border border-border/60">Campus Wing A (North)</span>
+                                    <i data-lucide="chevron-down" class="w-3 h-3 text-muted-foreground"></i>
+                                </button>
+
+                                <div id="branch-dropdown" class="hidden absolute top-8 left-0 z-50 bg-background border border-border rounded-xl shadow-xl p-1.5 w-52 space-y-1">
+                                    <button onclick="selectBranch('Campus Wing A (North)')" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-secondary font-medium">Campus Wing A (North)</button>
+                                    <button onclick="selectBranch('Campus Wing B (South)')" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-secondary font-medium">Campus Wing B (South)</button>
+                                    <button onclick="selectBranch('Graduate Co-Living Suites')" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-secondary font-medium">Graduate Co-Living Suites</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Search Box -->
+                        <div class="hidden sm:flex items-center gap-2 bg-secondary/80 border border-border/70 rounded-md px-3 py-1 w-64 text-muted-foreground">
+                            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                            <input type="text" id="dashboard-search" onkeyup="handleDashboardSearch()" placeholder="Search resident, room, bed ID..." class="bg-transparent border-0 text-[11px] text-foreground focus:outline-none w-full">
+                            <kbd class="text-[9px] bg-background border border-border px-1 py-0.2 rounded text-muted-foreground font-mono">⌘K</kbd>
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <button onclick="openModal('collect-rent-modal')" class="bg-accent text-accent-foreground px-3 py-1 rounded-md text-[10px] font-medium hover:opacity-90 transition">Collect Rent</button>
-                            <button onclick="openModal('cloud-modal')" class="p-1.5 hover:bg-secondary rounded-md text-muted-foreground hover:text-foreground">
-                                <i data-lucide="settings" class="w-4 h-4"></i>
+                            <button onclick="openCheckinModal()" class="flex items-center gap-1 bg-accent text-accent-foreground font-medium px-2.5 py-1 rounded-md text-[11px] shadow-xs hover:opacity-90">
+                                <i data-lucide="plus" class="w-3 h-3"></i>
+                                <span>New Check-In</span>
                             </button>
-                            <div class="w-6 h-6 rounded-full bg-slate-900 text-white font-semibold flex items-center justify-center text-[10px]">AP</div>
+                            <div class="w-6 h-6 rounded-full bg-accent/20 text-accent font-semibold flex items-center justify-center text-[10px] border border-accent/30">WD</div>
                         </div>
                     </div>
 
-                    <!-- App Core Body Grid -->
-                    <div class="flex flex-1 gap-3 min-h-0 overflow-hidden">
+                    <!-- Dashboard Core Layout -->
+                    <div class="bg-background rounded-xl border border-border overflow-hidden flex flex-col md:flex-row min-h-[420px]">
                         
-                        <!-- Sidebar Navigation -->
-                        <div class="w-36 sm:w-44 bg-background/80 rounded-xl p-2.5 border border-border flex flex-col justify-between shrink-0">
-                            <div class="space-y-1">
-                                <button onclick="switchTab('overview')" id="nav-overview" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-secondary text-foreground font-medium transition text-left">
-                                    <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-accent"></i>
-                                    <span>Dashboard</span>
-                                </button>
-                                <button onclick="switchTab('residents')" id="nav-residents" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-muted-foreground hover:bg-secondary/50 hover:text-foreground transition text-left">
-                                    <div class="flex items-center gap-2">
-                                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
-                                        <span>Residents</span>
-                                    </div>
-                                    <span id="badge-resident-count" class="bg-accent text-accent-foreground text-[9px] px-1.5 py-0.2 rounded-full font-semibold">0</span>
-                                </button>
-                                <button onclick="switchTab('complaints')" id="nav-complaints" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-muted-foreground hover:bg-secondary/50 hover:text-foreground transition text-left">
-                                    <div class="flex items-center gap-2">
-                                        <i data-lucide="wrench" class="w-3.5 h-3.5"></i>
-                                        <span>Complaints</span>
-                                    </div>
-                                    <span id="badge-complaint-count" class="bg-rose-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-semibold">0</span>
-                                </button>
-                                <button onclick="switchTab('ledger')" id="nav-ledger" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-muted-foreground hover:bg-secondary/50 hover:text-foreground transition text-left">
-                                    <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
-                                    <span>Ledger</span>
-                                </button>
+                        <!-- Sidebar -->
+                        <div class="w-full md:w-44 border-r border-border bg-background p-2.5 flex flex-col justify-between shrink-0">
+                            <div class="space-y-3">
+                                <div class="space-y-1">
+                                    <button onclick="switchDashboardTab('rooms')" id="dtab-rooms" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors bg-secondary text-foreground font-semibold">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="bed" class="w-3.5 h-3.5 text-accent"></i>
+                                            <span>Rooms & Beds</span>
+                                        </div>
+                                        <span class="bg-emerald-500/15 text-emerald-600 text-[9px] px-1.5 py-0.2 rounded-full font-semibold">3 Free</span>
+                                    </button>
+
+                                    <button onclick="switchDashboardTab('residents')" id="dtab-residents" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary/50">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                                            <span>Residents</span>
+                                        </div>
+                                        <span class="text-[9px] bg-secondary text-muted-foreground px-1.5 rounded">12</span>
+                                    </button>
+
+                                    <button onclick="switchDashboardTab('complaints')" id="dtab-complaints" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary/50">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="wrench" class="w-3.5 h-3.5"></i>
+                                            <span>Complaints</span>
+                                        </div>
+                                        <span class="bg-amber-500/15 text-amber-600 text-[9px] px-1.5 py-0.2 rounded-full font-semibold">2</span>
+                                    </button>
+
+                                    <button onclick="switchDashboardTab('mess')" id="dtab-mess" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary/50">
+                                        <i data-lucide="utensils" class="w-3.5 h-3.5"></i>
+                                        <span>Mess & Dining</span>
+                                    </button>
+
+                                    <button onclick="switchDashboardTab('fees')" id="dtab-fees" class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary/50">
+                                        <i data-lucide="indian-rupee" class="w-3.5 h-3.5"></i>
+                                        <span>Fee Collection</span>
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="pt-2 border-t border-border space-y-1">
-                                <div class="text-[9px] font-semibold text-muted-foreground px-2 uppercase tracking-wider">Quick Actions</div>
-                                <button onclick="openModal('add-resident-modal')" class="w-full text-left px-2 py-1 text-muted-foreground hover:text-foreground flex items-center gap-1.5">
-                                    <i data-lucide="plus" class="w-3 h-3"></i> Add Resident
-                                </button>
-                                <button onclick="openModal('collect-rent-modal')" class="w-full text-left px-2 py-1 text-muted-foreground hover:text-foreground flex items-center gap-1.5">
-                                    <i data-lucide="indian-rupee" class="w-3 h-3"></i> Collect Rent
-                                </button>
-                                <button onclick="openModal('add-expense-modal')" class="w-full text-left px-2 py-1 text-muted-foreground hover:text-foreground flex items-center gap-1.5">
-                                    <i data-lucide="minus-circle" class="w-3 h-3"></i> Log Expense
-                                </button>
+                            <div class="p-2.5 bg-secondary/60 rounded-lg border border-border/60 mt-4">
+                                <div class="flex items-center justify-between text-[10px] mb-1">
+                                    <span class="text-muted-foreground font-medium">Occupancy</span>
+                                    <span class="font-semibold text-foreground">80%</span>
+                                </div>
+                                <div class="w-full bg-border rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-accent h-1.5 rounded-full" style="width: 80%"></div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Main Interactive Views Canvas -->
-                        <div class="flex-1 bg-secondary/30 rounded-xl p-3 border border-border flex flex-col gap-3 min-h-0 overflow-y-auto">
+                        <!-- Main Dashboard Area -->
+                        <div class="flex-1 bg-secondary/30 p-3.5 space-y-3 overflow-y-auto">
                             
-                            <!-- VIEW 1: DASHBOARD OVERVIEW -->
-                            <div id="view-overview" class="space-y-3 flex-1 flex flex-col min-h-0">
-                                
-                                <!-- Action Pills Row -->
-                                <div class="flex items-center justify-between shrink-0">
-                                    <h3 class="text-xs font-bold text-foreground font-display text-sm">Amma Premium Performance</h3>
-                                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
-                                        <button onclick="openModal('add-resident-modal')" class="bg-accent text-accent-foreground px-2.5 py-1 rounded-full text-[10px] font-medium hover:opacity-90 whitespace-nowrap">+ Resident</button>
-                                        <button onclick="openModal('collect-rent-modal')" class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium hover:bg-secondary whitespace-nowrap">Collect Rent</button>
-                                        <button onclick="openModal('add-complaint-modal')" class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium hover:bg-secondary whitespace-nowrap">Log Ticket</button>
-                                        <button onclick="openModal('add-expense-modal')" class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium hover:bg-secondary whitespace-nowrap">Expense</button>
-                                        <button onclick="exportLedgerCSV()" class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium hover:bg-secondary whitespace-nowrap text-muted-foreground">Export CSV</button>
-                                    </div>
+                            <!-- Tab Content 1: Rooms Matrix -->
+                            <div id="dview-rooms" class="space-y-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="rooms-grid-container">
+                                    <!-- Cards populated dynamically -->
                                 </div>
-
-                                <!-- Metric Cards Grid -->
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 shrink-0">
-                                    <div class="bg-background rounded-xl p-2.5 border border-border space-y-1">
-                                        <div class="text-[10px] text-muted-foreground font-medium">Monthly Collection</div>
-                                        <div id="metric-collected" class="text-base font-bold text-emerald-600">₹0</div>
-                                        <div class="text-[9px] text-emerald-600 font-semibold">↑ Verified Ledger</div>
-                                    </div>
-                                    <div class="bg-background rounded-xl p-2.5 border border-border space-y-1">
-                                        <div class="text-[10px] text-muted-foreground font-medium">Pending Dues</div>
-                                        <div id="metric-dues" class="text-base font-bold text-amber-600">₹0</div>
-                                        <div class="text-[9px] text-amber-600 font-semibold">Active Residents</div>
-                                    </div>
-                                    <div class="bg-background rounded-xl p-2.5 border border-border space-y-1">
-                                        <div class="text-[10px] text-muted-foreground font-medium">Occupancy Rate</div>
-                                        <div id="metric-occupancy" class="text-base font-bold text-foreground">0%</div>
-                                        <div id="metric-occupancy-sub" class="text-[9px] text-muted-foreground">0 Active Beds</div>
-                                    </div>
-                                    <div class="bg-background rounded-xl p-2.5 border border-border space-y-1">
-                                        <div class="text-[10px] text-muted-foreground font-medium">Helpdesk Tickets</div>
-                                        <div id="metric-tickets" class="text-base font-bold text-rose-600">0 Open</div>
-                                        <div class="text-[9px] text-rose-500 font-semibold">Action Required</div>
-                                    </div>
-                                </div>
-
-                                <!-- Handcrafted Cubic Bézier Chart Card -->
-                                <div class="bg-background rounded-xl p-3 border border-border space-y-2 shrink-0">
-                                    <div class="flex items-center justify-between text-muted-foreground">
-                                        <div class="flex items-center gap-1 text-[11px] font-semibold text-foreground">
-                                            <span>Revenue Trend & Collection Curve</span>
-                                            <i data-lucide="check-circle-2" class="w-3 h-3 text-accent"></i>
-                                        </div>
-                                        <span class="text-[10px] text-emerald-600 font-medium">Synced in Integer Paise Precision</span>
-                                    </div>
-
-                                    <!-- Cubic Bézier Chart -->
-                                    <div class="h-16 w-full pt-1">
-                                        <svg class="w-full h-full overflow-visible" viewBox="0 0 300 60" preserveAspectRatio="none">
-                                            <defs>
-                                                <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="15%" stop-color="hsl(239 84% 67%)" stop-opacity="0.3"/>
-                                                    <stop offset="100%" stop-color="hsl(239 84% 67%)" stop-opacity="0"/>
-                                                </linearGradient>
-                                            </defs>
-                                            <path d="M 0 45 C 40 20, 80 50, 120 25 C 160 5, 220 35, 300 10 L 300 60 L 0 60 Z" fill="url(#revenueGradient)"/>
-                                            <path d="M 0 45 C 40 20, 80 50, 120 25 C 160 5, 220 35, 300 10" fill="none" stroke="hsl(239 84% 67%)" stroke-width="2"/>
-                                        </svg>
-                                    </div>
-                                </div>
-
-                                <!-- Recent Transactions Table -->
-                                <div class="bg-background rounded-xl p-3 border border-border flex-1 min-h-0 overflow-y-auto">
-                                    <div class="font-semibold text-foreground text-xs mb-2 flex justify-between items-center">
-                                        <span>Recent PG Transactions</span>
-                                        <span class="text-[10px] text-muted-foreground">Live Audit Log</span>
-                                    </div>
-                                    <div class="w-full">
-                                        <div class="grid grid-cols-4 text-muted-foreground text-[10px] pb-1.5 border-b border-border font-medium">
-                                            <span>Type</span>
-                                            <span>Resident / Note</span>
-                                            <span class="text-right">Amount</span>
-                                            <span class="text-right">Method</span>
-                                        </div>
-                                        <div id="overview-transactions-list" class="divide-y divide-border/50 text-[10px]">
-                                            <!-- Dynamically Rendered -->
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <!-- VIEW 2: RESIDENTS & RENT -->
-                            <div id="view-residents" class="space-y-3 flex-1 hidden flex-col min-h-0">
-                                <div class="flex justify-between items-center shrink-0">
-                                    <h3 class="text-sm font-bold text-foreground">Resident Directory</h3>
-                                    <button onclick="openModal('add-resident-modal')" class="bg-accent text-accent-foreground px-3 py-1 rounded-md text-[10px] font-medium hover:opacity-90">+ Add Resident</button>
-                                </div>
+                            <!-- Tab Content 2: Residents Directory -->
+                            <div id="dview-residents" class="hidden space-y-3 bg-background p-3 rounded-xl border border-border">
+                                <h4 class="font-semibold text-foreground text-xs">Active PG Residents</h4>
+                                <table class="w-full text-left text-[11px]">
+                                    <thead>
+                                        <tr class="border-b border-border text-muted-foreground text-[9px] uppercase">
+                                            <th class="pb-2">Resident</th>
+                                            <th class="pb-2">Room</th>
+                                            <th class="pb-2">Phone</th>
+                                            <th class="pb-2">Rent Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="residents-table-body" class="divide-y divide-border/50">
+                                        <!-- Rows populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                <div class="bg-background rounded-xl p-3 border border-border flex-1 min-h-0 overflow-y-auto">
-                                    <div class="w-full">
-                                        <div class="grid grid-cols-5 text-muted-foreground text-[10px] pb-2 border-b border-border font-medium">
-                                            <span>Resident</span>
-                                            <span>Room</span>
-                                            <span>Rent (Monthly)</span>
-                                            <span>Status</span>
-                                            <span class="text-right">Actions</span>
-                                        </div>
-                                        <div id="residents-table-body" class="divide-y divide-border/50 text-[10px]">
-                                            <!-- Dynamically Rendered -->
-                                        </div>
+                            <!-- Tab Content 3: Complaints -->
+                            <div id="dview-complaints" class="hidden space-y-2 bg-background p-3 rounded-xl border border-border">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-semibold text-foreground text-xs">Active Repair Tickets</h4>
+                                    <button onclick="openLogTicketModal()" class="px-2 py-1 bg-accent text-accent-foreground text-[10px] rounded font-medium">+ Log Ticket</button>
+                                </div>
+                                <div id="complaints-list" class="space-y-2">
+                                    <!-- Tickets populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Tab Content 4: Mess -->
+                            <div id="dview-mess" class="hidden bg-background p-3 rounded-xl border border-border space-y-3">
+                                <h4 class="font-semibold text-foreground text-xs">Daily Mess Headcount</h4>
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div class="p-2 rounded bg-secondary">
+                                        <span class="text-[9px] text-muted-foreground">Breakfast</span>
+                                        <p class="font-bold text-xs">118 Served</p>
+                                    </div>
+                                    <div class="p-2 rounded bg-accent/10 border border-accent/30">
+                                        <span class="text-[9px] text-accent font-bold">Lunch (Active)</span>
+                                        <p class="font-bold text-xs text-accent">94 Served</p>
+                                    </div>
+                                    <div class="p-2 rounded bg-secondary">
+                                        <span class="text-[9px] text-muted-foreground">Dinner</span>
+                                        <p class="font-bold text-xs">110 Expected</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- VIEW 3: COMPLAINTS HELPDESK -->
-                            <div id="view-complaints" class="space-y-3 flex-1 hidden flex-col min-h-0">
-                                <div class="flex justify-between items-center shrink-0">
-                                    <h3 class="text-sm font-bold text-foreground">Maintenance Tickets</h3>
-                                    <button onclick="openModal('add-complaint-modal')" class="bg-accent text-accent-foreground px-3 py-1 rounded-md text-[10px] font-medium hover:opacity-90">+ Log Complaint</button>
+                            <!-- Tab Content 5: Fees -->
+                            <div id="dview-fees" class="hidden bg-background p-3 rounded-xl border border-border space-y-2">
+                                <h4 class="font-semibold text-foreground text-xs">Fee Ledger Summary</h4>
+                                <div class="flex justify-between items-center p-2 rounded bg-secondary text-xs">
+                                    <span>Total Collected (Oct 2026)</span>
+                                    <span class="font-bold text-emerald-600">₹1,84,500</span>
                                 </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 overflow-y-auto flex-1" id="complaints-cards-grid">
-                                    <!-- Dynamically Rendered -->
-                                </div>
-                            </div>
-
-                            <!-- VIEW 4: LEDGER & EXPENSES -->
-                            <div id="view-ledger" class="space-y-3 flex-1 hidden flex-col min-h-0">
-                                <div class="flex justify-between items-center shrink-0">
-                                    <h3 class="text-sm font-bold text-foreground">Financial Ledger (Paise Precision)</h3>
-                                    <button onclick="openModal('add-expense-modal')" class="bg-rose-600 text-white px-3 py-1 rounded-md text-[10px] font-medium hover:opacity-90">+ Record Expense</button>
-                                </div>
-
-                                <div class="bg-background rounded-xl p-3 border border-border flex-1 min-h-0 overflow-y-auto space-y-2" id="full-ledger-list">
-                                    <!-- Dynamically Rendered -->
+                                <div class="flex justify-between items-center p-2 rounded bg-secondary text-xs">
+                                    <span>Pending Dues</span>
+                                    <span class="font-bold text-amber-600">₹8,500</span>
                                 </div>
                             </div>
 
@@ -398,446 +340,383 @@
             </div>
 
         </main>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="w-full bg-background/95 py-16 px-6 md:px-12 lg:px-20 border-t border-border font-body">
+            <div class="max-w-6xl mx-auto space-y-12">
+                
+                <!-- Section Header -->
+                <div class="text-center space-y-3 max-w-2xl mx-auto">
+                    <div class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-xs text-muted-foreground font-medium">
+                        <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500 fill-amber-500"></i>
+                        <span>Trusted by 140+ Hostels & Co-Living Spaces</span>
+                    </div>
+
+                    <h2 class="font-display text-4xl md:text-5xl text-foreground tracking-tight">
+                        Loved by Wardens. Proven in <em class="font-display italic font-normal">Every</em> Wing.
+                    </h2>
+
+                    <p class="text-muted-foreground text-sm leading-relaxed">
+                        Discover how property managers eliminate paperwork, boost bed occupancy, and automate meal tracking with Amma Premium Co-Live.
+                    </p>
+
+                    <!-- Filter Pills + Share Story CTA -->
+                    <div class="flex items-center justify-center gap-2 pt-2 flex-wrap">
+                        <button onclick="filterTestimonials('all')" id="tcat-all" class="px-3.5 py-1 rounded-full text-xs font-medium bg-foreground text-background">All Properties</button>
+                        <button onclick="filterTestimonials('student')" id="tcat-student" class="px-3.5 py-1 rounded-full text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground">Student Housing</button>
+                        <button onclick="filterTestimonials('coliving')" id="tcat-coliving" class="px-3.5 py-1 rounded-full text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground">Co-Living</button>
+                        <button onclick="filterTestimonials('hostel')" id="tcat-hostel" class="px-3.5 py-1 rounded-full text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground">Hostels</button>
+                        
+                        <button onclick="openSubmitReviewModal()" class="px-3.5 py-1 rounded-full text-xs font-semibold text-accent bg-accent/10 border border-accent/30 hover:bg-accent/20">
+                            + Share Your Story
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Banner -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-secondary/50 border border-border text-center">
+                    <div>
+                        <span class="font-display text-2xl md:text-3xl font-bold text-foreground">99.2%</span>
+                        <span class="block text-xs text-muted-foreground">On-time fee collection</span>
+                    </div>
+                    <div>
+                        <span class="font-display text-2xl md:text-3xl font-bold text-foreground">140+</span>
+                        <span class="block text-xs text-muted-foreground">Hostels & co-living hubs</span>
+                    </div>
+                    <div>
+                        <span class="font-display text-2xl md:text-3xl font-bold text-foreground">14,500+</span>
+                        <span class="block text-xs text-muted-foreground">Active resident beds</span>
+                    </div>
+                    <div>
+                        <span class="font-display text-2xl md:text-3xl font-bold text-foreground">4.9 / 5</span>
+                        <span class="block text-xs text-muted-foreground">Warden satisfaction</span>
+                    </div>
+                </div>
+
+                <!-- Testimonials Grid -->
+                <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards populated dynamically -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="bg-background border-t border-border py-8 text-center text-xs text-muted-foreground">
+            <p>© 2026 Amma Premium Co-Live Platform. All rights reserved.</p>
+        </footer>
+
     </div>
 
-    <!-- MODALS SECTION -->
+    <!-- Modals -->
 
-    <!-- Modal 1: Add Resident -->
-    <div id="add-resident-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-background border border-border rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-up" style="--fade-y: 10px; --fade-duration: 0.3s;">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-foreground">Register Resident</h3>
-                <button onclick="closeModal('add-resident-modal')" class="text-muted-foreground hover:text-foreground">✕</button>
+    <!-- New Check-In Modal -->
+    <div id="checkin-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-background border border-border rounded-2xl p-5 max-w-sm w-full space-y-3">
+            <div class="flex justify-between items-center border-b border-border pb-2">
+                <h4 class="font-bold text-sm">New Resident Check-In</h4>
+                <button onclick="closeCheckinModal()" class="text-muted-foreground hover:text-foreground">✕</button>
             </div>
-            <form onsubmit="handleAddResident(event)" class="space-y-2.5 text-xs">
+            <form onsubmit="handleCheckinSubmit(event)" class="space-y-2 text-xs">
                 <div>
-                    <label class="text-muted-foreground font-medium">Full Name</label>
-                    <input type="text" id="res-name" required class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
+                    <label class="block text-muted-foreground mb-0.5">Resident Full Name</label>
+                    <input type="text" id="chk-name" required class="w-full p-2 rounded border border-border bg-background">
                 </div>
+                <div>
+                    <label class="block text-muted-foreground mb-0.5">Phone Number</label>
+                    <input type="tel" id="chk-phone" required class="w-full p-2 rounded border border-border bg-background">
+                </div>
+                <div>
+                    <label class="block text-muted-foreground mb-0.5">Assign Room / Bed</label>
+                    <select id="chk-bed" class="w-full p-2 rounded border border-border bg-background">
+                        <option value="101-C">Room 101 - Bed C (Vacant)</option>
+                        <option value="102-D">Room 102 - Bed D (Vacant)</option>
+                        <option value="203-B">Room 203 - Bed B (Vacant)</option>
+                    </select>
+                </div>
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeCheckinModal()" class="flex-1 p-2 rounded bg-secondary">Cancel</button>
+                    <button type="submit" class="flex-1 p-2 rounded bg-accent text-accent-foreground font-semibold">Confirm Check-In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Log Complaint Modal -->
+    <div id="ticket-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-background border border-border rounded-2xl p-5 max-w-sm w-full space-y-3">
+            <div class="flex justify-between items-center border-b border-border pb-2">
+                <h4 class="font-bold text-sm">Log Repair Ticket</h4>
+                <button onclick="closeLogTicketModal()" class="text-muted-foreground hover:text-foreground">✕</button>
+            </div>
+            <form onsubmit="handleTicketSubmit(event)" class="space-y-2 text-xs">
+                <div>
+                    <label class="block text-muted-foreground mb-0.5">Room Number</label>
+                    <input type="text" id="tkt-room" required placeholder="e.g. 102" class="w-full p-2 rounded border border-border bg-background">
+                </div>
+                <div>
+                    <label class="block text-muted-foreground mb-0.5">Issue Description</label>
+                    <input type="text" id="tkt-issue" required placeholder="e.g. AC cooling leak" class="w-full p-2 rounded border border-border bg-background">
+                </div>
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeLogTicketModal()" class="flex-1 p-2 rounded bg-secondary">Cancel</button>
+                    <button type="submit" class="flex-1 p-2 rounded bg-accent text-accent-foreground font-semibold">Submit Ticket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Submit Review Modal -->
+    <div id="review-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-background border border-border rounded-2xl p-5 max-w-md w-full space-y-3">
+            <div class="flex justify-between items-center border-b border-border pb-2">
+                <h4 class="font-bold text-sm">Share Your Warden Story</h4>
+                <button onclick="closeSubmitReviewModal()" class="text-muted-foreground hover:text-foreground">✕</button>
+            </div>
+            <form onsubmit="handleReviewSubmit(event)" class="space-y-2 text-xs">
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-muted-foreground font-medium">Room No.</label>
-                        <input type="text" id="res-room" required placeholder="e.g. 101" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
+                        <label class="block text-muted-foreground mb-0.5">Your Name</label>
+                        <input type="text" id="rev-name" required placeholder="e.g. Rohan Sharma" class="w-full p-2 rounded border border-border bg-background">
                     </div>
                     <div>
-                        <label class="text-muted-foreground font-medium">Phone</label>
-                        <input type="tel" id="res-phone" required placeholder="10-digit" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
+                        <label class="block text-muted-foreground mb-0.5">Role</label>
+                        <input type="text" id="rev-role" required placeholder="e.g. Head Warden" class="w-full p-2 rounded border border-border bg-background">
                     </div>
                 </div>
                 <div>
-                    <label class="text-muted-foreground font-medium">Monthly Rent (₹)</label>
-                    <input type="number" id="res-rent" required placeholder="8500" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
+                    <label class="block text-muted-foreground mb-0.5">Property Name & Location</label>
+                    <input type="text" id="rev-prop" required placeholder="e.g. Starlight Residences, Bengaluru" class="w-full p-2 rounded border border-border bg-background">
                 </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('add-resident-modal')" class="px-3 py-1.5 rounded-md text-muted-foreground hover:bg-secondary">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 bg-accent text-accent-foreground rounded-md font-medium">Save Resident</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal 2: Collect Rent -->
-    <div id="collect-rent-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-background border border-border rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-up" style="--fade-y: 10px; --fade-duration: 0.3s;">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-foreground">Collect Rent Payment</h3>
-                <button onclick="closeModal('collect-rent-modal')" class="text-muted-foreground hover:text-foreground">✕</button>
-            </div>
-            <form onsubmit="handleCollectRent(event)" class="space-y-2.5 text-xs">
                 <div>
-                    <label class="text-muted-foreground font-medium">Select Resident</label>
-                    <select id="rent-resident-select" required class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                        <!-- Dynamically filled -->
+                    <label class="block text-muted-foreground mb-0.5">Category</label>
+                    <select id="rev-cat" class="w-full p-2 rounded border border-border bg-background">
+                        <option value="student">Student Housing</option>
+                        <option value="coliving">Co-Living Space</option>
+                        <option value="hostel">Hostel</option>
                     </select>
                 </div>
                 <div>
-                    <label class="text-muted-foreground font-medium">Amount Received (₹)</label>
-                    <input type="number" id="rent-amount" required placeholder="8500" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
+                    <label class="block text-muted-foreground mb-0.5">Testimonial Quote</label>
+                    <textarea id="rev-quote" required rows="3" placeholder="How Amma Premium Co-Live helped your hostel..." class="w-full p-2 rounded border border-border bg-background"></textarea>
                 </div>
-                <div>
-                    <label class="text-muted-foreground font-medium">Payment Method</label>
-                    <select id="rent-method" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                        <option value="UPI">UPI / GPay / PhonePe</option>
-                        <option value="CASH">Cash</option>
-                        <option value="BANK_TRANSFER">Bank Transfer</option>
-                    </select>
-                </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('collect-rent-modal')" class="px-3 py-1.5 rounded-md text-muted-foreground hover:bg-secondary">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 bg-emerald-600 text-white rounded-md font-medium">Record Rent</button>
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeSubmitReviewModal()" class="flex-1 p-2 rounded bg-secondary">Cancel</button>
+                    <button type="submit" class="flex-1 p-2 rounded bg-accent text-accent-foreground font-semibold">Post Review</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal 3: Add Complaint -->
-    <div id="add-complaint-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-background border border-border rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-up" style="--fade-y: 10px; --fade-duration: 0.3s;">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-foreground">Log Maintenance Ticket</h3>
-                <button onclick="closeModal('add-complaint-modal')" class="text-muted-foreground hover:text-foreground">✕</button>
-            </div>
-            <form onsubmit="handleAddComplaint(event)" class="space-y-2.5 text-xs">
-                <div>
-                    <label class="text-muted-foreground font-medium">Resident Name & Room</label>
-                    <input type="text" id="comp-resident" required placeholder="Rahul Sharma (101)" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                </div>
-                <div>
-                    <label class="text-muted-foreground font-medium">Category</label>
-                    <select id="comp-category" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                        <option value="WiFi">WiFi / Internet</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Cleaning">Housekeeping</option>
-                        <option value="AC">AC / Appliance</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-muted-foreground font-medium">Issue Description</label>
-                    <textarea id="comp-desc" required rows="2" placeholder="Brief details..." class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent"></textarea>
-                </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('add-complaint-modal')" class="px-3 py-1.5 rounded-md text-muted-foreground hover:bg-secondary">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 bg-accent text-accent-foreground rounded-md font-medium">Submit Ticket</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal 4: Add Expense -->
-    <div id="add-expense-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-background border border-border rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-up" style="--fade-y: 10px; --fade-duration: 0.3s;">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-foreground">Record PG Expense</h3>
-                <button onclick="closeModal('add-expense-modal')" class="text-muted-foreground hover:text-foreground">✕</button>
-            </div>
-            <form onsubmit="handleAddExpense(event)" class="space-y-2.5 text-xs">
-                <div>
-                    <label class="text-muted-foreground font-medium">Expense Category</label>
-                    <input type="text" id="exp-category" required placeholder="Electricity Bill / WiFi / Repairs" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                </div>
-                <div>
-                    <label class="text-muted-foreground font-medium">Amount Spent (₹)</label>
-                    <input type="number" id="exp-amount" required placeholder="1200" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('add-expense-modal')" class="px-3 py-1.5 rounded-md text-muted-foreground hover:bg-secondary">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 bg-rose-600 text-white rounded-md font-medium">Log Expense</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal 5: Supabase Cloud Configuration -->
-    <div id="cloud-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-background border border-border rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-fade-up" style="--fade-y: 10px; --fade-duration: 0.3s;">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-foreground">Supabase Cloud Sync</h3>
-                <button onclick="closeModal('cloud-modal')" class="text-muted-foreground hover:text-foreground">✕</button>
-            </div>
-            <p class="text-xs text-muted-foreground">Paste your Supabase credentials to synchronize your PG database across all devices in real time.</p>
-            <form onsubmit="handleCloudConfig(event)" class="space-y-2.5 text-xs">
-                <div>
-                    <label class="text-muted-foreground font-medium">Project URL</label>
-                    <input type="url" id="cloud-url" placeholder="https://xyz.supabase.co" class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                </div>
-                <div>
-                    <label class="text-muted-foreground font-medium">Anon Key</label>
-                    <input type="password" id="cloud-key" placeholder="eyJhbG..." class="w-full bg-secondary border border-border rounded-lg px-3 py-1.5 mt-1 outline-none focus:border-accent">
-                </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('cloud-modal')" class="px-3 py-1.5 rounded-md text-muted-foreground hover:bg-secondary">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 bg-accent text-accent-foreground rounded-md font-medium">Connect Cloud</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- JavaScript Core Engine -->
+    <!-- Application Script Engine -->
     <script>
-        // Default Mock State with Exact Integer Paise Values
-        const defaultResidents = [
-            { id: '1', name: 'Rahul Sharma', room_number: '101', phone: '9876543210', rent_paise: 850000, status: 'Active' },
-            { id: '2', name: 'Priya Verma', room_number: '204', phone: '9123456789', rent_paise: 900000, status: 'Active' },
-            { id: '3', name: 'Ananya Reddy', room_number: '302', phone: '9988776655', rent_paise: 950000, status: 'Active' }
+        // State Data
+        let roomsData = [
+            { number: "101", type: "4-Bed Shared Dorm", wing: "North Wing", beds: [
+                { id: "101-A", code: "A", occupant: "Alex Johnson", status: "occupied" },
+                { id: "101-B", code: "B", occupant: "Marcus Chen", status: "occupied" },
+                { id: "101-C", code: "C", status: "vacant" },
+                { id: "101-D", code: "D", occupant: "Liam Patel", status: "occupied" }
+            ]},
+            { number: "102", type: "4-Bed Shared Dorm", wing: "North Wing", beds: [
+                { id: "102-A", code: "A", occupant: "Carlos Mendez", status: "occupied" },
+                { id: "102-B", code: "B", occupant: "Ethan Wright", status: "occupied" },
+                { id: "102-C", code: "C", occupant: "Noah Kim", status: "occupied" },
+                { id: "102-D", code: "D", status: "vacant" }
+            ]}
         ];
 
-        const defaultComplaints = [
-            { id: '1', resident_name: 'Rahul Sharma', room_number: '101', category: 'WiFi', description: 'High latency during evening calls', status: 'Open' },
-            { id: '2', resident_name: 'Priya Verma', room_number: '204', category: 'Plumbing', description: 'Bathroom tap leaking slowly', status: 'Resolved' }
+        let complaintsData = [
+            { id: "T-101", room: "102", issue: "Air Conditioner Cooling Failure", status: "In Progress" },
+            { id: "T-102", room: "101", issue: "Shower Tap Leakage", status: "Assigned" }
         ];
 
-        const defaultLedger = [
-            { id: '1', type: 'PAYMENT', resident_name: 'Rahul Sharma', amount_paise: 850000, method: 'UPI', date: 'Oct 20' },
-            { id: '2', type: 'PAYMENT', resident_name: 'Priya Verma', amount_paise: 900000, method: 'UPI', date: 'Oct 19' },
-            { id: '3', type: 'EXPENSE', resident_name: 'Main Board Electricity', amount_paise: 320000, method: 'BANK_TRANSFER', date: 'Oct 18' }
+        let testimonialsData = [
+            {
+                id: "1", name: "Rohan Sharma", role: "Head Warden", property: "Starlight Campus Residences", location: "Bengaluru, IN",
+                beds: "480 Beds", category: "student", stat: "+98% Occupancy", statLabel: "Up from 82% in 1 semester",
+                quote: "Before Amma Premium Co Live, admission week was pure chaos with scattered paper registers and double-booked bunks. Now, bed allocation takes seconds.", avatar: "RS"
+            },
+            {
+                id: "2", name: "Elena Rostova", role: "Operations Director", property: "Nomad Urban Living Spaces", location: "Austin, TX",
+                beds: "320 Beds", category: "coliving", stat: "$2,800 Saved/mo", statLabel: "Mess food waste reduction",
+                quote: "The live dining attendance and mess plan system alone paid for the software. We know the exact meal headcount before morning prep.", avatar: "ER"
+            },
+            {
+                id: "3", name: "Priya Venkatesh", role: "Founder & Operator", property: "GreenTerrace Women's Co-Living", location: "Pune, IN",
+                beds: "210 Beds", category: "coliving", stat: "100% Verified Entry", statLabel: "Biometric & gate pass sync",
+                quote: "Security and trust are non-negotiable for female-only hostels. Amma Premium Co Live gives our wardens instant visibility over night curfews.", avatar: "PV"
+            }
         ];
-
-        // Persistent State
-        let residents = JSON.parse(localStorage.getItem('amma_residents')) || defaultResidents;
-        let complaints = JSON.parse(localStorage.getItem('amma_complaints')) || defaultComplaints;
-        let ledger = JSON.parse(localStorage.getItem('amma_ledger')) || defaultLedger;
-        let supabaseClient = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            initSupabaseIfConfigured();
-            renderAll();
-        });
-
-        // Supabase Initialization
-        function initSupabaseIfConfigured() {
-            const url = localStorage.getItem('amma_supabase_url');
-            const key = localStorage.getItem('amma_supabase_key');
-            if (url && key && window.supabase) {
-                try {
-                    supabaseClient = window.supabase.createClient(url, key);
-                    document.getElementById('cloud-indicator').className = "w-2 h-2 rounded-full bg-emerald-500";
-                    document.getElementById('cloud-status-label').innerText = "Supabase Live";
-                } catch (e) {
-                    console.error("Supabase init failed", e);
-                }
-            }
-        }
-
-        // Render Orchestration
-        function renderAll() {
-            renderOverview();
+            renderRooms();
             renderResidents();
             renderComplaints();
-            renderLedger();
-            updateSelectDropdowns();
+            renderTestimonials('all');
+        });
+
+        // Navigation Helpers
+        function scrollToDashboard() { document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' }); }
+        function scrollToTestimonials() { document.getElementById('testimonials').scrollIntoView({ behavior: 'smooth' }); }
+
+        // Dashboard Tab Switcher
+        function switchDashboardTab(tab) {
+            ['rooms', 'residents', 'complaints', 'mess', 'fees'].forEach(t => {
+                document.getElementById(`dview-${t}`).classList.add('hidden');
+                document.getElementById(`dtab-${t}`).className = 'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary/50';
+            });
+            document.getElementById(`dview-${tab}`).classList.remove('hidden');
+            document.getElementById(`dtab-${tab}`).className = 'w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors bg-secondary text-foreground font-semibold';
         }
 
-        function renderOverview() {
-            const totalCollectedPaise = ledger.filter(l => l.type === 'PAYMENT').reduce((acc, curr) => acc + curr.amount_paise, 0);
-            const openComplaintsCount = complaints.filter(c => c.status === 'Open').length;
+        // Branch Switcher
+        function toggleBranchDropdown() { document.getElementById('branch-dropdown').classList.toggle('hidden'); }
+        function selectBranch(branch) {
+            document.getElementById('current-branch-text').innerText = branch;
+            document.getElementById('branch-dropdown').classList.add('hidden');
+        }
 
-            document.getElementById('metric-collected').innerText = `₹${(totalCollectedPaise / 100).toLocaleString('en-IN')}`;
-            document.getElementById('metric-dues').innerText = `₹0`;
-            document.getElementById('metric-occupancy').innerText = `${residents.length * 25}%`;
-            document.getElementById('metric-occupancy-sub').innerText = `${residents.length} Active Residents`;
-            document.getElementById('metric-tickets').innerText = `${openComplaintsCount} Open`;
-
-            document.getElementById('badge-resident-count').innerText = residents.length;
-            document.getElementById('badge-complaint-count').innerText = openComplaintsCount;
-
-            // Render Recent Overview Transactions
-            const txList = document.getElementById('overview-transactions-list');
-            txList.innerHTML = ledger.slice(0, 5).map(l => `
-                <div class="grid grid-cols-4 py-1.5 items-center">
-                    <span class="font-medium ${l.type === 'PAYMENT' ? 'text-emerald-600' : 'text-rose-600'}">${l.type}</span>
-                    <span class="text-foreground font-medium truncate">${l.resident_name}</span>
-                    <span class="text-right font-medium ${l.type === 'PAYMENT' ? 'text-emerald-600' : 'text-foreground'}">
-                        ${l.type === 'PAYMENT' ? '+' : '-'}₹${(l.amount_paise / 100).toLocaleString('en-IN')}
-                    </span>
-                    <span class="text-right text-muted-foreground">${l.method || 'CASH'}</span>
+        // Render Functions
+        function renderRooms() {
+            const container = document.getElementById('rooms-grid-container');
+            container.innerHTML = roomsData.map(r => `
+                <div class="bg-background rounded-xl border border-border p-3">
+                    <div class="flex justify-between items-center pb-2 border-b border-border/70">
+                        <span class="font-semibold text-xs">Room ${r.number}</span>
+                        <span class="text-[9px] text-muted-foreground">${r.type}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5 mt-2">
+                        ${r.beds.map(b => `
+                            <div class="p-1.5 rounded border text-[10px] ${b.status === 'occupied' ? 'bg-secondary' : 'bg-accent/5 border-dashed border-accent/40'}">
+                                <div class="font-bold">Bed ${b.code}</div>
+                                <div class="truncate text-muted-foreground">${b.occupant || '+ Vacant'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             `).join('');
         }
 
         function renderResidents() {
             const tbody = document.getElementById('residents-table-body');
-            tbody.innerHTML = residents.map(r => `
-                <div class="grid grid-cols-5 py-2 items-center">
-                    <span class="font-semibold text-foreground">${r.name}</span>
-                    <span class="text-muted-foreground">Room ${r.room_number}</span>
-                    <span class="font-medium text-foreground">₹${(r.rent_paise / 100).toLocaleString('en-IN')}</span>
-                    <div>
-                        <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-semibold">${r.status}</span>
-                    </div>
-                    <div class="text-right">
-                        <a href="https://wa.me/91${r.phone}?text=Hello%20${encodeURIComponent(r.name)},%20this%20is%20a%20reminder%20from%20Amma%20Premium%20Co-Live%20for%20your%20monthly%20rent." target="_blank" class="bg-emerald-600 text-white px-2 py-1 rounded text-[9px] font-medium inline-flex items-center gap-1">
-                            WhatsApp
-                        </a>
-                    </div>
-                </div>
+            const residents = [];
+            roomsData.forEach(r => {
+                r.beds.forEach(b => {
+                    if (b.status === 'occupied') residents.push({ name: b.occupant, room: r.number, phone: '+91 98765 43210' });
+                });
+            });
+            tbody.innerHTML = residents.map(res => `
+                <tr class="hover:bg-secondary/30">
+                    <td class="py-2 font-medium">${res.name}</td>
+                    <td class="py-2">${res.room}</td>
+                    <td class="py-2 text-muted-foreground">${res.phone}</td>
+                    <td class="py-2"><span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-500/15 text-emerald-600 font-semibold">Paid</span></td>
+                </tr>
             `).join('');
         }
 
         function renderComplaints() {
-            const grid = document.getElementById('complaints-cards-grid');
-            grid.innerHTML = complaints.map(c => `
-                <div class="bg-background rounded-xl p-3 border border-border space-y-1.5">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[9px] font-bold text-accent uppercase tracking-wider">${c.category}</span>
-                            <h4 class="text-xs font-bold text-foreground">${c.resident_name} (${c.room_number})</h4>
+            const list = document.getElementById('complaints-list');
+            list.innerHTML = complaintsData.map(c => `
+                <div class="p-2 rounded border border-border bg-secondary/30 flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-semibold">Room ${c.room}:</span> ${c.issue}
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[9px] bg-amber-500/15 text-amber-600 font-medium">${c.status}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderTestimonials(catFilter) {
+            const grid = document.getElementById('testimonials-grid');
+            const filtered = catFilter === 'all' ? testimonialsData : testimonialsData.filter(t => t.category === catFilter);
+            grid.innerHTML = filtered.map(t => `
+                <div class="rounded-2xl border border-border bg-background p-5 flex flex-col justify-between shadow-xs">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-amber-500 text-xs">★★★★★</span>
+                            <span class="text-[9px] uppercase px-2 py-0.5 rounded bg-secondary text-muted-foreground font-semibold">${t.category}</span>
                         </div>
-                        <button onclick="toggleComplaintStatus('${c.id}')" class="px-2 py-0.5 rounded text-[9px] font-semibold ${c.status === 'Open' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
-                            ${c.status}
-                        </button>
+                        <div class="p-2.5 rounded bg-accent/5 border border-accent/20">
+                            <span class="text-xs font-bold block">${t.stat}</span>
+                            <span class="text-[9px] text-muted-foreground">${t.statLabel}</span>
+                        </div>
+                        <p class="text-xs italic text-foreground/90">"${t.quote}"</p>
                     </div>
-                    <p class="text-[11px] text-muted-foreground leading-snug">${c.description}</p>
-                </div>
-            `).join('');
-        }
-
-        function renderLedger() {
-            const list = document.getElementById('full-ledger-list');
-            list.innerHTML = ledger.map(l => `
-                <div class="flex justify-between items-center p-2 rounded-lg bg-background border border-border">
-                    <div>
-                        <div class="text-xs font-semibold text-foreground">${l.resident_name}</div>
-                        <div class="text-[9px] text-muted-foreground">${l.type} • ${l.method || 'CASH'}</div>
-                    </div>
-                    <div class="text-xs font-bold ${l.type === 'PAYMENT' ? 'text-emerald-600' : 'text-rose-600'}">
-                        ${l.type === 'PAYMENT' ? '+' : '-'}₹${(l.amount_paise / 100).toLocaleString('en-IN')}
+                    <div class="pt-4 mt-4 border-t border-border flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full bg-accent/15 text-accent font-semibold flex items-center justify-center text-xs border border-accent/25">${t.avatar}</div>
+                        <div>
+                            <h4 class="font-semibold text-xs">${t.name}</h4>
+                            <p class="text-[9px] text-muted-foreground">${t.role} • ${t.property}</p>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function updateSelectDropdowns() {
-            const select = document.getElementById('rent-resident-select');
-            select.innerHTML = residents.map(r => `<option value="${r.id}">${r.name} (Room ${r.room_number})</option>`).join('');
-        }
-
-        // View Switching
-        function switchTab(tab) {
-            ['overview', 'residents', 'complaints', 'ledger'].forEach(t => {
-                document.getElementById(`view-${t}`).classList.add('hidden');
-                const navBtn = document.getElementById(`nav-${t}`);
-                if (navBtn) navBtn.className = "w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-muted-foreground hover:bg-secondary/50 hover:text-foreground transition text-left";
+        function filterTestimonials(cat) {
+            ['all', 'student', 'coliving', 'hostel'].forEach(c => {
+                document.getElementById(`tcat-${c}`).className = 'px-3.5 py-1 rounded-full text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground';
             });
-
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
-            const activeNav = document.getElementById(`nav-${tab}`);
-            if (activeNav) activeNav.className = "w-full flex items-center justify-between px-2.5 py-1.5 rounded-md bg-secondary text-foreground font-medium transition text-left";
+            document.getElementById(`tcat-${cat}`).className = 'px-3.5 py-1 rounded-full text-xs font-medium bg-foreground text-background';
+            renderTestimonials(cat);
         }
 
-        // Search Filter
-        function handleGlobalSearch(query) {
-            const q = query.toLowerCase();
-            const filteredResidents = residents.filter(r => r.name.toLowerCase().includes(q) || r.room_number.includes(q));
-            const tbody = document.getElementById('residents-table-body');
-            tbody.innerHTML = filteredResidents.map(r => `
-                <div class="grid grid-cols-5 py-2 items-center">
-                    <span class="font-semibold text-foreground">${r.name}</span>
-                    <span class="text-muted-foreground">Room ${r.room_number}</span>
-                    <span class="font-medium text-foreground">₹${(r.rent_paise / 100).toLocaleString('en-IN')}</span>
-                    <div>
-                        <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-semibold">${r.status}</span>
-                    </div>
-                    <div class="text-right">
-                        <a href="https://wa.me/91${r.phone}?text=Hello" target="_blank" class="bg-emerald-600 text-white px-2 py-1 rounded text-[9px]">WhatsApp</a>
-                    </div>
-                </div>
-            `).join('');
-        }
+        // Modal Handlers
+        function openCheckinModal() { document.getElementById('checkin-modal').classList.remove('hidden'); }
+        function closeCheckinModal() { document.getElementById('checkin-modal').classList.add('hidden'); }
+        function openLogTicketModal() { document.getElementById('ticket-modal').classList.remove('hidden'); }
+        function closeLogTicketModal() { document.getElementById('ticket-modal').classList.add('hidden'); }
+        function openSubmitReviewModal() { document.getElementById('review-modal').classList.remove('hidden'); }
+        function closeSubmitReviewModal() { document.getElementById('review-modal').classList.add('hidden'); }
 
-        // Modal Form Handlers
-        function handleAddResident(e) {
+        function handleCheckinSubmit(e) {
             e.preventDefault();
-            const newRes = {
-                id: Date.now().toString(),
-                name: document.getElementById('res-name').value,
-                room_number: document.getElementById('res-room').value,
-                phone: document.getElementById('res-phone').value,
-                rent_paise: parseInt(document.getElementById('res-rent').value) * 100,
-                status: 'Active'
-            };
-            residents.unshift(newRes);
-            saveAndSync('amma_residents', residents, 'residents', newRes);
-            renderAll();
-            closeModal('add-resident-modal');
-        }
-
-        function handleCollectRent(e) {
-            e.preventDefault();
-            const resId = document.getElementById('rent-resident-select').value;
-            const res = residents.find(r => r.id === resId);
-            const amount = parseInt(document.getElementById('rent-amount').value);
-            const method = document.getElementById('rent-method').value;
-
-            const newTx = {
-                id: Date.now().toString(),
-                type: 'PAYMENT',
-                resident_name: res ? `${res.name} (${res.room_number})` : 'Resident Payment',
-                amount_paise: amount * 100,
-                method: method,
-                date: 'Today'
-            };
-            ledger.unshift(newTx);
-            saveAndSync('amma_ledger', ledger, 'ledger_transactions', newTx);
-            renderAll();
-            closeModal('collect-rent-modal');
-        }
-
-        function handleAddComplaint(e) {
-            e.preventDefault();
-            const newComp = {
-                id: Date.now().toString(),
-                resident_name: document.getElementById('comp-resident').value,
-                room_number: 'N/A',
-                category: document.getElementById('comp-category').value,
-                description: document.getElementById('comp-desc').value,
-                status: 'Open'
-            };
-            complaints.unshift(newComp);
-            saveAndSync('amma_complaints', complaints, 'complaints', newComp);
-            renderAll();
-            closeModal('add-complaint-modal');
-        }
-
-        function handleAddExpense(e) {
-            e.preventDefault();
-            const newExp = {
-                id: Date.now().toString(),
-                type: 'EXPENSE',
-                resident_name: document.getElementById('exp-category').value,
-                amount_paise: parseInt(document.getElementById('exp-amount').value) * 100,
-                method: 'CASH',
-                date: 'Today'
-            };
-            ledger.unshift(newExp);
-            saveAndSync('amma_ledger', ledger, 'expenses', newExp);
-            renderAll();
-            closeModal('add-expense-modal');
-        }
-
-        function toggleComplaintStatus(id) {
-            const item = complaints.find(c => c.id === id);
-            if (item) {
-                item.status = item.status === 'Open' ? 'Resolved' : 'Open';
-                localStorage.setItem('amma_complaints', JSON.stringify(complaints));
-                renderAll();
-            }
-        }
-
-        function handleCloudConfig(e) {
-            e.preventDefault();
-            localStorage.setItem('amma_supabase_url', document.getElementById('cloud-url').value);
-            localStorage.setItem('amma_supabase_key', document.getElementById('cloud-key').value);
-            initSupabaseIfConfigured();
-            closeModal('cloud-modal');
-        }
-
-        function exportLedgerCSV() {
-            let csv = "Type,Resident/Note,Amount (Rupees),Method\n";
-            ledger.forEach(l => {
-                csv += `${l.type},"${l.resident_name}",${l.amount_paise / 100},${l.method}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Amma_CoLive_Ledger.csv';
-            a.click();
-        }
-
-        function saveAndSync(key, data, tableName, newItem) {
-            localStorage.setItem(key, JSON.stringify(data));
-            if (supabaseClient) {
-                supabaseClient.from(tableName).insert([newItem]).then(res => {
-                    console.log("Supabase synced", res);
+            const name = document.getElementById('chk-name').value;
+            const bedCode = document.getElementById('chk-bed').value;
+            roomsData.forEach(r => {
+                r.beds.forEach(b => {
+                    if (b.id === bedCode) { b.occupant = name; b.status = 'occupied'; }
                 });
-            }
+            });
+            renderRooms();
+            renderResidents();
+            closeCheckinModal();
         }
 
-        // Modal Open/Close
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function handleTicketSubmit(e) {
+            e.preventDefault();
+            complaintsData.unshift({
+                id: `T-${Math.floor(100 + Math.random() * 900)}`,
+                room: document.getElementById('tkt-room').value,
+                issue: document.getElementById('tkt-issue').value,
+                status: 'Assigned'
+            });
+            renderComplaints();
+            closeLogTicketModal();
+        }
+
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('rev-name').value;
+            testimonialsData.unshift({
+                id: Date.now().toString(),
+                name,
+                role: document.getElementById('rev-role').value,
+                property: document.getElementById('rev-prop').value,
+                location: "Verified Location",
+                beds: "Active Wing",
+                category: document.getElementById('rev-cat').value,
+                stat: "5/5 Star Warden Feedback",
+                statLabel: "Verified Review",
+                quote: document.getElementById('rev-quote').value,
+                avatar: name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
+            });
+            renderTestimonials('all');
+            closeSubmitReviewModal();
+        }
     </script>
 </body>
 </html>
