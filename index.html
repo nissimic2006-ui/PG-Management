@@ -3,476 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amma Premium Co-Live | Smart PG Management Platform</title>
-    <meta name="description" content="Amma Premium Co-Live - Enterprise PG Management System with real-time financial ledger, complaints tracker, and automated billing.">
+    <title>Nexora — The Future of Smarter Automation</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['var(--font-display)', 'serif'],
+                        body: ['var(--font-body)', 'sans-serif'],
+                    },
+                    colors: {
+                        background: 'hsl(var(--background) / <alpha-value>)',
+                        foreground: 'hsl(var(--foreground) / <alpha-value>)',
+                        primary: {
+                            DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
+                            foreground: 'hsl(var(--primary-foreground) / <alpha-value>)',
+                        },
+                        secondary: {
+                            DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
+                            foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)',
+                        },
+                        muted: {
+                            DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
+                            foreground: 'hsl(var(--muted-foreground) / <alpha-value>)',
+                        },
+                        accent: {
+                            DEFAULT: 'hsl(var(--accent) / <alpha-value>)',
+                            foreground: 'hsl(var(--accent-foreground) / <alpha-value>)',
+                        },
+                        border: 'hsl(var(--border) / <alpha-value>)',
+                        ring: 'hsl(var(--ring) / <alpha-value>)',
+                    },
+                    borderRadius: {
+                        lg: 'var(--radius)',
+                        md: 'calc(var(--radius) - 2px)',
+                        sm: 'calc(var(--radius) - 4px)',
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        /* Animated Animated Forest Background Keyframes */
-        @keyframes floatCloud {
-            0% { transform: translateX(-10%); }
-            50% { transform: translateX(10%); }
-            100% { transform: translateX(-10%); }
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 210 14% 17%;
+            --primary: 210 14% 17%;
+            --primary-foreground: 0 0% 100%;
+            --secondary: 0 0% 96%;
+            --secondary-foreground: 0 0% 9%;
+            --muted: 0 0% 96%;
+            --muted-foreground: 210 10% 50%;
+            --accent: 239 84% 67%;
+            --accent-foreground: 0 0% 100%;
+            --border: 0 0% 90%;
+            --ring: 239 84% 67%;
+            --radius: 0.5rem;
+            --font-display: 'Instrument Serif', serif;
+            --font-body: 'Inter', sans-serif;
+            --shadow-dashboard: 0 25px 80px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
         }
 
-        @keyframes swayTreeSlow {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(1.2deg) scale(1.01); }
+        /* Framer Motion Replication Keyframes */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(var(--fade-y, 16px));
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @keyframes swayTreeFast {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-1.8deg); }
+        .animate-fade-up {
+            animation: fadeUp var(--fade-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--fade-delay, 0s);
+            opacity: 0;
         }
 
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Glassmorphism Styles */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
+        .dashboard-glass {
+            background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .glass-input {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #f8fafc;
-        }
-
-        .glass-input:focus {
-            border-color: #6366f1;
-            outline: none;
-            box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Motion Forest Vector Backdrop */
-        .forest-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -10;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #0f172a 0%, #1e1b4b 40%, #064e3b 100%);
-        }
-
-        .forest-layer-back {
-            position: absolute;
-            bottom: 0;
-            width: 120%;
-            left: -10%;
-            height: 60%;
-            background: repeating-linear-gradient(90deg, #064e3b 0px, #022c22 40px, #0f4c3a 80px);
-            clip-path: polygon(0% 100%, 5% 40%, 10% 80%, 15% 35%, 20% 70%, 25% 30%, 30% 75%, 35% 25%, 40% 65%, 45% 20%, 50% 60%, 55% 15%, 60% 70%, 65% 25%, 70% 65%, 75% 30%, 80% 75%, 85% 35%, 90% 80%, 95% 40%, 100% 100%);
-            opacity: 0.5;
-            animation: swayTreeSlow 12s ease-in-out infinite;
-        }
-
-        .forest-layer-front {
-            position: absolute;
-            bottom: -20px;
-            width: 110%;
-            left: -5%;
-            height: 45%;
-            background: repeating-linear-gradient(90deg, #022c22 0px, #064e3b 60px, #022c22 120px);
-            clip-path: polygon(0% 100%, 8% 20%, 15% 90%, 22% 15%, 30% 85%, 38% 10%, 45% 80%, 52% 25%, 60% 90%, 68% 18%, 75% 85%, 82% 12%, 90% 90%, 98% 22%, 100% 100%);
-            opacity: 0.85;
-            animation: swayTreeFast 8s ease-in-out infinite;
-        }
-
-        .ambient-glow {
-            position: absolute;
-            top: 10%;
-            left: 30%;
-            width: 40vw;
-            height: 40vw;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(0,0,0,0) 70%);
-            animation: pulseGlow 6s infinite ease-in-out;
-            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: var(--shadow-dashboard);
         }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen font-sans antialiased relative selection:bg-indigo-500 selection:text-white">
+<body class="h-screen flex flex-col bg-background font-body overflow-hidden text-foreground antialiased selection:bg-accent selection:text-white">
 
-    <!-- Motion Background -->
-    <div class="forest-backdrop">
-        <div class="ambient-glow"></div>
-        <div class="forest-layer-back"></div>
-        <div class="forest-layer-front"></div>
-    </div>
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none">
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4" type="video/mp4">
+    </video>
 
-    <!-- App Container -->
-    <div id="app" class="min-h-screen flex flex-col">
+    <!-- Content Container -->
+    <div class="relative z-10 flex flex-col h-full w-full">
 
-        <!-- Top Header Navigation -->
-        <header class="glass-panel sticky top-0 z-40 px-6 py-4 flex items-center justify-between border-b border-white/10">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-teal-400 to-emerald-400 p-0.5 shadow-lg shadow-indigo-500/30">
-                    <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                        <i data-lucide="building-2" class="w-5 h-5 text-teal-400"></i>
-                    </div>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-teal-300">
-                        AMMA PREMIUM CO-LIVE
-                    </h1>
-                    <p class="text-xs text-teal-400/80 font-medium tracking-wider uppercase">Enterprise PG Platform</p>
-                </div>
-            </div>
+        <!-- Navbar -->
+        <header class="flex items-center justify-between px-6 md:px-12 lg:px-20 py-5 font-body w-full">
+            <a href="#" class="text-xl font-semibold tracking-tight text-foreground flex items-center gap-2">
+                <span>✦</span>
+                <span>Nexora</span>
+            </a>
 
-            <div class="flex items-center space-x-4">
-                <button onclick="openModal('cloud-modal')" class="glass-card hover:bg-slate-800/80 px-3 py-2 rounded-lg text-xs font-semibold flex items-center space-x-2 transition border border-teal-500/30 text-teal-300 shadow-sm">
-                    <i data-lucide="cloud" class="w-4 h-4 text-teal-400"></i>
-                    <span id="cloud-status-text">Cloud Sync</span>
-                </button>
-                
-                <div id="auth-controls">
-                    <button onclick="handleLogout()" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 px-3 py-2 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition">
-                        <i data-lucide="log-out" class="w-4 h-4"></i>
-                        <span>Logout</span>
-                    </button>
-                </div>
-            </div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Home</a>
+                <a href="#" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+                <a href="#" class="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a>
+                <a href="#" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+            </nav>
+
+            <button class="rounded-full px-5 py-2 text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
+                Get Started
+            </button>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 space-y-8">
-
-            <!-- Hero Banner -->
-            <div class="glass-panel rounded-2xl p-6 md:p-8 relative overflow-hidden shadow-2xl border border-white/15">
-                <div class="relative z-10 max-w-2xl space-y-3">
-                    <span class="px-3 py-1 text-xs font-semibold tracking-wider text-teal-300 bg-teal-500/10 border border-teal-500/30 rounded-full inline-block">
-                        AUTOMATED ENTERPRISE HOSTEL MANAGEMENT
-                    </span>
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                        The Future of Smarter Co-Living
-                    </h2>
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                        Effortlessly manage resident ledger transactions, automated rent receipts, real-time maintenance complaints, and bed allocations—all synced instantly with Supabase Cloud.
-                    </p>
-                </div>
+        <!-- Hero Section -->
+        <main class="flex-1 flex flex-col items-center w-full px-4 overflow-hidden">
+            
+            <!-- 1. Badge -->
+            <div class="animate-fade-up mb-6 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/80 backdrop-blur-sm px-4 py-1.5 text-sm text-muted-foreground font-body shadow-sm" style="--fade-y: 10px; --fade-duration: 0.5s; --fade-delay: 0s;">
+                <span>Now with GPT-5 support ✨</span>
             </div>
 
-            <!-- Dashboard Analytics Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="glass-card p-5 rounded-xl space-y-2 border-l-4 border-l-emerald-400">
-                    <div class="flex justify-between items-center text-slate-400">
-                        <span class="text-xs font-medium uppercase tracking-wider">Total Monthly Collection</span>
-                        <i data-lucide="indian-rupee" class="w-4 h-4 text-emerald-400"></i>
-                    </div>
-                    <div id="stat-collection" class="text-2xl font-bold text-white">₹0.00</div>
-                </div>
+            <!-- 2. Headline -->
+            <h1 class="animate-fade-up text-center font-display text-5xl md:text-6xl lg:text-[5rem] leading-[0.95] tracking-tight text-foreground max-w-2xl" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.1s;">
+                The Future of <em class="font-display italic font-normal">Smarter</em> Automation
+            </h1>
 
-                <div class="glass-card p-5 rounded-xl space-y-2 border-l-4 border-l-amber-400">
-                    <div class="flex justify-between items-center text-slate-400">
-                        <span class="text-xs font-medium uppercase tracking-wider">Pending Dues</span>
-                        <i data-lucide="alert-circle" class="w-4 h-4 text-amber-400"></i>
-                    </div>
-                    <div id="stat-dues" class="text-2xl font-bold text-amber-300">₹0.00</div>
-                </div>
+            <!-- 3. Subheadline -->
+            <p class="animate-fade-up mt-4 text-center text-base md:text-lg text-muted-foreground max-w-[650px] leading-relaxed font-body" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.2s;">
+                Automate your busywork with intelligent agents that learn, adapt, and execute—so your team can focus on what matters most.
+            </p>
 
-                <div class="glass-card p-5 rounded-xl space-y-2 border-l-4 border-l-indigo-400">
-                    <div class="flex justify-between items-center text-slate-400">
-                        <span class="text-xs font-medium uppercase tracking-wider">Active Residents</span>
-                        <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
-                    </div>
-                    <div id="stat-residents" class="text-2xl font-bold text-white">0</div>
-                </div>
-
-                <div class="glass-card p-5 rounded-xl space-y-2 border-l-4 border-l-rose-400">
-                    <div class="flex justify-between items-center text-slate-400">
-                        <span class="text-xs font-medium uppercase tracking-wider">Open Complaints</span>
-                        <i data-lucide="wrench" class="w-4 h-4 text-rose-400"></i>
-                    </div>
-                    <div id="stat-complaints" class="text-2xl font-bold text-rose-300">0</div>
-                </div>
-            </div>
-
-            <!-- Action Tabs Navigation -->
-            <div class="flex space-x-2 border-b border-white/10 pb-3 overflow-x-auto">
-                <button onclick="switchTab('residents')" id="tab-residents" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center space-x-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30">
-                    <i data-lucide="user-check" class="w-4 h-4"></i>
-                    <span>Residents & Rent</span>
+            <!-- 4. CTA Buttons -->
+            <div class="animate-fade-up mt-5 flex items-center gap-3" style="--fade-y: 16px; --fade-duration: 0.6s; --fade-delay: 0.3s;">
+                <button class="rounded-full px-6 py-3 text-sm font-medium font-body bg-primary text-primary-foreground hover:opacity-90 transition-opacity shadow-md">
+                    Book a demo
                 </button>
-                <button onclick="switchTab('complaints')" id="tab-complaints" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-slate-800/50">
-                    <i data-lucide="life-buoy" class="w-4 h-4"></i>
-                    <span>Complaints Portal</span>
-                </button>
-                <button onclick="switchTab('ledger')" id="tab-ledger" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-slate-800/50">
-                    <i data-lucide="receipt" class="w-4 h-4"></i>
-                    <span>Ledger & Expenses</span>
+                <button class="h-11 w-11 rounded-full border-0 bg-background shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:bg-background/90 flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+                    <i data-lucide="play" class="h-4 w-4 fill-foreground text-foreground ml-0.5"></i>
                 </button>
             </div>
 
-            <!-- Tab 1: Residents Management -->
-            <div id="view-residents" class="space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-white">Resident Directory</h3>
-                    <button onclick="openModal('add-resident-modal')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 shadow-lg shadow-indigo-600/30 transition">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                        <span>Add Resident</span>
-                    </button>
-                </div>
+            <!-- 5. Dashboard Preview (Coded UI) -->
+            <div class="animate-fade-up mt-8 w-full max-w-5xl flex-1 min-h-0 overflow-hidden" style="--fade-y: 30px; --fade-duration: 0.8s; --fade-delay: 0.5s;">
+                <div class="dashboard-glass rounded-t-2xl p-3 md:p-4 text-[11px] select-none pointer-events-none h-full flex flex-col">
+                    
+                    <!-- Top Bar -->
+                    <div class="bg-background/90 rounded-xl px-4 py-2.5 flex items-center justify-between border border-border shadow-sm mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-md bg-foreground text-background font-bold flex items-center justify-center text-xs">N</div>
+                            <span class="font-semibold text-foreground text-xs">Nexora</span>
+                            <i data-lucide="chevron-down" class="w-3 h-3 text-muted-foreground"></i>
+                        </div>
 
-                <div class="glass-panel rounded-xl overflow-hidden border border-white/10">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-slate-300">
-                            <thead class="bg-slate-900/80 text-xs uppercase tracking-wider text-slate-400 border-b border-white/10">
-                                <tr>
-                                    <th class="p-4">Resident</th>
-                                    <th class="p-4">Room</th>
-                                    <th class="p-4">Phone</th>
-                                    <th class="p-4">Monthly Rent</th>
-                                    <th class="p-4">Status</th>
-                                    <th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="resident-table-body" class="divide-y divide-white/5">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
+                        <div class="flex items-center gap-2 bg-secondary/80 border border-border px-3 py-1 rounded-md w-64 justify-between text-muted-foreground">
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                                <span>Search anything...</span>
+                            </div>
+                            <kbd class="bg-background border border-border rounded px-1 text-[9px]">⌘K</kbd>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button class="bg-primary text-primary-foreground px-2.5 py-1 rounded-md text-[10px] font-medium">Move Money</button>
+                            <i data-lucide="bell" class="w-3.5 h-3.5 text-muted-foreground"></i>
+                            <div class="w-6 h-6 rounded-full bg-accent/20 border border-accent text-accent font-semibold flex items-center justify-center text-[10px]">JB</div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Tab 2: Complaints Tracker -->
-            <div id="view-complaints" class="space-y-4 hidden">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-white">Maintenance Helpdesk</h3>
-                    <button onclick="openModal('add-complaint-modal')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 shadow-lg shadow-indigo-600/30 transition">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                        <span>Log Ticket</span>
-                    </button>
-                </div>
+                    <!-- Dashboard Core Layout -->
+                    <div class="flex flex-1 gap-3 min-h-0 overflow-hidden">
+                        
+                        <!-- Sidebar -->
+                        <div class="w-40 bg-background/80 rounded-xl p-3 border border-border flex flex-col justify-between shrink-0">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2 px-2 py-1.5 rounded-md bg-secondary text-foreground font-medium">
+                                    <i data-lucide="home" class="w-3.5 h-3.5"></i>
+                                    <span>Home</span>
+                                </div>
+                                <div class="flex items-center justify-between px-2 py-1.5 text-muted-foreground">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="check-square" class="w-3.5 h-3.5"></i>
+                                        <span>Tasks</span>
+                                    </div>
+                                    <span class="bg-accent text-accent-foreground text-[9px] px-1.5 py-0.2 rounded-full font-semibold">10</span>
+                                </div>
+                                <div class="flex items-center gap-2 px-2 py-1.5 text-muted-foreground">
+                                    <i data-lucide="arrow-left-right" class="w-3.5 h-3.5"></i>
+                                    <span>Transactions</span>
+                                </div>
+                                <div class="flex items-center justify-between px-2 py-1.5 text-muted-foreground">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+                                        <span>Payments</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                                </div>
+                                <div class="flex items-center gap-2 px-2 py-1.5 text-muted-foreground">
+                                    <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+                                    <span>Cards</span>
+                                </div>
+                                <div class="flex items-center gap-2 px-2 py-1.5 text-muted-foreground">
+                                    <i data-lucide="landmark" class="w-3.5 h-3.5"></i>
+                                    <span>Capital</span>
+                                </div>
+                                <div class="flex items-center justify-between px-2 py-1.5 text-muted-foreground">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                                        <span>Accounts</span>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                                </div>
+                            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="complaint-cards-container">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
+                            <div class="pt-3 border-t border-border space-y-1">
+                                <div class="text-[9px] font-semibold text-muted-foreground px-2 uppercase tracking-wider">Workflows</div>
+                                <div class="px-2 py-1 text-muted-foreground">Trake rutes</div>
+                                <div class="px-2 py-1 text-muted-foreground">Payments</div>
+                                <div class="px-2 py-1 text-muted-foreground">Notifications</div>
+                                <div class="px-2 py-1 text-muted-foreground">Settings</div>
+                            </div>
+                        </div>
 
-            <!-- Tab 3: Ledger & Expenses -->
-            <div id="view-ledger" class="space-y-4 hidden">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-white">Exact Integer Ledger (Paise Precision)</h3>
-                    <button onclick="openModal('add-expense-modal')" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center space-x-2 shadow-lg shadow-rose-600/30 transition">
-                        <i data-lucide="minus-circle" class="w-4 h-4"></i>
-                        <span>Record Expense</span>
-                    </button>
-                </div>
+                        <!-- Main Dashboard Area -->
+                        <div class="flex-1 bg-secondary/30 rounded-xl p-3 border border-border flex flex-col gap-3 min-h-0 overflow-hidden">
+                            
+                            <!-- Greeting & Pill Actions -->
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-foreground">Welcome, Jane</h3>
+                                <div class="flex items-center gap-1.5">
+                                    <button class="bg-accent text-accent-foreground px-2.5 py-1 rounded-full text-[10px] font-medium">Send</button>
+                                    <button class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium">Request</button>
+                                    <button class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium">Transfer</button>
+                                    <button class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium">Deposit</button>
+                                    <button class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium">Pay Bill</button>
+                                    <button class="bg-background border border-border px-2.5 py-1 rounded-full text-[10px] font-medium">Create Invoice</button>
+                                    <span class="text-muted-foreground text-[10px] ml-1">+ Customize</span>
+                                </div>
+                            </div>
 
-                <div class="glass-panel rounded-xl p-4 border border-white/10">
-                    <div class="space-y-3" id="ledger-transactions-list">
-                        <!-- Populated dynamically -->
+                            <!-- Two Equal Width Cards -->
+                            <div class="flex gap-3">
+                                
+                                <!-- Mercury Balance Card -->
+                                <div class="flex-1 basis-0 bg-background rounded-xl p-3 border border-border space-y-2">
+                                    <div class="flex items-center justify-between text-muted-foreground">
+                                        <div class="flex items-center gap-1">
+                                            <span>Mercury Balance</span>
+                                            <i data-lucide="check-circle-2" class="w-3 h-3 text-accent"></i>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-[10px]">
+                                            <span>Last 30 Days</span>
+                                            <span class="text-emerald-600 font-medium">+$1.8M</span>
+                                            <span class="text-rose-500 font-medium">-$900K</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-xl font-bold text-foreground tracking-tight">
+                                        $8,450,190<span class="text-xs text-muted-foreground font-normal">.32</span>
+                                    </div>
+
+                                    <!-- Cubic Bézier SVG Area Chart -->
+                                    <div class="h-20 w-full pt-1">
+                                        <svg class="w-full h-full overflow-visible" viewBox="0 0 300 70" preserveAspectRatio="none">
+                                            <defs>
+                                                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="15%" stop-color="hsl(239 84% 67%)" stop-opacity="0.25"/>
+                                                    <stop offset="100%" stop-color="hsl(239 84% 67%)" stop-opacity="0"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <!-- Fill Path -->
+                                            <path d="M 0 50 C 50 20, 80 60, 130 30 C 180 5, 220 40, 300 15 L 300 70 L 0 70 Z" fill="url(#chartGradient)"/>
+                                            <!-- Stroke Path -->
+                                            <path d="M 0 50 C 50 20, 80 60, 130 30 C 180 5, 220 40, 300 15" fill="none" stroke="hsl(239 84% 67%)" stroke-width="1.5"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Accounts Card -->
+                                <div class="flex-1 basis-0 bg-background rounded-xl p-3 border border-border flex flex-col justify-between">
+                                    <div class="flex items-center justify-between text-muted-foreground mb-1">
+                                        <span class="font-semibold text-foreground text-xs">Accounts</span>
+                                        <div class="flex items-center gap-1">
+                                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                            <i data-lucide="more-vertical" class="w-3.5 h-3.5"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-2 text-xs">
+                                        <div class="flex justify-between items-center py-1">
+                                            <span class="text-muted-foreground">Credit</span>
+                                            <span class="font-medium text-foreground">$98,125.50</span>
+                                        </div>
+                                        <div class="flex justify-between items-center py-1">
+                                            <span class="text-muted-foreground">Treasury</span>
+                                            <span class="font-medium text-foreground">$6,750,200.00</span>
+                                        </div>
+                                        <div class="flex justify-between items-center py-1">
+                                            <span class="text-muted-foreground">Operations</span>
+                                            <span class="font-medium text-foreground">$1,592,864.82</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Transactions Table -->
+                            <div class="bg-background rounded-xl p-3 border border-border flex-1 min-h-0">
+                                <div class="font-semibold text-foreground text-xs mb-2">Recent Transactions</div>
+                                <div class="w-full">
+                                    <div class="grid grid-cols-4 text-muted-foreground text-[10px] pb-1.5 border-b border-border">
+                                        <span>Date</span>
+                                        <span>Description</span>
+                                        <span class="text-right">Amount</span>
+                                        <span class="text-right">Status</span>
+                                    </div>
+                                    <div class="divide-y divide-border/50 text-[10px]">
+                                        <div class="grid grid-cols-4 py-1.5 items-center">
+                                            <span class="text-muted-foreground">Oct 21</span>
+                                            <span class="font-medium text-foreground">AWS</span>
+                                            <span class="text-right font-medium text-foreground">-$5,200</span>
+                                            <span class="text-right"><span class="bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-[9px] font-medium">Pending</span></span>
+                                        </div>
+                                        <div class="grid grid-cols-4 py-1.5 items-center">
+                                            <span class="text-muted-foreground">Oct 20</span>
+                                            <span class="font-medium text-foreground">Client Payment</span>
+                                            <span class="text-right font-medium text-emerald-600">+$125,000</span>
+                                            <span class="text-right"><span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[9px] font-medium">Completed</span></span>
+                                        </div>
+                                        <div class="grid grid-cols-4 py-1.5 items-center">
+                                            <span class="text-muted-foreground">Oct 19</span>
+                                            <span class="font-medium text-foreground">Payroll</span>
+                                            <span class="text-right font-medium text-foreground">-$85,450</span>
+                                            <span class="text-right"><span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[9px] font-medium">Completed</span></span>
+                                        </div>
+                                        <div class="grid grid-cols-4 py-1.5 items-center">
+                                            <span class="text-muted-foreground">Oct 18</span>
+                                            <span class="font-medium text-foreground">Office Supplies</span>
+                                            <span class="text-right font-medium text-foreground">-$1,200</span>
+                                            <span class="text-right"><span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[9px] font-medium">Completed</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
             </div>
 
         </main>
     </div>
 
-    <!-- Modals -->
-
-    <!-- Add Resident Modal -->
-    <div id="add-resident-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-panel max-w-md w-full rounded-2xl p-6 space-y-4 border border-white/20 shadow-2xl">
-            <h3 class="text-lg font-bold text-white">Register New Resident</h3>
-            <form onsubmit="handleAddResident(event)" class="space-y-3">
-                <div>
-                    <label class="text-xs text-slate-300 font-medium">Full Name</label>
-                    <input type="text" id="res-name" required class="w-full glass-input px-3 py-2 rounded-lg text-sm mt-1">
-                </div>
-                <div>
-                    <label class="text-xs text-slate-300 font-medium">Phone Number</label>
-                    <input type="tel" id="res-phone" required class="w-full glass-input px-3 py-2 rounded-lg text-sm mt-1">
-                </div>
-                <div>
-                    <label class="text-xs text-slate-300 font-medium">Room Number</label>
-                    <input type="text" id="res-room" required class="w-full glass-input px-3 py-2 rounded-lg text-sm mt-1">
-                </div>
-                <div>
-                    <label class="text-xs text-slate-300 font-medium">Monthly Rent (₹)</label>
-                    <input type="number" id="res-rent" required class="w-full glass-input px-3 py-2 rounded-lg text-sm mt-1">
-                </div>
-                <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="closeModal('add-resident-modal')" class="px-4 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white">Save Resident</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Cloud Integration Modal -->
-    <div id="cloud-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-panel max-w-md w-full rounded-2xl p-6 space-y-4 border border-white/20 shadow-2xl">
-            <h3 class="text-lg font-bold text-white">Supabase Cloud Sync</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">Paste your Supabase credentials below to enable multi-device synchronization and secure database persistence.</p>
-            <form onsubmit="handleSaveCloudConfig(event)" class="space-y-3">
-                <div>
-                    <label class="text-xs text-slate-300 font-medium">Supabase Project URL</label>
-                    <input type="url" id="cloud-url" placeholder="https://your-id.supabase.co" class="w-full glass-input px-3 py-2 rounded-lg text-sm mt-1">
-                </div>
-                <div>
-                    <label class="text-xs text-slate-300 font-medium">Supabase Anon Key</label>
-                    <input type="password" id="cloud-key" placeholder="eyJhbGciOi..." class="w-full glass-input px-3 py-2 rounded-lg text-sm mt-1">
-                </div>
-                <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="closeModal('cloud-modal')" class="px-4 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-sm font-semibold text-white">Connect Cloud</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Application JavaScript Engine -->
+    <!-- Initialize Icons -->
     <script>
-        // State Management & LocalStorage Fallback
-        let residents = JSON.parse(localStorage.getItem('amma_residents')) || [
-            { id: '1', name: 'Rahul Sharma', phone: '9876543210', room_number: '101', rent_paise: 850000, status: 'Active' },
-            { id: '2', name: 'Priya Verma', phone: '9123456789', room_number: '204', rent_paise: 900000, status: 'Active' }
-        ];
-
-        let complaints = JSON.parse(localStorage.getItem('amma_complaints')) || [
-            { id: '1', resident_name: 'Rahul Sharma', room_number: '101', category: 'WiFi', description: 'High latency in evening hours', status: 'Open' }
-        ];
-
-        let ledger = JSON.parse(localStorage.getItem('amma_ledger')) || [
-            { id: '1', type: 'PAYMENT', resident_name: 'Rahul Sharma', amount_paise: 850000, notes: 'Rent Payment Oct' }
-        ];
-
-        // Initialize Icons & Application
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            renderDashboard();
-            renderResidents();
-            renderComplaints();
-            renderLedger();
         });
-
-        // Tab Switcher
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = 'tab-btn px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-slate-800/50';
-            });
-            document.getElementById(`tab-${tab}`).className = 'tab-btn px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center space-x-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30';
-
-            document.getElementById('view-residents').classList.add('hidden');
-            document.getElementById('view-complaints').classList.add('hidden');
-            document.getElementById('view-ledger').classList.add('hidden');
-
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
-        }
-
-        // Render Functions
-        function renderDashboard() {
-            const totalCollection = ledger.reduce((acc, curr) => curr.type === 'PAYMENT' ? acc + curr.amount_paise : acc, 0);
-            document.getElementById('stat-collection').innerText = `₹${(totalCollection / 100).toLocaleString('en-IN')}`;
-            document.getElementById('stat-residents').innerText = residents.length;
-            document.getElementById('stat-complaints').innerText = complaints.filter(c => c.status === 'Open').length;
-        }
-
-        function renderResidents() {
-            const tbody = document.getElementById('resident-table-body');
-            tbody.innerHTML = residents.map(r => `
-                <tr class="hover:bg-slate-800/30 transition">
-                    <td class="p-4 font-semibold text-white">${r.name}</td>
-                    <td class="p-4">${r.room_number}</td>
-                    <td class="p-4">${r.phone}</td>
-                    <td class="p-4">₹${(r.rent_paise / 100).toLocaleString('en-IN')}</td>
-                    <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">${r.status}</span></td>
-                    <td class="p-4 text-right">
-                        <a href="https://wa.me/91${r.phone}?text=Hello%20${encodeURIComponent(r.name)},%20this%20is%20a%20reminder%20from%20Amma%20Premium%20Co-Live%20for%20your%20monthly%20rent." target="_blank" class="px-3 py-1.5 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-300 rounded-lg text-xs font-semibold inline-flex items-center space-x-1">
-                            <i data-lucide="message-square" class="w-3 h-3"></i>
-                            <span>WhatsApp</span>
-                        </a>
-                    </td>
-                </tr>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        function renderComplaints() {
-            const container = document.getElementById('complaint-cards-container');
-            container.innerHTML = complaints.map(c => `
-                <div class="glass-card p-4 rounded-xl border border-white/10 space-y-2">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">${c.category}</span>
-                            <h4 class="text-base font-bold text-white">${c.resident_name} (Room ${c.room_number})</h4>
-                        </div>
-                        <span class="px-2 py-1 rounded-md text-xs font-semibold ${c.status === 'Open' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300'}">${c.status}</span>
-                    </div>
-                    <p class="text-sm text-slate-300">${c.description}</p>
-                </div>
-            `).join('');
-        }
-
-        function renderLedger() {
-            const list = document.getElementById('ledger-transactions-list');
-            list.innerHTML = ledger.map(l => `
-                <div class="flex justify-between items-center p-3 rounded-lg bg-slate-900/50 border border-white/5">
-                    <div>
-                        <div class="text-sm font-semibold text-white">${l.notes || l.type}</div>
-                        <div class="text-xs text-slate-400">${l.resident_name || 'General Expense'}</div>
-                    </div>
-                    <div class="text-sm font-bold ${l.type === 'PAYMENT' ? 'text-emerald-400' : 'text-rose-400'}">
-                        ${l.type === 'PAYMENT' ? '+' : '-'}₹${(l.amount_paise / 100).toLocaleString('en-IN')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Modal Helpers
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        // Form Handlers
-        function handleAddResident(e) {
-            e.preventDefault();
-            const newRes = {
-                id: Date.now().toString(),
-                name: document.getElementById('res-name').value,
-                phone: document.getElementById('res-phone').value,
-                room_number: document.getElementById('res-room').value,
-                rent_paise: parseInt(document.getElementById('res-rent').value) * 100,
-                status: 'Active'
-            };
-            residents.push(newRes);
-            localStorage.setItem('amma_residents', JSON.stringify(residents));
-            renderResidents();
-            renderDashboard();
-            closeModal('add-resident-modal');
-        }
-
-        function handleSaveCloudConfig(e) {
-            e.preventDefault();
-            localStorage.setItem('amma_supabase_url', document.getElementById('cloud-url').value);
-            localStorage.setItem('amma_supabase_key', document.getElementById('cloud-key').value);
-            document.getElementById('cloud-status-text').innerText = 'Connected';
-            closeModal('cloud-modal');
-        }
-
-        function handleLogout() {
-            alert('Logged out successfully.');
-        }
     </script>
 </body>
 </html>
