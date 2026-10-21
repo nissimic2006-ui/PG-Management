@@ -1,625 +1,1048 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nexora - The Future of Smarter Automation</title>
-    <meta
-      name="description"
-      content="Automate your busywork with intelligent agents that learn, adapt, and execute—so your team can focus on what matters most."
-    />
-    <meta property="og:title" content="Nexora - The Future of Smarter Automation" />
-    <meta
-      property="og:description"
-      content="Automate your busywork with intelligent agents that learn, adapt, and execute—so your team can focus on what matters most."
-    />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amma Premium Co-Live - Management Server</title>
+  <meta name="description" content="Operating System and live room, bed, and resident allocation console for premium co-living properties." />
+  <meta property="og:title" content="Amma Premium Co-Live - Management Server" />
+  <meta property="og:description" content="Operating System and live room, bed, and resident allocation console for premium co-living properties." />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Google Fonts: Instrument Serif & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              display: ['"Instrument Serif"', 'serif'],
-              body: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              background: 'hsl(var(--background))',
-              foreground: 'hsl(var(--foreground))',
-              primary: {
-                DEFAULT: 'hsl(var(--primary))',
-                foreground: 'hsl(var(--primary-foreground))',
-              },
-              secondary: {
-                DEFAULT: 'hsl(var(--secondary))',
-                foreground: 'hsl(var(--secondary-foreground))',
-              },
-              muted: {
-                DEFAULT: 'hsl(var(--muted))',
-                foreground: 'hsl(var(--muted-foreground))',
-              },
-              accent: {
-                DEFAULT: 'hsl(var(--accent))',
-                foreground: 'hsl(var(--accent-foreground))',
-              },
-              border: 'hsl(var(--border))',
-              ring: 'hsl(var(--ring))',
-            },
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Instrument Serif"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
           },
-        },
-      };
-    </script>
-
-    <style>
-      :root {
-        --background: 0 0% 100%;
-        --foreground: 210 14% 17%;
-        --primary: 210 14% 17%;
-        --primary-foreground: 0 0% 100%;
-        --secondary: 0 0% 96%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96%;
-        --muted-foreground: 184 5% 55%;
-        --accent: 239 84% 67%;
-        --accent-foreground: 0 0% 100%;
-        --border: 0 0% 90%;
-        --ring: 239 84% 67%;
-        --radius: 0.5rem;
-        --font-display: 'Instrument Serif', serif;
-        --font-body: 'Inter', sans-serif;
-        --shadow-dashboard: 0 25px 80px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: var(--font-body);
-        background-color: hsl(var(--background));
-        color: hsl(var(--foreground));
-        overflow: hidden;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      /* Staggered entrance animations */
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(var(--tw-translate-y, 16px));
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+          colors: {
+            foreground: '#22292f',
+            background: '#ffffff',
+            primary: '#22292f',
+            accent: '#535bf2',
+          }
         }
       }
+    }
+  </script>
 
-      .animate-fade-badge {
-        --tw-translate-y: 10px;
-        animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-      .animate-fade-headline {
-        --tw-translate-y: 16px;
-        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-      }
+    /* Custom Scrollbar for the scrollable foreground */
+    .custom-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.32);
+    }
 
-      .animate-fade-subheadline {
-        --tw-translate-y: 16px;
-        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-      }
+    /* 200Hz GPU Hardware-Accelerated Video Rendering Pipeline */
+    .gpu-accelerated-200hz {
+      transform: translate3d(0, 0, 0) scale(1.001);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      perspective: 1000px;
+      -webkit-perspective: 1000px;
+      will-change: transform, filter, opacity;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: high-quality;
+      filter: contrast(1.03) saturate(1.05) brightness(1.01);
+    }
 
-      .animate-fade-cta {
-        --tw-translate-y: 16px;
-        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-      }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 25px 80px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
+    }
+  </style>
+</head>
+<body class="h-screen w-full bg-white text-slate-800 font-body relative overflow-hidden">
 
-      .animate-fade-dashboard {
-        --tw-translate-y: 30px;
-        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Entire Page: h-screen flex flex-col bg-background overflow-hidden -->
-    <div class="h-screen flex flex-col bg-background overflow-hidden relative">
-      <!-- Fullscreen Muted Autoplay Loop Video -->
-      <video
-        autoplay
-        loop
-        muted
-        playsinline
-        class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
-        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4"
-      ></video>
+  <!-- 1. FIXED BACKGROUND VIDEO (200Hz GPU COMPOSITING) -->
+  <video
+    id="bgVideo"
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="auto"
+    class="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none gpu-accelerated-200hz transition-all duration-300"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4"
+  ></video>
 
-      <!-- Navbar -->
-      <header class="relative z-20 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5 font-body w-full">
-        <!-- Brand Logo -->
-        <a href="#" class="text-xl font-semibold tracking-tight text-foreground flex items-center gap-2">
-          <span>✦</span>
-          <span>Nexora</span>
-        </a>
+  <!-- 2. FOREGROUND SCROLLABLE CONTAINER (Only text and table scroll over the video) -->
+  <div class="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden flex flex-col custom-scroll scroll-smooth">
+    
+    <!-- Top Navigation Bar -->
+    <header class="relative z-20 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5 w-full">
+      <a href="#roster-section" class="text-xl font-semibold tracking-tight text-slate-900 flex items-center gap-2">
+        <span class="text-slate-900 select-none">✦</span>
+        <span>Amma Premium Co-Live</span>
+      </a>
 
-        <!-- Right: Nav links & CTA -->
-        <div class="flex items-center gap-8">
-          <nav class="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-            <a href="#home" class="hover:text-foreground transition-colors font-medium">Home</a>
-            <a href="#pricing" class="hover:text-foreground transition-colors font-medium">Pricing</a>
-            <a href="#about" class="hover:text-foreground transition-colors font-medium">About</a>
-            <a href="#contact" class="hover:text-foreground transition-colors font-medium">Contact</a>
-          </nav>
+      <div class="flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-sm text-slate-600">
+          <a href="#roster-section" class="hover:text-slate-900 font-medium text-slate-900">Rooms & Beds</a>
+          <a href="#roster-section" class="hover:text-slate-900 font-medium">Occupancy Matrix</a>
+          <a href="#roster-section" class="hover:text-slate-900 font-medium">Smart Keycards</a>
+          <button onclick="openModal('accessModal')" class="hover:text-slate-900 font-medium">Console Docs</button>
+        </nav>
+        <button onclick="openModal('accessModal')" class="rounded-full px-5 py-2 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-all cursor-pointer shadow-sm active:scale-95">
+          Access Server
+        </button>
+      </div>
+    </header>
 
-          <button
-            class="rounded-full px-5 py-2 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-all cursor-pointer shadow-sm active:scale-95"
-          >
-            Book a demo
-          </button>
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col items-center w-full px-4 md:px-8 xl:px-12 pt-2 sm:pt-4 pb-20">
+      
+      <!-- Top Badge -->
+      <div class="mb-5 cursor-default">
+        <div class="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/90 backdrop-blur-md px-4 py-1.5 text-xs text-slate-600 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+          <span>Co-Living Management Server v3.4 · Live Roster</span>
         </div>
-      </header>
+      </div>
 
-      <!-- Hero Section -->
-      <main class="relative z-10 flex-1 flex flex-col items-center w-full px-4 overflow-hidden pt-2 sm:pt-4">
-        <!-- 1. Badge (top) -->
-        <div class="animate-fade-badge mb-6 cursor-default">
-          <div
-            class="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-1.5 text-sm text-muted-foreground font-body shadow-xs"
-          >
-            <span>Now with GPT-5 support ✨</span>
-          </div>
+      <!-- Main Headline -->
+      <h1 class="text-center font-display text-5xl md:text-6xl lg:text-[5rem] leading-[0.95] tracking-tight text-slate-900 max-w-2xl">
+        The Operating System for <span class="italic font-display">Premium</span> Co-Living
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="mt-4 text-center text-base md:text-lg text-slate-600 max-w-[680px] leading-relaxed px-2">
+        Real-time room and bed allocation matrix, smart lock provisioning, resident occupancy tracking,
+        and automated billing across all co-living suites.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="mt-5 flex items-center gap-3">
+        <button onclick="openModal('accessModal')" class="rounded-full px-7 py-3 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-md active:scale-95 cursor-pointer">
+          Access Management Console
+        </button>
+        <button onclick="openModal('videoModal')" class="h-11 w-11 rounded-full bg-white shadow-md hover:bg-slate-100 transition-all active:scale-95 flex items-center justify-center p-0 cursor-pointer" title="Watch Video">
+          <svg class="h-4 w-4 fill-slate-900 ml-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </button>
+      </div>
+
+      <!-- MASTER CO-LIVING ROOM & BED MANAGEMENT CONSOLE -->
+      <div id="roster-section" class="mt-8 w-full transition-all duration-300 relative" style="max-width: 1320px;">
+        
+        <!-- Toast Notification Alert -->
+        <div id="toastAlert" class="fixed top-6 right-6 z-50 hidden flex items-center gap-2.5 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-white/20 text-xs font-semibold">
+          <span class="text-emerald-400">✓</span>
+          <span id="toastText">Action completed successfully.</span>
         </div>
 
-        <!-- 2. Headline -->
-        <h1
-          class="animate-fade-headline text-center font-display text-5xl md:text-6xl lg:text-[5rem] leading-[0.95] tracking-tight text-foreground max-w-xl"
-        >
-          The Future of <span class="italic font-display">Smarter</span> Automation
-        </h1>
-
-        <!-- 3. Subheadline -->
-        <p
-          class="animate-fade-subheadline mt-4 text-center text-base md:text-lg text-muted-foreground max-w-[650px] leading-relaxed font-body px-2"
-        >
-          Automate your busywork with intelligent agents that learn, adapt, and execute—so your team can focus on what
-          matters most.
-        </p>
-
-        <!-- 4. CTA Buttons -->
-        <div class="animate-fade-cta mt-5 flex items-center gap-3">
-          <button
-            class="rounded-full px-6 py-3.5 text-sm font-medium font-body bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md active:scale-95 cursor-pointer"
-          >
-            Book a demo
-          </button>
-
-          <!-- Play button -->
-          <button
-            aria-label="Play video"
-            class="h-11 w-11 rounded-full border-0 bg-background shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:bg-background/80 transition-all active:scale-95 flex items-center justify-center cursor-pointer"
-          >
-            <svg class="h-4 w-4 fill-foreground text-foreground ml-0.5" viewBox="0 0 24 24">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-          </button>
-        </div>
-
-        <!-- 5. Dashboard Preview (custom coded, overflows bottom) -->
-        <div class="animate-fade-dashboard mt-8 w-full max-w-5xl">
-          <div
-            class="rounded-2xl overflow-hidden p-3 md:p-4 backdrop-blur-md"
-            style="
-              background: rgba(255, 255, 255, 0.4);
-              border: 1px solid rgba(255, 255, 255, 0.5);
-              box-shadow: var(--shadow-dashboard);
-            "
-          >
-            <!-- Dashboard Main Container -->
-            <div
-              class="bg-white/95 rounded-xl border border-border/70 overflow-hidden shadow-xs text-[11px] font-body text-foreground select-none pointer-events-none"
-            >
-              <!-- Top bar -->
-              <div class="h-11 border-b border-border/60 px-4 flex items-center justify-between bg-white/70">
-                <!-- Left: Logo "N" in rounded box + "Nexora" + chevron -->
+        <div class="rounded-3xl overflow-hidden p-4 md:p-6 backdrop-blur-md glass-card transition-all duration-300">
+          <div id="tableWrapper" class="bg-white/95 rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm text-xs transition-all duration-200">
+            
+            <!-- Table Header Bar -->
+            <div class="h-14 border-b border-slate-200 px-6 flex items-center justify-between bg-white/70">
+              <div class="flex items-center gap-3">
+                <div class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs">A</div>
                 <div class="flex items-center gap-2">
-                  <div
-                    class="w-5 h-5 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-[10px]"
-                  >
-                    N
-                  </div>
-                  <span class="font-semibold text-xs tracking-tight">Nexora</span>
-                  <svg class="w-3.5 h-3.5 text-muted-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </div>
-
-                <!-- Search bar with ⌘K shortcut -->
-                <div
-                  class="flex items-center gap-2 bg-secondary/70 border border-border/50 rounded-lg px-2.5 py-1 text-muted-foreground w-64 max-w-xs"
-                >
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                  <span class="text-[10px] flex-1">Search or jump to...</span>
-                  <kbd class="text-[9px] bg-background border border-border/60 px-1 py-0.2 rounded font-mono text-muted-foreground">
-                    ⌘K
-                  </kbd>
-                </div>
-
-                <!-- Right: "Move Money" + bell + avatar "JB" -->
-                <div class="flex items-center gap-3">
-                  <div
-                    class="flex items-center gap-1 bg-secondary text-foreground font-medium text-[10px] px-2.5 py-1 rounded-full border border-border/40"
-                  >
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <line x1="7" y1="17" x2="17" y2="7"></line>
-                      <polyline points="7 7 17 7 17 17"></polyline>
-                    </svg>
-                    <span>Move Money</span>
-                  </div>
-                  <div class="relative">
-                    <svg class="w-3.5 h-3.5 text-muted-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                      <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                    <span class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-accent rounded-full"></span>
-                  </div>
-                  <div
-                    class="w-6 h-6 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-medium text-[10px] shadow-xs"
-                  >
-                    JB
-                  </div>
+                  <span class="font-semibold text-sm text-slate-900">Amma Co-Live Management Server · Room & Bed Console</span>
+                  <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">Live Roster</span>
                 </div>
               </div>
 
-              <!-- Body: Sidebar + Main Content -->
-              <div class="flex min-h-[380px]">
-                <!-- Sidebar (w-40) -->
-                <aside class="w-40 border-r border-border/60 bg-white/40 p-3 flex flex-col justify-between shrink-0">
-                  <div class="space-y-4">
-                    <div class="space-y-0.5">
-                      <!-- Home (active) -->
-                      <div class="flex items-center gap-2 px-2 py-1.5 rounded-md bg-secondary font-medium text-foreground">
-                        <svg class="w-3.5 h-3.5 text-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                        <span>Home</span>
-                      </div>
-
-                      <!-- Tasks (badge "10") -->
-                      <div class="flex items-center justify-between px-2 py-1.5 rounded-md text-muted-foreground">
-                        <div class="flex items-center gap-2">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <polyline points="9 11 12 14 22 4"></polyline>
-                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                          </svg>
-                          <span>Tasks</span>
-                        </div>
-                        <span class="bg-secondary text-foreground text-[9px] font-semibold px-1.5 py-0.2 rounded-full">
-                          10
-                        </span>
-                      </div>
-
-                      <!-- Transactions -->
-                      <div class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path d="M8 3 4 7l4 4"></path>
-                          <path d="M4 7h16"></path>
-                          <path d="m16 21 4-4-4-4"></path>
-                          <path d="M20 17H4"></path>
-                        </svg>
-                        <span>Transactions</span>
-                      </div>
-
-                      <!-- Payments (chevron) -->
-                      <div class="flex items-center justify-between px-2 py-1.5 rounded-md text-muted-foreground">
-                        <div class="flex items-center gap-2">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
-                            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
-                          </svg>
-                          <span>Payments</span>
-                        </div>
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </div>
-
-                      <!-- Cards -->
-                      <div class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                          <line x1="2" x2="22" y1="10" y2="10"></line>
-                        </svg>
-                        <span>Cards</span>
-                      </div>
-
-                      <!-- Capital -->
-                      <div class="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <line x1="18" x2="18" y1="20" y2="10"></line>
-                          <line x1="12" x2="12" y1="20" y2="4"></line>
-                          <line x1="6" x2="6" y1="20" y2="14"></line>
-                        </svg>
-                        <span>Capital</span>
-                      </div>
-
-                      <!-- Accounts (chevron) -->
-                      <div class="flex items-center justify-between px-2 py-1.5 rounded-md text-muted-foreground">
-                        <div class="flex items-center gap-2">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
-                          </svg>
-                          <span>Accounts</span>
-                        </div>
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </div>
-                    </div>
-
-                    <!-- Workflows Section -->
-                    <div>
-                      <div class="px-2 pb-1.5 text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">
-                        Workflows
-                      </div>
-                      <div class="space-y-0.5 text-muted-foreground">
-                        <div class="flex items-center gap-2 px-2 py-1.5 rounded-md">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <line x1="6" x2="6" y1="3" y2="15"></line>
-                            <circle cx="18" cy="6" r="3"></circle>
-                            <circle cx="6" cy="18" r="3"></circle>
-                            <path d="M18 9a9 9 0 0 1-9 9"></path>
-                          </svg>
-                          <span>Trake rutes</span>
-                        </div>
-                        <div class="flex items-center gap-2 px-2 py-1.5 rounded-md">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                          </svg>
-                          <span>Payments</span>
-                        </div>
-                        <div class="flex items-center gap-2 px-2 py-1.5 rounded-md">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                          </svg>
-                          <span>Notifications</span>
-                        </div>
-                        <div class="flex items-center gap-2 px-2 py-1.5 rounded-md">
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <line x1="21" x2="14" y1="4" y2="4"></line>
-                            <line x1="10" x2="3" y1="4" y2="4"></line>
-                            <line x1="21" x2="12" y1="12" y2="12"></line>
-                            <line x1="8" x2="3" y1="12" y2="12"></line>
-                            <line x1="21" x2="16" y1="20" y2="20"></line>
-                            <line x1="12" x2="3" y1="20" y2="20"></line>
-                          </svg>
-                          <span>Settings</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </aside>
-
-                <!-- Main Content (bg-secondary/30) -->
-                <main class="flex-1 bg-secondary/30 p-4 space-y-4 overflow-hidden">
-                  <!-- Greeting -->
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <h3 class="text-sm font-semibold text-foreground tracking-tight">Welcome, Jane</h3>
-                      <p class="text-[10px] text-muted-foreground">Here is an overview of your automated operations today.</p>
-                    </div>
-                    <span class="text-[10px] text-muted-foreground tabular-nums">Updated just now</span>
-                  </div>
-
-                  <!-- Action Buttons Row -->
-                  <div class="flex items-center justify-between gap-2 flex-wrap">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                      <button class="rounded-full px-3 py-1 bg-accent text-accent-foreground font-medium text-[10px] shadow-xs">
-                        Send
-                      </button>
-                      <button class="rounded-full px-3 py-1 bg-white border border-border/80 text-foreground font-medium text-[10px] shadow-xs">
-                        Request
-                      </button>
-                      <button class="rounded-full px-3 py-1 bg-white border border-border/80 text-foreground font-medium text-[10px] shadow-xs">
-                        Transfer
-                      </button>
-                      <button class="rounded-full px-3 py-1 bg-white border border-border/80 text-foreground font-medium text-[10px] shadow-xs">
-                        Deposit
-                      </button>
-                      <button class="rounded-full px-3 py-1 bg-white border border-border/80 text-foreground font-medium text-[10px] shadow-xs">
-                        Pay Bill
-                      </button>
-                      <button class="rounded-full px-3 py-1 bg-white border border-border/80 text-foreground font-medium text-[10px] shadow-xs">
-                        Create Invoice
-                      </button>
-                    </div>
-                    <span class="text-[10px] text-muted-foreground font-medium">+ Customize</span>
-                  </div>
-
-                  <!-- Two Equal-Width Cards Side-by-Side -->
-                  <div class="flex gap-3">
-                    <!-- Balance Card -->
-                    <div class="flex-1 basis-0 bg-white rounded-xl border border-border/70 p-3.5 shadow-xs flex flex-col justify-between">
-                      <div>
-                        <div class="flex items-center justify-between text-muted-foreground mb-1">
-                          <div class="flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            <span class="font-medium text-[11px] text-foreground">Mercury Balance</span>
-                          </div>
-                          <span class="text-[10px] text-muted-foreground">Primary Checking</span>
-                        </div>
-
-                        <!-- Amount -->
-                        <div class="mt-1">
-                          <div class="text-xl font-bold tracking-tight text-foreground tabular-nums">
-                            $8,450,190<span class="text-xs text-muted-foreground font-normal">.32</span>
-                          </div>
-                        </div>
-
-                        <!-- Stats -->
-                        <div class="flex items-center gap-3 mt-1.5 text-[10px]">
-                          <span class="text-muted-foreground">Last 30 Days</span>
-                          <span class="text-emerald-600 font-medium tabular-nums">+$1.8M</span>
-                          <span class="text-rose-500 font-medium tabular-nums">-$900K</span>
-                        </div>
-                      </div>
-
-                      <!-- Hand-crafted Cubic Bézier SVG Area Chart (h-20) -->
-                      <div class="mt-2 h-20 w-full">
-                        <svg viewBox="0 0 320 80" class="w-full h-full overflow-visible" preserveAspectRatio="none">
-                          <defs>
-                            <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stop-color="hsl(239, 84%, 67%)" stop-opacity="0.22" />
-                              <stop offset="100%" stop-color="hsl(239, 84%, 67%)" stop-opacity="0.0" />
-                            </linearGradient>
-                          </defs>
-                          <!-- Gradient Area Fill -->
-                          <path
-                            d="M 0 58 C 45 62, 70 38, 110 44 C 150 50, 185 24, 230 28 C 275 32, 295 12, 320 8 L 320 80 L 0 80 Z"
-                            fill="url(#balanceGradient)"
-                          />
-                          <!-- Accent Stroke Line -->
-                          <path
-                            d="M 0 58 C 45 62, 70 38, 110 44 C 150 50, 185 24, 230 28 C 275 32, 295 12, 320 8"
-                            fill="none"
-                            stroke="hsl(239, 84%, 67%)"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-
-                    <!-- Accounts Card -->
-                    <div class="flex-1 basis-0 bg-white rounded-xl border border-border/70 p-3.5 shadow-xs flex flex-col justify-between">
-                      <div>
-                        <!-- Header with + and ⋮ icons -->
-                        <div class="flex items-center justify-between text-foreground mb-1">
-                          <span class="font-semibold text-xs tracking-tight">Accounts</span>
-                          <div class="flex items-center gap-1.5 text-muted-foreground">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                              <line x1="12" y1="5" x2="12" y2="19"></line>
-                              <line x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                              <circle cx="12" cy="12" r="1"></circle>
-                              <circle cx="12" cy="5" r="1"></circle>
-                              <circle cx="12" cy="19" r="1"></circle>
-                            </svg>
-                          </div>
-                        </div>
-
-                        <!-- 3 Rows (py-3, no dividers, text-xs, justify-between) -->
-                        <div>
-                          <div class="flex items-center justify-between py-3 text-xs">
-                            <span class="text-muted-foreground font-medium">Credit</span>
-                            <span class="font-semibold text-foreground tabular-nums">$98,125.50</span>
-                          </div>
-                          <div class="flex items-center justify-between py-3 text-xs">
-                            <span class="text-muted-foreground font-medium">Treasury</span>
-                            <span class="font-semibold text-foreground tabular-nums">$6,750,200.00</span>
-                          </div>
-                          <div class="flex items-center justify-between py-3 text-xs">
-                            <span class="text-muted-foreground font-medium">Operations</span>
-                            <span class="font-semibold text-foreground tabular-nums">$1,592,864.82</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="pt-1 text-[10px] text-muted-foreground flex items-center justify-between border-t border-border/40">
-                        <span>3 active commercial vaults</span>
-                        <span class="text-accent font-medium">Manage</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Transactions Table -->
-                  <div class="bg-white rounded-xl border border-border/70 p-3 shadow-xs">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-semibold text-xs text-foreground tracking-tight">Recent Transactions</h4>
-                      <span class="text-[10px] text-muted-foreground">View all (24)</span>
-                    </div>
-                    <table class="w-full text-left">
-                      <thead>
-                        <tr class="border-b border-border/50 text-[10px] text-muted-foreground">
-                          <th class="pb-1.5 font-medium">Date</th>
-                          <th class="pb-1.5 font-medium">Description</th>
-                          <th class="pb-1.5 font-medium text-right">Amount</th>
-                          <th class="pb-1.5 font-medium text-right">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody class="divide-y divide-border/30 text-[11px]">
-                        <!-- Row 1: AWS -$5,200 Pending (amber) -->
-                        <tr>
-                          <td class="py-2 text-muted-foreground tabular-nums">Today, 2:14 PM</td>
-                          <td class="py-2 font-medium text-foreground">AWS Cloud Infrastructure</td>
-                          <td class="py-2 text-right font-medium text-foreground tabular-nums">-$5,200.00</td>
-                          <td class="py-2 text-right">
-                            <span class="inline-block text-[9px] font-medium text-amber-700 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded-full">
-                              Pending
-                            </span>
-                          </td>
-                        </tr>
-
-                        <!-- Row 2: Client Payment +$125,000 Completed (green) -->
-                        <tr>
-                          <td class="py-2 text-muted-foreground tabular-nums">Today, 11:30 AM</td>
-                          <td class="py-2 font-medium text-foreground">Client Payment (Stripe Inc.)</td>
-                          <td class="py-2 text-right font-semibold text-emerald-600 tabular-nums">+$125,000.00</td>
-                          <td class="py-2 text-right">
-                            <span class="inline-block text-[9px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
-                              Completed
-                            </span>
-                          </td>
-                        </tr>
-
-                        <!-- Row 3: Payroll -$85,450 Completed -->
-                        <tr>
-                          <td class="py-2 text-muted-foreground tabular-nums">Yesterday</td>
-                          <td class="py-2 font-medium text-foreground">Gusto Bi-weekly Payroll</td>
-                          <td class="py-2 text-right font-medium text-foreground tabular-nums">-$85,450.00</td>
-                          <td class="py-2 text-right">
-                            <span class="inline-block text-[9px] font-medium text-slate-700 bg-slate-100 border border-slate-200/60 px-2 py-0.5 rounded-full">
-                              Completed
-                            </span>
-                          </td>
-                        </tr>
-
-                        <!-- Row 4: Office Supplies -$1,200 Completed -->
-                        <tr>
-                          <td class="py-2 text-muted-foreground tabular-nums">Oct 19, 2026</td>
-                          <td class="py-2 font-medium text-foreground">Office Supplies & Hardware</td>
-                          <td class="py-2 text-right font-medium text-foreground tabular-nums">-$1,200.00</td>
-                          <td class="py-2 text-right">
-                            <span class="inline-block text-[9px] font-medium text-slate-700 bg-slate-100 border border-slate-200/60 px-2 py-0.5 rounded-full">
-                              Completed
-                            </span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </main>
+              <!-- Search Bar -->
+              <div class="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 text-slate-500 w-80 max-w-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input id="searchInput" type="text" oninput="renderTable()" placeholder="Search rooms, beds, resident names..." class="text-xs flex-1 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400" />
               </div>
+
+              <!-- Action Buttons -->
+              <div class="flex items-center gap-2.5">
+                <button onclick="openModal('addBedModal')" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-sm cursor-pointer active:scale-95 transition-all">
+                  <span>+ Allocate Bed</span>
+                </button>
+                <button onclick="exportCSV()" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs px-3 py-1.5 rounded-full border border-slate-200 cursor-pointer active:scale-95 transition-all" title="Export CSV">
+                  <span>↓ Export</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dashboard Body: Sidebar + Main Content -->
+            <div class="flex min-h-[500px]">
+              
+              <!-- Sidebar -->
+              <aside class="w-48 border-r border-slate-200 bg-white/40 p-4 flex flex-col justify-between shrink-0 space-y-5">
+                <div class="space-y-1">
+                  <button onclick="filterStatus('All')" id="navAll" class="w-full flex items-center justify-between px-3 py-2 rounded-xl font-semibold text-xs bg-slate-100 text-slate-900 shadow-xs cursor-pointer">
+                    <span>Rooms & Beds</span>
+                  </button>
+                  <button onclick="filterStatus('Occupied')" id="navOccupied" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">
+                    <span>Residents</span>
+                    <span id="occupiedBadge" class="bg-slate-200 text-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">8</span>
+                  </button>
+                  <button onclick="searchKeys()" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">
+                    <span>IoT Keys</span>
+                  </button>
+                  <button onclick="filterStatus('Turnover')" id="navTurnover" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-amber-900 hover:bg-amber-50 cursor-pointer">
+                    <span>Turnover SLA</span>
+                    <span id="turnoverBadge" class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">1</span>
+                  </button>
+                  <button onclick="resetFilters()" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-900 cursor-pointer text-left">
+                    <span>↺ Reset Filters</span>
+                  </button>
+                </div>
+
+                <!-- Floors Section -->
+                <div>
+                  <div class="px-3 pb-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Filter by Floor</div>
+                  <div class="space-y-0.5" id="floorButtons">
+                    <button onclick="filterFloor('All')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-900 cursor-pointer">All Floors</button>
+                    <button onclick="filterFloor('Floor 4')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 4</button>
+                    <button onclick="filterFloor('Floor 3')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 3</button>
+                    <button onclick="filterFloor('Floor 2')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 2</button>
+                    <button onclick="filterFloor('Floor 1')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 1</button>
+                  </div>
+                </div>
+              </aside>
+
+              <!-- Main Content Column -->
+              <main class="flex-1 bg-slate-50/50 p-6 space-y-5 overflow-hidden">
+                
+                <!-- Metric Cards Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div onclick="filterStatus('All')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-slate-400 transition-all">
+                    <span class="text-xs text-slate-500 uppercase font-semibold">Total Registered Beds</span>
+                    <div id="metricTotal" class="text-2xl font-bold text-slate-900 mt-1">12 Beds</div>
+                    <span class="text-xs text-slate-400">Click to view all</span>
+                  </div>
+
+                  <div onclick="filterStatus('Occupied')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-emerald-400 transition-all">
+                    <span class="text-xs text-slate-500 uppercase font-semibold">Occupied Beds</span>
+                    <div id="metricOccupied" class="text-2xl font-bold text-emerald-600 mt-1">8 Beds (67%)</div>
+                    <span class="text-xs text-emerald-600 font-medium">● Active residents</span>
+                  </div>
+
+                  <div onclick="filterStatus('Vacant')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-indigo-400 transition-all">
+                    <span class="text-xs text-slate-500 uppercase font-semibold">Vacant & Ready Beds</span>
+                    <div id="metricVacant" class="text-2xl font-bold text-indigo-600 mt-1">2 Beds Available</div>
+                    <span class="text-xs text-indigo-600 font-medium">Immediate booking</span>
+                  </div>
+
+                  <div onclick="filterStatus('Turnover')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-amber-400 transition-all">
+                    <span class="text-xs text-slate-500 uppercase font-semibold">Under Turnover</span>
+                    <div id="metricTurnover" class="text-2xl font-bold text-amber-600 mt-1">1 Bed Cleaning</div>
+                    <span class="text-xs text-amber-600 font-medium">SLA: Tomorrow 2 PM</span>
+                  </div>
+                </div>
+
+                <!-- TABLE SIZE CUSTOMIZATION CONTROLS TOOLBAR -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm space-y-3">
+                  <div class="flex flex-wrap items-center justify-between gap-3">
+                    
+                    <!-- Status Filter Tabs -->
+                    <div class="flex items-center gap-1 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold">
+                      <button onclick="filterStatus('All')" id="tabAll" class="px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-900 cursor-pointer">All Beds</button>
+                      <button onclick="filterStatus('Occupied')" id="tabOccupied" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Occupied</button>
+                      <button onclick="filterStatus('Vacant')" id="tabVacant" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Vacant</button>
+                      <button onclick="filterStatus('Reserved')" id="tabReserved" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Reserved</button>
+                      <button onclick="filterStatus('Turnover')" id="tabTurnover" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Turnover</button>
+                    </div>
+
+                    <!-- Size Controls -->
+                    <div class="flex items-center gap-2.5 flex-wrap text-xs">
+                      
+                      <!-- Width Presets -->
+                      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                        <span class="text-[11px] font-semibold text-slate-500 px-2">Width:</span>
+                        <button onclick="setWidth('standard')" id="btnWidthStd" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Standard</button>
+                        <button onclick="setWidth('wide')" id="btnWidthWide" class="px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer">Wide</button>
+                        <button onclick="setWidth('expanded')" id="btnWidthExp" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Expanded</button>
+                        <button onclick="setWidth('full')" id="btnWidthFull" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Full 100%</button>
+                      </div>
+
+                      <!-- Row Density Presets -->
+                      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                        <span class="text-[11px] font-semibold text-slate-500 px-2">Spacing:</span>
+                        <button onclick="setDensity('compact')" id="btnDensCompact" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Compact</button>
+                        <button onclick="setDensity('normal')" id="btnDensNormal" class="px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer">Normal</button>
+                        <button onclick="setDensity('spacious')" id="btnDensSpacious" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Spacious</button>
+                      </div>
+
+                      <!-- Font Scale Adjuster -->
+                      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                        <span class="text-[11px] font-semibold text-slate-500 px-2">Text:</span>
+                        <button onclick="setFontScale('sm')" id="btnFontSm" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">A-</button>
+                        <button onclick="setFontScale('md')" id="btnFontMd" class="px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer">A</button>
+                        <button onclick="setFontScale('lg')" id="btnFontLg" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">A+</button>
+                      </div>
+
+                      <!-- Custom Slider Toggle Button -->
+                      <button onclick="toggleSliders()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 hover:bg-slate-100 cursor-pointer">
+                        <span>⚙ Custom Sliders</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Expandable Custom Sliders Drawer -->
+                  <div id="customSlidersPanel" class="hidden pt-3 border-t border-slate-200">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-3 bg-slate-50 rounded-xl">
+                      <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+                          <span>Container Max Width</span>
+                          <span id="sliderWidthVal" class="text-indigo-600 font-bold tabular-nums">1320px</span>
+                        </div>
+                        <input id="widthRange" type="range" min="960" max="1680" step="20" value="1320" oninput="onCustomWidthChange(this.value)" class="w-full accent-indigo-600 cursor-pointer" />
+                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                          <span>960px (Standard)</span>
+                          <span>1320px (Wide)</span>
+                          <span>1680px (Ultra)</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
+                          <span>Row Vertical Padding</span>
+                          <span id="sliderPadVal" class="text-indigo-600 font-bold tabular-nums">16px</span>
+                        </div>
+                        <input id="padRange" type="range" min="6" max="28" step="2" value="16" oninput="onCustomPadChange(this.value)" class="w-full accent-indigo-600 cursor-pointer" />
+                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                          <span>6px (Dense)</span>
+                          <span>16px (Normal)</span>
+                          <span>28px (Spacious)</span>
+                        </div>
+                      </div>
+
+                      <div class="flex items-end justify-end">
+                        <button onclick="resetCustomSizing()" class="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 text-slate-800 hover:bg-slate-100 rounded-xl text-xs font-semibold cursor-pointer shadow-xs">
+                          <span>↺ Reset Sizing</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- MASTER TABLE -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs overflow-x-auto">
+                  <div class="flex items-center justify-between mb-4">
+                    <div>
+                      <h4 class="font-semibold text-base text-slate-900 tracking-tight">Co-Living Suites, Beds & Resident Allocation Roster</h4>
+                      <p class="text-xs text-slate-500 mt-0.5">Click any bed row to inspect resident profile, rotate IoT keys, or update lease terms.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <div class="flex items-center gap-1.5 text-xs text-slate-500">
+                        <span>Sort:</span>
+                        <select id="sortField" onchange="renderTable()" class="bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-slate-800 text-xs font-semibold outline-none cursor-pointer">
+                          <option value="room">Room Number</option>
+                          <option value="resident">Resident Name</option>
+                          <option value="rate">Monthly Rent</option>
+                          <option value="status">Bed Status</option>
+                        </select>
+                      </div>
+                      <span id="tableCountBadge" class="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-semibold">Live Roster (12)</span>
+                    </div>
+                  </div>
+
+                  <table class="w-full text-left border-collapse min-w-[1050px]">
+                    <thead>
+                      <tr class="border-b border-slate-200 text-xs text-slate-500 bg-slate-50">
+                        <th class="py-3 px-4 font-semibold rounded-l-lg">Room / Suite</th>
+                        <th class="py-3 px-4 font-semibold">Bed & Configuration</th>
+                        <th class="py-3 px-4 font-semibold">Assigned Resident & Bed Usage</th>
+                        <th class="py-3 px-4 font-semibold">Lease Period</th>
+                        <th class="py-3 px-4 font-semibold">IoT Keycard</th>
+                        <th class="py-3 px-4 font-semibold text-right">Monthly Rent</th>
+                        <th class="py-3 px-4 font-semibold text-right rounded-r-lg">Actions & Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-100 text-xs">
+                      <!-- Rendered by JavaScript dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+
+              </main>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- FLOATING REFRESH RATE CONTROLLER (BOTTOM-RIGHT) -->
+  <div class="fixed bottom-4 right-4 z-40">
+    <div class="relative">
+      <button onclick="toggleRefreshMenu()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-md hover:bg-white text-xs font-semibold text-slate-800 transition-all cursor-pointer">
+        <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+        <span id="hzLabel">Video Engine: 200Hz Ultra-Smooth</span>
+      </button>
+
+      <div id="refreshMenu" class="hidden absolute bottom-11 right-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-2.5 shadow-xl text-xs space-y-1">
+        <div class="text-[10px] uppercase font-bold text-slate-400 px-2 pb-1 border-b border-slate-100">GPU Refresh Pipeline</div>
+        <button onclick="setRefreshRate(200)" class="w-full text-left p-2 rounded-xl hover:bg-indigo-50 text-slate-800 font-semibold flex items-center justify-between cursor-pointer">
+          <div><div>200Hz Ultra-Smooth</div><div class="text-[10px] text-slate-400 font-normal">Subpixel GPU interpolation</div></div>
+          <span class="text-indigo-600">✓</span>
+        </button>
+        <button onclick="setRefreshRate(120)" class="w-full text-left p-2 rounded-xl hover:bg-slate-100 text-slate-800 font-semibold cursor-pointer">
+          <div>120Hz ProMotion Sync</div><div class="text-[10px] text-slate-400 font-normal">Native smooth V-sync</div>
+        </button>
+        <button onclick="setRefreshRate(60)" class="w-full text-left p-2 rounded-xl hover:bg-slate-100 text-slate-800 font-semibold cursor-pointer">
+          <div>60Hz Standard Mode</div><div class="text-[10px] text-slate-400 font-normal">Power saving profile</div>
+        </button>
+      </div>
     </div>
-  </body>
+  </div>
+
+  <!-- MODAL 1: BED ALLOCATION & RESIDENT MANAGEMENT DRAWER -->
+  <div id="bedDrawerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+    <div class="relative w-full max-w-xl bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-2xl overflow-hidden font-body text-slate-800">
+      <button onclick="closeModal('bedDrawerModal')" class="absolute top-5 right-5 p-1.5 text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 cursor-pointer">✕</button>
+
+      <div id="drawerRoomBadge" class="text-indigo-600 text-xs font-semibold mb-1">Suite 402 · Floor 4</div>
+      <h3 id="drawerBedTitle" class="font-display text-3xl text-slate-900 tracking-tight">Bed A Management</h3>
+      <p id="drawerBedSub" class="text-xs text-slate-500 mt-0.5 mb-5">King Bed · Private En-Suite</p>
+
+      <!-- View State -->
+      <div id="drawerCardView" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-5">
+        <div class="flex items-start justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div id="drawerAvatar" class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm">JD</div>
+            <div>
+              <div id="drawerResidentName" class="font-bold text-base text-slate-900">Jane Doe</div>
+              <div id="drawerResidentEmail" class="text-xs text-slate-500">jane.doe@techcorp.io</div>
+              <div id="drawerUsageNote" class="text-xs font-semibold text-indigo-600 mt-1">Occupying Bed A (Private Master En-Suite)</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400">Monthly Rent</span>
+            <div id="drawerRent" class="text-lg font-bold text-slate-900 tabular-nums">$1,850/mo</div>
+            <span id="drawerPaymentStatus" class="text-xs text-emerald-600 font-semibold">Paid</span>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+          <span id="drawerSuiteMates" class="text-slate-500">Shares suite with Elena Rostova (Bed B)</span>
+          <button onclick="toggleDrawerEdit(true)" class="font-semibold text-indigo-600 hover:underline cursor-pointer">Edit Resident Allocation</button>
+        </div>
+      </div>
+
+      <!-- Edit Form State -->
+      <form id="drawerEditForm" onsubmit="saveDrawerEdit(event)" class="hidden bg-slate-50 border border-indigo-200 rounded-2xl p-4 mb-5 space-y-3">
+        <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Edit Resident & Bed Allocation</div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Resident Name</label>
+            <input id="editName" type="text" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Resident Email</label>
+            <input id="editEmail" type="email" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Which Bed is this person using? (Bed Usage Note)</label>
+          <input id="editUsageNote" type="text" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Monthly Rent ($)</label>
+            <input id="editRent" type="number" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Roommates</label>
+            <input id="editSuiteMates" type="text" class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
+          </div>
+        </div>
+        <div class="pt-1 flex items-center justify-end gap-2">
+          <button type="button" onclick="toggleDrawerEdit(false)" class="px-3.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-xs hover:bg-indigo-700 cursor-pointer">Save Changes</button>
+        </div>
+      </form>
+
+      <!-- Quick Controls -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-800 mb-1.5">Update Bed Occupancy Status:</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="updateSelectedStatus('Occupied')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-slate-900 text-white cursor-pointer">Occupied</button>
+            <button onclick="updateSelectedStatus('Reserved')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-100 cursor-pointer">Reserved</button>
+            <button onclick="updateSelectedStatus('Vacant')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-100 cursor-pointer">Vacant</button>
+            <button onclick="updateSelectedStatus('Turnover')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-100 cursor-pointer">Turnover</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-[10px] text-slate-400 uppercase font-bold">Digital Keycard Status</span>
+            <div class="font-mono text-xs font-bold text-slate-800 mt-0.5 flex items-center justify-between">
+              <span id="drawerKeyId">Key #SK-402A</span>
+              <span class="text-emerald-600 text-[10px]">● Active</span>
+            </div>
+            <button onclick="rotateCurrentKey()" class="mt-2 text-xs font-semibold text-indigo-600 hover:underline cursor-pointer">Rotate Key Now</button>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-[10px] text-slate-400 uppercase font-bold">Housekeeping / SLA</span>
+            <div id="drawerSlaText" class="text-xs font-bold text-slate-800 mt-0.5">Certified Clean</div>
+            <button onclick="dispatchTurnoverCurrent()" id="drawerSlaBtn" class="mt-2 text-xs font-semibold text-amber-700 hover:underline cursor-pointer">Dispatch Turnover</button>
+          </div>
+        </div>
+
+        <div class="pt-4 flex items-center justify-between border-t border-slate-200">
+          <button onclick="deleteCurrentBed()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold cursor-pointer">Delete Bed Entry</button>
+          <button onclick="closeModal('bedDrawerModal')" class="px-5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold cursor-pointer">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ALLOCATE NEW BED MODAL -->
+  <div id="addBedModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+    <div class="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-2xl overflow-hidden font-body text-slate-800">
+      <button onclick="closeModal('addBedModal')" class="absolute top-5 right-5 p-1.5 text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 cursor-pointer">✕</button>
+
+      <div class="text-indigo-600 text-xs font-semibold mb-1">+ Roster Management</div>
+      <h3 class="font-display text-3xl text-slate-900 tracking-tight">Allocate New Bed</h3>
+      <p class="text-xs text-slate-500 mt-0.5 mb-5">Register a new room suite and designate resident bed allocation.</p>
+
+      <form onsubmit="handleAddNewBed(event)" class="space-y-3.5">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold mb-1">Room / Suite</label>
+            <input id="addRoom" type="text" required value="Suite 302" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1">Floor Level</label>
+            <select id="addFloor" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl">
+              <option>Floor 1</option>
+              <option>Floor 2</option>
+              <option selected>Floor 3</option>
+              <option>Floor 4</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold mb-1">Bed Identifier</label>
+            <input id="addBedName" type="text" required value="Bed A" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1">Bed Configuration</label>
+            <input id="addBedType" type="text" required value="Queen Bed · Private Bath" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold mb-1">Resident Full Name</label>
+            <input id="addResName" type="text" required value="Alex Mercer" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1">Resident Email</label>
+            <input id="addResEmail" type="email" required value="alex.mercer@gmail.com" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold mb-1">Monthly Rate ($)</label>
+            <input id="addRent" type="number" required value="1550" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1">Initial Status</label>
+            <select id="addStatus" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl">
+              <option value="Occupied" selected>Occupied</option>
+              <option value="Reserved">Reserved</option>
+              <option value="Vacant">Vacant</option>
+              <option value="Turnover">Turnover</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeModal('addBedModal')" class="px-5 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
+          <button type="submit" class="px-6 py-2.5 rounded-full bg-slate-900 text-white font-semibold text-xs shadow-xs hover:bg-slate-800 cursor-pointer">Register & Allocate Bed</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: VIDEO ARCHITECTURE MODAL -->
+  <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 md:p-8 bg-slate-900/60 backdrop-blur-md">
+    <div class="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/20 aspect-video flex items-center justify-center">
+      <button onclick="closeModal('videoModal')" class="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/70 rounded-full cursor-pointer">✕</button>
+      <video id="modalVideoPlayer" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4" controls class="w-full h-full object-cover"></video>
+    </div>
+  </div>
+
+  <!-- MODAL 4: REQUEST SERVER ACCESS MODAL -->
+  <div id="accessModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+    <div class="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-2xl overflow-hidden font-body text-slate-800">
+      <button onclick="closeModal('accessModal')" class="absolute top-5 right-5 p-1.5 text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 cursor-pointer">✕</button>
+      <div class="text-indigo-600 text-xs font-semibold mb-1">Amma Enterprise Server · Console Provisioning</div>
+      <h3 class="font-display text-3xl text-slate-900 tracking-tight">Request Server Access</h3>
+      <p class="text-xs text-slate-500 mt-1 mb-5">Access the live co-living operations console, IoT lock gateway, and auto-billing ledger.</p>
+
+      <form onsubmit="handleRequestAccess(event)" class="space-y-3.5">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-medium text-slate-700 mb-1">Operator Name</label>
+            <input type="text" required value="Devon Vance" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-700 mb-1">Corporate Email</label>
+            <input type="email" required value="devon@company.com" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg" />
+          </div>
+        </div>
+        <div class="pt-2 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeModal('accessModal')" class="rounded-full px-4 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
+          <button type="submit" class="rounded-full px-6 py-2 bg-slate-900 text-white hover:bg-slate-800 text-xs font-medium cursor-pointer shadow-xs">Generate Sandbox Keys</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: DATA & INTERACTIVITY -->
+  <script>
+    let bedRoster = [
+      { id: "bed-402a", room: "Suite 402", floor: "Floor 4", suiteType: "2-Bed Master Suite", bedName: "Bed A", bedType: "King Bed · Private En-Suite", residentName: "Jane Doe", residentAvatar: "JD", residentEmail: "jane.doe@techcorp.io", bedUsageNote: "Occupying Bed A (Private Master En-Suite)", status: "Occupied", leasePeriod: "Oct 1, 2026 – Sep 30, 2027 (12 Mo)", smartKeyId: "Key #SK-402A", keyStatus: "Active", monthlyRate: 1850, paymentStatus: "Paid", suiteMates: "Shares suite with Elena Rostova (Bed B)" },
+      { id: "bed-402b", room: "Suite 402", floor: "Floor 4", suiteType: "2-Bed Master Suite", bedName: "Bed B", bedType: "Queen Bed · Private Balcony", residentName: "Elena Rostova", residentAvatar: "ER", residentEmail: "elena@bloomstudio.design", bedUsageNote: "Occupying Bed B (Balcony Queen)", status: "Occupied", leasePeriod: "Aug 15, 2026 – Aug 14, 2027 (12 Mo)", smartKeyId: "Key #SK-402B", keyStatus: "Active", monthlyRate: 1650, paymentStatus: "Paid", suiteMates: "Shares suite with Jane Doe (Bed A)" },
+      { id: "bed-401", room: "Suite 401", floor: "Floor 4", suiteType: "Private Executive Studio", bedName: "Solo Bed", bedType: "King Bed · Full Private Studio", residentName: "Marcus Sterling", residentAvatar: "MS", residentEmail: "marcus@stripe-infra.com", bedUsageNote: "Occupying Sole Studio Bed (Solo Occupant)", status: "Occupied", leasePeriod: "Jul 1, 2026 – Jun 30, 2027 (12 Mo)", smartKeyId: "Key #SK-401", keyStatus: "Active", monthlyRate: 2350, paymentStatus: "Auto-Pay", suiteMates: "Solo Studio (No Roommates)" },
+      { id: "bed-305a", room: "Suite 305", floor: "Floor 3", suiteType: "3-Bed Garden Penthouse", bedName: "Bed A", bedType: "King Bed · Garden View", residentName: "Sophia Patel", residentAvatar: "SP", residentEmail: "sophia.p@neuroai.org", bedUsageNote: "Occupying Bed A (Garden View King)", status: "Occupied", leasePeriod: "Sep 1, 2026 – Feb 28, 2027 (6 Mo)", smartKeyId: "Key #SK-305A", keyStatus: "Active", monthlyRate: 1750, paymentStatus: "Paid", suiteMates: "Shares with Liam Chen (Bed B) & Vacant (Bed C)" },
+      { id: "bed-305b", room: "Suite 305", floor: "Floor 3", suiteType: "3-Bed Garden Penthouse", bedName: "Bed B", bedType: "Queen Bed · Dedicated Desk", residentName: "Liam Chen", residentAvatar: "LC", residentEmail: "liam@finflow.co", bedUsageNote: "Occupying Bed B (Desk Queen)", status: "Occupied", leasePeriod: "Oct 15, 2026 – Apr 15, 2027 (6 Mo)", smartKeyId: "Key #SK-305B", keyStatus: "Active", monthlyRate: 1550, paymentStatus: "Paid", suiteMates: "Shares with Sophia Patel (Bed A) & Vacant (Bed C)" },
+      { id: "bed-305c", room: "Suite 305", floor: "Floor 3", suiteType: "3-Bed Garden Penthouse", bedName: "Bed C", bedType: "Queen Bed · Courtyard View", residentName: "Unassigned / Vacant", residentAvatar: "—", residentEmail: "Ready for move-in", bedUsageNote: "Bed C is clean, inspected & open for immediate booking", status: "Vacant", leasePeriod: "Available for 30d – 12mo lease", smartKeyId: "Key #SK-305C", keyStatus: "Unassigned", monthlyRate: 1500, paymentStatus: "Available", suiteMates: "Suite mates: Sophia Patel & Liam Chen" },
+      { id: "bed-204a", room: "Suite 204", floor: "Floor 2", suiteType: "2-Bed Terrace Suite", bedName: "Bed A", bedType: "Queen Bed · Private Terrace", residentName: "Lucas Vance", residentAvatar: "LV", residentEmail: "lucas.vance@soundlab.fm", bedUsageNote: "Occupying Bed A (Terrace Queen)", status: "Occupied", leasePeriod: "Nov 1, 2026 – Oct 31, 2027 (12 Mo)", smartKeyId: "Key #SK-204A", keyStatus: "Pending", monthlyRate: 1700, paymentStatus: "Due Nov 1", suiteMates: "Shares with Maya Lin (Bed B)" },
+      { id: "bed-204b", room: "Suite 204", floor: "Floor 2", suiteType: "2-Bed Terrace Suite", bedName: "Bed B", bedType: "Full Bed · Built-in Wardrobe", residentName: "Maya Lin", residentAvatar: "ML", residentEmail: "maya@arcdesign.studio", bedUsageNote: "Occupying Bed B (Wardrobe Suite)", status: "Occupied", leasePeriod: "Sep 1, 2026 – Aug 31, 2027 (12 Mo)", smartKeyId: "Key #SK-204B", keyStatus: "Active", monthlyRate: 1450, paymentStatus: "Paid", suiteMates: "Shares with Lucas Vance (Bed A)" },
+      { id: "bed-201a", room: "Suite 201", floor: "Floor 2", suiteType: "Pod Loft Suite (4-Bed)", bedName: "Pod Bed 1", bedType: "Lower Acoustic Sleep Pod · XL Twin", residentName: "David Kim", residentAvatar: "DK", residentEmail: "dkim@berkeley.alumni.edu", bedUsageNote: "Occupying Lower Acoustic Pod 1", status: "Occupied", leasePeriod: "Oct 1, 2026 – Jan 31, 2027 (4 Mo)", smartKeyId: "Key #SK-201-1", keyStatus: "Active", monthlyRate: 1150, paymentStatus: "Paid", suiteMates: "4-Bed Shared Co-Living Pod Loft" },
+      { id: "bed-201b", room: "Suite 201", floor: "Floor 2", suiteType: "Pod Loft Suite (4-Bed)", bedName: "Pod Bed 2", bedType: "Upper Acoustic Sleep Pod · XL Twin", residentName: "Under Turnover", residentAvatar: "🧹", residentEmail: "Housekeeping in progress", bedUsageNote: "Previous resident checked out · Deep linen sanitation active", status: "Turnover", leasePeriod: "Ready for check-in tomorrow at 2 PM", smartKeyId: "Key #SK-201-2", keyStatus: "Unassigned", monthlyRate: 1150, paymentStatus: "Available", suiteMates: "4-Bed Shared Co-Living Pod Loft" },
+      { id: "bed-201c", room: "Suite 201", floor: "Floor 2", suiteType: "Pod Loft Suite (4-Bed)", bedName: "Pod Bed 3", bedType: "Lower Acoustic Sleep Pod · XL Twin", residentName: "Oliver Thorne", residentAvatar: "OT", residentEmail: "oliver@remotehire.co", bedUsageNote: "Reserved Bed 3 (Move-in Nov 1)", status: "Reserved", leasePeriod: "Nov 1, 2026 – Apr 30, 2027 (6 Mo)", smartKeyId: "Key #SK-201-3", keyStatus: "Pending", monthlyRate: 1150, paymentStatus: "Due Nov 1", suiteMates: "4-Bed Shared Co-Living Pod Loft" },
+      { id: "bed-108", room: "Suite 108", floor: "Floor 1", suiteType: "Courtyard Studio En-Suite", bedName: "Solo Bed", bedType: "Queen Bed · ADA Accessible En-Suite", residentName: "Vacant & Cleaned", residentAvatar: "✨", residentEmail: "Ready for allocation", bedUsageNote: "Turnkey prepared · Keycard staged at reception", status: "Vacant", leasePeriod: "Immediate occupancy available", smartKeyId: "Key #SK-108", keyStatus: "Unassigned", monthlyRate: 1600, paymentStatus: "Available", suiteMates: "Private Studio (Solo Occupant)" }
+    ];
+
+    let currentStatusFilter = "All";
+    let currentFloorFilter = "All";
+    let selectedBedId = null;
+    let customPadding = 16;
+
+    // Toast alert
+    function showToast(msg) {
+      const el = document.getElementById("toastAlert");
+      const text = document.getElementById("toastText");
+      text.textContent = msg;
+      el.classList.remove("hidden");
+      setTimeout(() => el.classList.add("hidden"), 3000);
+    }
+
+    // Render Table Logic
+    function renderTable() {
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const sortField = document.getElementById("sortField").value;
+      const tbody = document.getElementById("tableBody");
+
+      const filtered = bedRoster.filter(item => {
+        const matchesSearch = item.room.toLowerCase().includes(searchTerm) ||
+          item.bedName.toLowerCase().includes(searchTerm) ||
+          item.residentName.toLowerCase().includes(searchTerm) ||
+          item.bedUsageNote.toLowerCase().includes(searchTerm);
+        const matchesStatus = currentStatusFilter === "All" || item.status === currentStatusFilter;
+        const matchesFloor = currentFloorFilter === "All" || item.floor === currentFloorFilter;
+        return matchesSearch && matchesStatus && matchesFloor;
+      }).sort((a, b) => {
+        if (sortField === "rate") return a.monthlyRate - b.monthlyRate;
+        if (sortField === "resident") return a.residentName.localeCompare(b.residentName);
+        if (sortField === "status") return a.status.localeCompare(b.status);
+        return a.room.localeCompare(b.room);
+      });
+
+      document.getElementById("tableCountBadge").textContent = `Live Roster (${filtered.length})`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-400">No rooms or beds matching your filter criteria.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const statusColors = {
+          Occupied: "text-emerald-700 bg-emerald-50 border border-emerald-200",
+          Reserved: "text-amber-700 bg-amber-50 border border-amber-200",
+          Turnover: "text-purple-700 bg-purple-50 border border-purple-200",
+          Vacant: "text-blue-700 bg-blue-50 border border-blue-200"
+        };
+        const dotColors = {
+          Occupied: "bg-emerald-500",
+          Reserved: "bg-amber-500",
+          Turnover: "bg-purple-500",
+          Vacant: "bg-blue-500"
+        };
+
+        return `
+          <tr onclick="openBedDrawer('${item.id}')" class="hover:bg-indigo-50/30 transition-colors cursor-pointer group">
+            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="font-bold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors">${item.room}</div>
+              <div class="text-xs text-slate-500 mt-0.5">${item.floor} · ${item.suiteType}</div>
+              <div class="text-[11px] text-slate-400 mt-1 truncate max-w-[160px]">${item.suiteMates}</div>
+            </td>
+            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="font-semibold text-slate-900 text-sm">${item.bedName}</div>
+              <div class="text-xs text-slate-500 mt-0.5">${item.bedType}</div>
+            </td>
+            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0">${item.residentAvatar}</div>
+                <div>
+                  <div class="font-semibold text-slate-900 text-sm">${item.residentName}</div>
+                  <div class="text-xs text-slate-500">${item.residentEmail}</div>
+                  <div class="text-xs font-semibold text-indigo-600 mt-1 bg-indigo-50 px-2 py-0.5 rounded-md inline-block">↳ ${item.bedUsageNote}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="text-xs font-semibold text-slate-800">${item.leasePeriod}</div>
+              <div class="text-xs text-slate-400 mt-1">Flexible Lease</div>
+            </td>
+            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="font-mono text-xs font-semibold text-slate-900">${item.smartKeyId}</div>
+              <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 ${item.keyStatus === 'Active' ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' : 'text-slate-500 bg-slate-100'}">● ${item.keyStatus}</span>
+            </td>
+            <td class="px-4 align-top text-right" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="font-bold text-slate-900 text-sm tabular-nums">$${item.monthlyRate.toLocaleString()}/mo</div>
+              <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 text-slate-600 bg-slate-100">${item.paymentStatus}</span>
+            </td>
+            <td class="px-4 align-top text-right" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
+              <div class="flex items-center justify-end gap-2">
+                <button onclick="event.stopPropagation(); quickRotateKey('${item.id}')" title="Rotate Key" class="p-1 rounded text-slate-400 hover:text-indigo-600 cursor-pointer">↺</button>
+                <button onclick="event.stopPropagation(); openBedDrawer('${item.id}')" class="text-[11px] font-semibold text-indigo-600 px-2 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 cursor-pointer">Manage</button>
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${statusColors[item.status]}">
+                  <span class="w-2 h-2 rounded-full ${dotColors[item.status]}"></span>
+                  <span>${item.status}</span>
+                </span>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      updateMetrics();
+    }
+
+    function updateMetrics() {
+      const total = bedRoster.length;
+      const occupied = bedRoster.filter(b => b.status === "Occupied").length;
+      const vacant = bedRoster.filter(b => b.status === "Vacant").length;
+      const turnover = bedRoster.filter(b => b.status === "Turnover").length;
+
+      document.getElementById("metricTotal").textContent = `${total} Registered Beds`;
+      document.getElementById("metricOccupied").textContent = `${occupied} Beds (${Math.round((occupied/total)*100)}%)`;
+      document.getElementById("metricVacant").textContent = `${vacant} Beds Available`;
+      document.getElementById("metricTurnover").textContent = `${turnover} Bed Cleaning`;
+
+      document.getElementById("occupiedBadge").textContent = occupied;
+      document.getElementById("turnoverBadge").textContent = turnover;
+    }
+
+    // Filter handlers
+    function filterStatus(st) {
+      currentStatusFilter = st;
+      ["All", "Occupied", "Vacant", "Reserved", "Turnover"].forEach(name => {
+        const tab = document.getElementById("tab" + name);
+        if (tab) {
+          if (name === st) {
+            tab.className = "px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-900 cursor-pointer";
+          } else {
+            tab.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer";
+          }
+        }
+      });
+      renderTable();
+    }
+
+    function filterFloor(fl) {
+      currentFloorFilter = fl;
+      renderTable();
+      showToast(`Filtered by: ${fl}`);
+    }
+
+    function resetFilters() {
+      currentStatusFilter = "All";
+      currentFloorFilter = "All";
+      document.getElementById("searchInput").value = "";
+      renderTable();
+      showToast("All filters reset.");
+    }
+
+    function searchKeys() {
+      document.getElementById("searchInput").value = "Key #";
+      renderTable();
+    }
+
+    // Table Customizer Controls
+    function setWidth(w) {
+      const section = document.getElementById("roster-section");
+      const map = { standard: "1120px", wide: "1320px", expanded: "1480px", full: "100%" };
+      section.style.maxWidth = map[w];
+
+      ["Std", "Wide", "Exp", "Full"].forEach(id => {
+        const btn = document.getElementById("btnWidth" + id);
+        btn.className = "px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer";
+      });
+      const activeBtnMap = { standard: "btnWidthStd", wide: "btnWidthWide", expanded: "btnWidthExp", full: "btnWidthFull" };
+      document.getElementById(activeBtnMap[w]).className = "px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer";
+    }
+
+    function setDensity(d) {
+      const map = { compact: 8, normal: 16, spacious: 24 };
+      customPadding = map[d];
+      document.getElementById("padRange").value = customPadding;
+      document.getElementById("sliderPadVal").textContent = customPadding + "px";
+
+      ["Compact", "Normal", "Spacious"].forEach(id => {
+        const btn = document.getElementById("btnDens" + id);
+        btn.className = "px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer";
+      });
+      const activeBtnMap = { compact: "btnDensCompact", normal: "btnDensNormal", spacious: "btnDensSpacious" };
+      document.getElementById(activeBtnMap[d]).className = "px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer";
+
+      renderTable();
+    }
+
+    function setFontScale(sz) {
+      const wrapper = document.getElementById("tableWrapper");
+      wrapper.classList.remove("text-[11px]", "text-xs", "text-sm");
+      if (sz === "sm") wrapper.classList.add("text-[11px]");
+      if (sz === "md") wrapper.classList.add("text-xs");
+      if (sz === "lg") wrapper.classList.add("text-sm");
+
+      ["Sm", "Md", "Lg"].forEach(id => {
+        const btn = document.getElementById("btnFont" + id);
+        btn.className = "px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer";
+      });
+      const activeBtnMap = { sm: "btnFontSm", md: "btnFontMd", lg: "btnFontLg" };
+      document.getElementById(activeBtnMap[sz]).className = "px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer";
+    }
+
+    function toggleSliders() {
+      const p = document.getElementById("customSlidersPanel");
+      p.classList.toggle("hidden");
+    }
+
+    function onCustomWidthChange(val) {
+      document.getElementById("sliderWidthVal").textContent = val + "px";
+      document.getElementById("roster-section").style.maxWidth = val + "px";
+    }
+
+    function onCustomPadChange(val) {
+      customPadding = Number(val);
+      document.getElementById("sliderPadVal").textContent = val + "px";
+      renderTable();
+    }
+
+    function resetCustomSizing() {
+      setWidth("wide");
+      setDensity("normal");
+      setFontScale("md");
+      document.getElementById("widthRange").value = 1320;
+      document.getElementById("sliderWidthVal").textContent = "1320px";
+      showToast("Reset table sizing to default.");
+    }
+
+    // Modal helpers
+    function openModal(id) {
+      document.getElementById(id).classList.remove("hidden");
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add("hidden");
+      if (id === "videoModal") {
+        document.getElementById("modalVideoPlayer").pause();
+      }
+    }
+
+    // Bed Drawer Management
+    function openBedDrawer(id) {
+      selectedBedId = id;
+      const bed = bedRoster.find(b => b.id === id);
+      if (!bed) return;
+
+      document.getElementById("drawerRoomBadge").textContent = `${bed.room} · ${bed.floor}`;
+      document.getElementById("drawerBedTitle").textContent = `${bed.bedName} Management`;
+      document.getElementById("drawerBedSub").textContent = `${bed.bedType} · ${bed.suiteType}`;
+      document.getElementById("drawerAvatar").textContent = bed.residentAvatar;
+      document.getElementById("drawerResidentName").textContent = bed.residentName;
+      document.getElementById("drawerResidentEmail").textContent = bed.residentEmail;
+      document.getElementById("drawerUsageNote").textContent = bed.bedUsageNote;
+      document.getElementById("drawerRent").textContent = `$${bed.monthlyRate.toLocaleString()}/mo`;
+      document.getElementById("drawerPaymentStatus").textContent = bed.paymentStatus;
+      document.getElementById("drawerSuiteMates").textContent = bed.suiteMates;
+      document.getElementById("drawerKeyId").textContent = bed.smartKeyId;
+
+      toggleDrawerEdit(false);
+      openModal("bedDrawerModal");
+    }
+
+    function toggleDrawerEdit(isEdit) {
+      const card = document.getElementById("drawerCardView");
+      const form = document.getElementById("drawerEditForm");
+      if (isEdit) {
+        const bed = bedRoster.find(b => b.id === selectedBedId);
+        document.getElementById("editName").value = bed.residentName;
+        document.getElementById("editEmail").value = bed.residentEmail;
+        document.getElementById("editUsageNote").value = bed.bedUsageNote;
+        document.getElementById("editRent").value = bed.monthlyRate;
+        document.getElementById("editSuiteMates").value = bed.suiteMates;
+        card.classList.add("hidden");
+        form.classList.remove("hidden");
+      } else {
+        card.classList.remove("hidden");
+        form.classList.add("hidden");
+      }
+    }
+
+    function saveDrawerEdit(e) {
+      e.preventDefault();
+      const bed = bedRoster.find(b => b.id === selectedBedId);
+      if (!bed) return;
+
+      bed.residentName = document.getElementById("editName").value;
+      bed.residentEmail = document.getElementById("editEmail").value;
+      bed.bedUsageNote = document.getElementById("editUsageNote").value;
+      bed.monthlyRate = Number(document.getElementById("editRent").value);
+      bed.suiteMates = document.getElementById("editSuiteMates").value;
+      bed.residentAvatar = bed.residentName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "RS";
+
+      renderTable();
+      openBedDrawer(selectedBedId);
+      showToast("Updated resident allocation details.");
+    }
+
+    function updateSelectedStatus(newStatus) {
+      const bed = bedRoster.find(b => b.id === selectedBedId);
+      if (!bed) return;
+      bed.status = newStatus;
+      renderTable();
+      openBedDrawer(selectedBedId);
+      showToast(`Updated status to: ${newStatus}`);
+    }
+
+    function quickRotateKey(id) {
+      const bed = bedRoster.find(b => b.id === id);
+      if (!bed) return;
+      const num = Math.floor(1000 + Math.random() * 9000);
+      bed.smartKeyId = `Key #SK-${num}`;
+      bed.keyStatus = "Active";
+      renderTable();
+      showToast(`Rotated digital key for ${bed.bedName} → Key #SK-${num}`);
+    }
+
+    function rotateCurrentKey() {
+      if (selectedBedId) quickRotateKey(selectedBedId);
+      openBedDrawer(selectedBedId);
+    }
+
+    function dispatchTurnoverCurrent() {
+      updateSelectedStatus("Turnover");
+      showToast("Housekeeping turnover dispatched.");
+    }
+
+    function deleteCurrentBed() {
+      bedRoster = bedRoster.filter(b => b.id !== selectedBedId);
+      closeModal("bedDrawerModal");
+      renderTable();
+      showToast("Bed entry removed from roster.");
+    }
+
+    // Add New Bed Handler
+    function handleAddNewBed(e) {
+      e.preventDefault();
+      const newBed = {
+        id: "bed-" + Date.now(),
+        room: document.getElementById("addRoom").value,
+        floor: document.getElementById("addFloor").value,
+        suiteType: "Shared Suite",
+        bedName: document.getElementById("addBedName").value,
+        bedType: document.getElementById("addBedType").value,
+        residentName: document.getElementById("addResName").value,
+        residentAvatar: document.getElementById("addResName").value.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "RS",
+        residentEmail: document.getElementById("addResEmail").value,
+        bedUsageNote: `Occupying ${document.getElementById("addBedName").value} in ${document.getElementById("addRoom").value}`,
+        status: document.getElementById("addStatus").value,
+        leasePeriod: "Nov 1, 2026 – Oct 31, 2027 (12 Mo)",
+        smartKeyId: `Key #SK-${Math.floor(1000 + Math.random() * 9000)}`,
+        keyStatus: "Active",
+        monthlyRate: Number(document.getElementById("addRent").value),
+        paymentStatus: "Paid",
+        suiteMates: "Shared Co-Living Suite"
+      };
+
+      bedRoster.unshift(newBed);
+      closeModal("addBedModal");
+      renderTable();
+      showToast(`Allocated new bed in ${newBed.room}!`);
+    }
+
+    // CSV Export
+    function exportCSV() {
+      const headers = ["Room", "Floor", "Suite Type", "Bed Name", "Bed Type", "Resident Name", "Resident Email", "Bed Usage Note", "Status", "Lease Period", "Smart Key ID", "Monthly Rate", "Payment Status"];
+      const rows = bedRoster.map(b => [b.room, b.floor, b.suiteType, b.bedName, b.bedType, b.residentName, b.residentEmail, `"${b.bedUsageNote}"`, b.status, `"${b.leasePeriod}"`, b.smartKeyId, b.monthlyRate, b.paymentStatus]);
+      const csv = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const encoded = encodeURI(csv);
+      const a = document.createElement("a");
+      a.href = encoded;
+      a.download = `amma-roster-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("Roster exported to CSV.");
+    }
+
+    // Refresh rate controller
+    function toggleRefreshMenu() {
+      document.getElementById("refreshMenu").classList.toggle("hidden");
+    }
+
+    function setRefreshRate(hz) {
+      const video = document.getElementById("bgVideo");
+      document.getElementById("hzLabel").textContent = `Video Engine: ${hz}Hz ${hz === 200 ? 'Ultra-Smooth' : hz === 120 ? 'ProMotion' : 'Standard'}`;
+      if (hz === 200) {
+        video.className = "fixed inset-0 w-full h-full object-cover z-0 pointer-events-none gpu-accelerated-200hz transition-all duration-300";
+      } else {
+        video.className = "fixed inset-0 w-full h-full object-cover z-0 pointer-events-none transition-all duration-300";
+      }
+      toggleRefreshMenu();
+      showToast(`Switched video refresh pipeline to ${hz}Hz.`);
+    }
+
+    function handleRequestAccess(e) {
+      e.preventDefault();
+      closeModal("accessModal");
+      showToast("Staging sandbox credentials generated & sent.");
+    }
+
+    // Initial table render
+    window.onload = function() {
+      renderTable();
+    };
+  </script>
+</body>
 </html>
