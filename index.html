@@ -1,1048 +1,1057 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amma Premium Co-Live - Management Server</title>
-  <meta name="description" content="Operating System and live room, bed, and resident allocation console for premium co-living properties." />
-  <meta property="og:title" content="Amma Premium Co-Live - Management Server" />
-  <meta property="og:description" content="Operating System and live room, bed, and resident allocation console for premium co-living properties." />
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Gridline — designing the future through digital experiences. Amma Premium Co-Live." />
+    <meta property="og:title" content="Gridline — Designing the Future" />
+    <meta property="og:description" content="Amma Premium Co-Live — Live together. Live better. Designed around the way you live." />
+    <title>Gridline — Designing the Future</title>
 
-  <!-- Google Fonts: Instrument Serif & Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['"Instrument Serif"', 'serif'],
-            body: ['"Inter"', 'sans-serif'],
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            },
           },
-          colors: {
-            foreground: '#22292f',
-            background: '#ffffff',
-            primary: '#22292f',
-            accent: '#535bf2',
-          }
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        color: #111827;
+        background: #ffffff;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      html,
+      body {
+        min-width: 320px;
+        min-height: 100%;
+        margin: 0;
+        background: #ffffff;
+        overflow-x: hidden;
+      }
+
+      * {
+        scrollbar-width: none;
+      }
+
+      *::-webkit-scrollbar {
+        display: none;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .interactive-letter {
+        display: inline-block;
+        cursor: pointer;
+        transform-origin: 50% 100%;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+        will-change: transform, color;
+      }
+
+      .interactive-letter:hover {
+        transform: translateY(-8px) rotate(3deg);
+        color: #111827 !important;
+      }
+
+      .nav-interactive-letter:hover {
+        transform: translateY(-3px);
+        color: #000000 !important;
+      }
+
+      ::selection {
+        color: #ffffff;
+        background: #182235;
+      }
+
+      .sculpture-fallback {
+        background:
+          radial-gradient(circle at 78% 21%, rgba(17, 24, 39, 0.055), transparent 17%),
+          radial-gradient(circle at 83% 70%, rgba(17, 24, 39, 0.035), transparent 22%);
+      }
+
+      .console-background {
+        background-image: linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 72%);
+      }
+
+      .hero-glow {
+        background: radial-gradient(circle at 72% 38%, rgba(17, 24, 39, 0.055), transparent 30%);
+      }
+
+      .sculpture-layer {
+        opacity: 0.9;
+      }
+
+      @media (max-width: 767px) {
+        .sculpture-layer {
+          opacity: 0.52;
         }
       }
-    }
-  </script>
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Custom Scrollbar for the scrollable foreground */
-    .custom-scroll {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
-    }
-    .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.18);
-      border-radius: 9999px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: rgba(0, 0, 0, 0.32);
-    }
-
-    /* 200Hz GPU Hardware-Accelerated Video Rendering Pipeline */
-    .gpu-accelerated-200hz {
-      transform: translate3d(0, 0, 0) scale(1.001);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      perspective: 1000px;
-      -webkit-perspective: 1000px;
-      will-change: transform, filter, opacity;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: high-quality;
-      filter: contrast(1.03) saturate(1.05) brightness(1.01);
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.52);
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      box-shadow: 0 25px 80px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
-    }
-  </style>
-</head>
-<body class="h-screen w-full bg-white text-slate-800 font-body relative overflow-hidden">
-
-  <!-- 1. FIXED BACKGROUND VIDEO (200Hz GPU COMPOSITING) -->
-  <video
-    id="bgVideo"
-    autoplay
-    loop
-    muted
-    playsinline
-    preload="auto"
-    class="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none gpu-accelerated-200hz transition-all duration-300"
-    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4"
-  ></video>
-
-  <!-- 2. FOREGROUND SCROLLABLE CONTAINER (Only text and table scroll over the video) -->
-  <div class="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden flex flex-col custom-scroll scroll-smooth">
-    
-    <!-- Top Navigation Bar -->
-    <header class="relative z-20 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5 w-full">
-      <a href="#roster-section" class="text-xl font-semibold tracking-tight text-slate-900 flex items-center gap-2">
-        <span class="text-slate-900 select-none">✦</span>
-        <span>Amma Premium Co-Live</span>
-      </a>
-
-      <div class="flex items-center gap-8">
-        <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-sm text-slate-600">
-          <a href="#roster-section" class="hover:text-slate-900 font-medium text-slate-900">Rooms & Beds</a>
-          <a href="#roster-section" class="hover:text-slate-900 font-medium">Occupancy Matrix</a>
-          <a href="#roster-section" class="hover:text-slate-900 font-medium">Smart Keycards</a>
-          <button onclick="openModal('accessModal')" class="hover:text-slate-900 font-medium">Console Docs</button>
-        </nav>
-        <button onclick="openModal('accessModal')" class="rounded-full px-5 py-2 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-all cursor-pointer shadow-sm active:scale-95">
-          Access Server
-        </button>
-      </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col items-center w-full px-4 md:px-8 xl:px-12 pt-2 sm:pt-4 pb-20">
-      
-      <!-- Top Badge -->
-      <div class="mb-5 cursor-default">
-        <div class="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/90 backdrop-blur-md px-4 py-1.5 text-xs text-slate-600 shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-          <span>Co-Living Management Server v3.4 · Live Roster</span>
-        </div>
-      </div>
-
-      <!-- Main Headline -->
-      <h1 class="text-center font-display text-5xl md:text-6xl lg:text-[5rem] leading-[0.95] tracking-tight text-slate-900 max-w-2xl">
-        The Operating System for <span class="italic font-display">Premium</span> Co-Living
-      </h1>
-
-      <!-- Subheadline -->
-      <p class="mt-4 text-center text-base md:text-lg text-slate-600 max-w-[680px] leading-relaxed px-2">
-        Real-time room and bed allocation matrix, smart lock provisioning, resident occupancy tracking,
-        and automated billing across all co-living suites.
-      </p>
-
-      <!-- Action Buttons -->
-      <div class="mt-5 flex items-center gap-3">
-        <button onclick="openModal('accessModal')" class="rounded-full px-7 py-3 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-md active:scale-95 cursor-pointer">
-          Access Management Console
-        </button>
-        <button onclick="openModal('videoModal')" class="h-11 w-11 rounded-full bg-white shadow-md hover:bg-slate-100 transition-all active:scale-95 flex items-center justify-center p-0 cursor-pointer" title="Watch Video">
-          <svg class="h-4 w-4 fill-slate-900 ml-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        </button>
-      </div>
-
-      <!-- MASTER CO-LIVING ROOM & BED MANAGEMENT CONSOLE -->
-      <div id="roster-section" class="mt-8 w-full transition-all duration-300 relative" style="max-width: 1320px;">
-        
-        <!-- Toast Notification Alert -->
-        <div id="toastAlert" class="fixed top-6 right-6 z-50 hidden flex items-center gap-2.5 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-white/20 text-xs font-semibold">
-          <span class="text-emerald-400">✓</span>
-          <span id="toastText">Action completed successfully.</span>
-        </div>
-
-        <div class="rounded-3xl overflow-hidden p-4 md:p-6 backdrop-blur-md glass-card transition-all duration-300">
-          <div id="tableWrapper" class="bg-white/95 rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm text-xs transition-all duration-200">
-            
-            <!-- Table Header Bar -->
-            <div class="h-14 border-b border-slate-200 px-6 flex items-center justify-between bg-white/70">
-              <div class="flex items-center gap-3">
-                <div class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs">A</div>
-                <div class="flex items-center gap-2">
-                  <span class="font-semibold text-sm text-slate-900">Amma Co-Live Management Server · Room & Bed Console</span>
-                  <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">Live Roster</span>
-                </div>
-              </div>
-
-              <!-- Search Bar -->
-              <div class="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 text-slate-500 w-80 max-w-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <input id="searchInput" type="text" oninput="renderTable()" placeholder="Search rooms, beds, resident names..." class="text-xs flex-1 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400" />
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="flex items-center gap-2.5">
-                <button onclick="openModal('addBedModal')" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-sm cursor-pointer active:scale-95 transition-all">
-                  <span>+ Allocate Bed</span>
-                </button>
-                <button onclick="exportCSV()" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs px-3 py-1.5 rounded-full border border-slate-200 cursor-pointer active:scale-95 transition-all" title="Export CSV">
-                  <span>↓ Export</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Dashboard Body: Sidebar + Main Content -->
-            <div class="flex min-h-[500px]">
-              
-              <!-- Sidebar -->
-              <aside class="w-48 border-r border-slate-200 bg-white/40 p-4 flex flex-col justify-between shrink-0 space-y-5">
-                <div class="space-y-1">
-                  <button onclick="filterStatus('All')" id="navAll" class="w-full flex items-center justify-between px-3 py-2 rounded-xl font-semibold text-xs bg-slate-100 text-slate-900 shadow-xs cursor-pointer">
-                    <span>Rooms & Beds</span>
-                  </button>
-                  <button onclick="filterStatus('Occupied')" id="navOccupied" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">
-                    <span>Residents</span>
-                    <span id="occupiedBadge" class="bg-slate-200 text-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">8</span>
-                  </button>
-                  <button onclick="searchKeys()" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">
-                    <span>IoT Keys</span>
-                  </button>
-                  <button onclick="filterStatus('Turnover')" id="navTurnover" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-amber-900 hover:bg-amber-50 cursor-pointer">
-                    <span>Turnover SLA</span>
-                    <span id="turnoverBadge" class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">1</span>
-                  </button>
-                  <button onclick="resetFilters()" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-900 cursor-pointer text-left">
-                    <span>↺ Reset Filters</span>
-                  </button>
-                </div>
-
-                <!-- Floors Section -->
-                <div>
-                  <div class="px-3 pb-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Filter by Floor</div>
-                  <div class="space-y-0.5" id="floorButtons">
-                    <button onclick="filterFloor('All')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-900 cursor-pointer">All Floors</button>
-                    <button onclick="filterFloor('Floor 4')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 4</button>
-                    <button onclick="filterFloor('Floor 3')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 3</button>
-                    <button onclick="filterFloor('Floor 2')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 2</button>
-                    <button onclick="filterFloor('Floor 1')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-slate-100 cursor-pointer">Floor 1</button>
-                  </div>
-                </div>
-              </aside>
-
-              <!-- Main Content Column -->
-              <main class="flex-1 bg-slate-50/50 p-6 space-y-5 overflow-hidden">
-                
-                <!-- Metric Cards Row -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div onclick="filterStatus('All')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-slate-400 transition-all">
-                    <span class="text-xs text-slate-500 uppercase font-semibold">Total Registered Beds</span>
-                    <div id="metricTotal" class="text-2xl font-bold text-slate-900 mt-1">12 Beds</div>
-                    <span class="text-xs text-slate-400">Click to view all</span>
-                  </div>
-
-                  <div onclick="filterStatus('Occupied')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-emerald-400 transition-all">
-                    <span class="text-xs text-slate-500 uppercase font-semibold">Occupied Beds</span>
-                    <div id="metricOccupied" class="text-2xl font-bold text-emerald-600 mt-1">8 Beds (67%)</div>
-                    <span class="text-xs text-emerald-600 font-medium">● Active residents</span>
-                  </div>
-
-                  <div onclick="filterStatus('Vacant')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-indigo-400 transition-all">
-                    <span class="text-xs text-slate-500 uppercase font-semibold">Vacant & Ready Beds</span>
-                    <div id="metricVacant" class="text-2xl font-bold text-indigo-600 mt-1">2 Beds Available</div>
-                    <span class="text-xs text-indigo-600 font-medium">Immediate booking</span>
-                  </div>
-
-                  <div onclick="filterStatus('Turnover')" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm cursor-pointer hover:border-amber-400 transition-all">
-                    <span class="text-xs text-slate-500 uppercase font-semibold">Under Turnover</span>
-                    <div id="metricTurnover" class="text-2xl font-bold text-amber-600 mt-1">1 Bed Cleaning</div>
-                    <span class="text-xs text-amber-600 font-medium">SLA: Tomorrow 2 PM</span>
-                  </div>
-                </div>
-
-                <!-- TABLE SIZE CUSTOMIZATION CONTROLS TOOLBAR -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm space-y-3">
-                  <div class="flex flex-wrap items-center justify-between gap-3">
-                    
-                    <!-- Status Filter Tabs -->
-                    <div class="flex items-center gap-1 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold">
-                      <button onclick="filterStatus('All')" id="tabAll" class="px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-900 cursor-pointer">All Beds</button>
-                      <button onclick="filterStatus('Occupied')" id="tabOccupied" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Occupied</button>
-                      <button onclick="filterStatus('Vacant')" id="tabVacant" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Vacant</button>
-                      <button onclick="filterStatus('Reserved')" id="tabReserved" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Reserved</button>
-                      <button onclick="filterStatus('Turnover')" id="tabTurnover" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Turnover</button>
-                    </div>
-
-                    <!-- Size Controls -->
-                    <div class="flex items-center gap-2.5 flex-wrap text-xs">
-                      
-                      <!-- Width Presets -->
-                      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
-                        <span class="text-[11px] font-semibold text-slate-500 px-2">Width:</span>
-                        <button onclick="setWidth('standard')" id="btnWidthStd" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Standard</button>
-                        <button onclick="setWidth('wide')" id="btnWidthWide" class="px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer">Wide</button>
-                        <button onclick="setWidth('expanded')" id="btnWidthExp" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Expanded</button>
-                        <button onclick="setWidth('full')" id="btnWidthFull" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Full 100%</button>
-                      </div>
-
-                      <!-- Row Density Presets -->
-                      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
-                        <span class="text-[11px] font-semibold text-slate-500 px-2">Spacing:</span>
-                        <button onclick="setDensity('compact')" id="btnDensCompact" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Compact</button>
-                        <button onclick="setDensity('normal')" id="btnDensNormal" class="px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer">Normal</button>
-                        <button onclick="setDensity('spacious')" id="btnDensSpacious" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">Spacious</button>
-                      </div>
-
-                      <!-- Font Scale Adjuster -->
-                      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
-                        <span class="text-[11px] font-semibold text-slate-500 px-2">Text:</span>
-                        <button onclick="setFontScale('sm')" id="btnFontSm" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">A-</button>
-                        <button onclick="setFontScale('md')" id="btnFontMd" class="px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer">A</button>
-                        <button onclick="setFontScale('lg')" id="btnFontLg" class="px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer">A+</button>
-                      </div>
-
-                      <!-- Custom Slider Toggle Button -->
-                      <button onclick="toggleSliders()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 hover:bg-slate-100 cursor-pointer">
-                        <span>⚙ Custom Sliders</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Expandable Custom Sliders Drawer -->
-                  <div id="customSlidersPanel" class="hidden pt-3 border-t border-slate-200">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-3 bg-slate-50 rounded-xl">
-                      <div>
-                        <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
-                          <span>Container Max Width</span>
-                          <span id="sliderWidthVal" class="text-indigo-600 font-bold tabular-nums">1320px</span>
-                        </div>
-                        <input id="widthRange" type="range" min="960" max="1680" step="20" value="1320" oninput="onCustomWidthChange(this.value)" class="w-full accent-indigo-600 cursor-pointer" />
-                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
-                          <span>960px (Standard)</span>
-                          <span>1320px (Wide)</span>
-                          <span>1680px (Ultra)</span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
-                          <span>Row Vertical Padding</span>
-                          <span id="sliderPadVal" class="text-indigo-600 font-bold tabular-nums">16px</span>
-                        </div>
-                        <input id="padRange" type="range" min="6" max="28" step="2" value="16" oninput="onCustomPadChange(this.value)" class="w-full accent-indigo-600 cursor-pointer" />
-                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
-                          <span>6px (Dense)</span>
-                          <span>16px (Normal)</span>
-                          <span>28px (Spacious)</span>
-                        </div>
-                      </div>
-
-                      <div class="flex items-end justify-end">
-                        <button onclick="resetCustomSizing()" class="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 text-slate-800 hover:bg-slate-100 rounded-xl text-xs font-semibold cursor-pointer shadow-xs">
-                          <span>↺ Reset Sizing</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- MASTER TABLE -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs overflow-x-auto">
-                  <div class="flex items-center justify-between mb-4">
-                    <div>
-                      <h4 class="font-semibold text-base text-slate-900 tracking-tight">Co-Living Suites, Beds & Resident Allocation Roster</h4>
-                      <p class="text-xs text-slate-500 mt-0.5">Click any bed row to inspect resident profile, rotate IoT keys, or update lease terms.</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <div class="flex items-center gap-1.5 text-xs text-slate-500">
-                        <span>Sort:</span>
-                        <select id="sortField" onchange="renderTable()" class="bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-slate-800 text-xs font-semibold outline-none cursor-pointer">
-                          <option value="room">Room Number</option>
-                          <option value="resident">Resident Name</option>
-                          <option value="rate">Monthly Rent</option>
-                          <option value="status">Bed Status</option>
-                        </select>
-                      </div>
-                      <span id="tableCountBadge" class="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-semibold">Live Roster (12)</span>
-                    </div>
-                  </div>
-
-                  <table class="w-full text-left border-collapse min-w-[1050px]">
-                    <thead>
-                      <tr class="border-b border-slate-200 text-xs text-slate-500 bg-slate-50">
-                        <th class="py-3 px-4 font-semibold rounded-l-lg">Room / Suite</th>
-                        <th class="py-3 px-4 font-semibold">Bed & Configuration</th>
-                        <th class="py-3 px-4 font-semibold">Assigned Resident & Bed Usage</th>
-                        <th class="py-3 px-4 font-semibold">Lease Period</th>
-                        <th class="py-3 px-4 font-semibold">IoT Keycard</th>
-                        <th class="py-3 px-4 font-semibold text-right">Monthly Rent</th>
-                        <th class="py-3 px-4 font-semibold text-right rounded-r-lg">Actions & Status</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tableBody" class="divide-y divide-slate-100 text-xs">
-                      <!-- Rendered by JavaScript dynamically -->
-                    </tbody>
-                  </table>
-                </div>
-
-              </main>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </main>
-  </div>
-
-  <!-- FLOATING REFRESH RATE CONTROLLER (BOTTOM-RIGHT) -->
-  <div class="fixed bottom-4 right-4 z-40">
-    <div class="relative">
-      <button onclick="toggleRefreshMenu()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-md hover:bg-white text-xs font-semibold text-slate-800 transition-all cursor-pointer">
-        <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-        <span id="hzLabel">Video Engine: 200Hz Ultra-Smooth</span>
-      </button>
-
-      <div id="refreshMenu" class="hidden absolute bottom-11 right-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-2.5 shadow-xl text-xs space-y-1">
-        <div class="text-[10px] uppercase font-bold text-slate-400 px-2 pb-1 border-b border-slate-100">GPU Refresh Pipeline</div>
-        <button onclick="setRefreshRate(200)" class="w-full text-left p-2 rounded-xl hover:bg-indigo-50 text-slate-800 font-semibold flex items-center justify-between cursor-pointer">
-          <div><div>200Hz Ultra-Smooth</div><div class="text-[10px] text-slate-400 font-normal">Subpixel GPU interpolation</div></div>
-          <span class="text-indigo-600">✓</span>
-        </button>
-        <button onclick="setRefreshRate(120)" class="w-full text-left p-2 rounded-xl hover:bg-slate-100 text-slate-800 font-semibold cursor-pointer">
-          <div>120Hz ProMotion Sync</div><div class="text-[10px] text-slate-400 font-normal">Native smooth V-sync</div>
-        </button>
-        <button onclick="setRefreshRate(60)" class="w-full text-left p-2 rounded-xl hover:bg-slate-100 text-slate-800 font-semibold cursor-pointer">
-          <div>60Hz Standard Mode</div><div class="text-[10px] text-slate-400 font-normal">Power saving profile</div>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 1: BED ALLOCATION & RESIDENT MANAGEMENT DRAWER -->
-  <div id="bedDrawerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-    <div class="relative w-full max-w-xl bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-2xl overflow-hidden font-body text-slate-800">
-      <button onclick="closeModal('bedDrawerModal')" class="absolute top-5 right-5 p-1.5 text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 cursor-pointer">✕</button>
-
-      <div id="drawerRoomBadge" class="text-indigo-600 text-xs font-semibold mb-1">Suite 402 · Floor 4</div>
-      <h3 id="drawerBedTitle" class="font-display text-3xl text-slate-900 tracking-tight">Bed A Management</h3>
-      <p id="drawerBedSub" class="text-xs text-slate-500 mt-0.5 mb-5">King Bed · Private En-Suite</p>
-
-      <!-- View State -->
-      <div id="drawerCardView" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-5">
-        <div class="flex items-start justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <div id="drawerAvatar" class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm">JD</div>
-            <div>
-              <div id="drawerResidentName" class="font-bold text-base text-slate-900">Jane Doe</div>
-              <div id="drawerResidentEmail" class="text-xs text-slate-500">jane.doe@techcorp.io</div>
-              <div id="drawerUsageNote" class="text-xs font-semibold text-indigo-600 mt-1">Occupying Bed A (Private Master En-Suite)</div>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-[10px] text-slate-400">Monthly Rent</span>
-            <div id="drawerRent" class="text-lg font-bold text-slate-900 tabular-nums">$1,850/mo</div>
-            <span id="drawerPaymentStatus" class="text-xs text-emerald-600 font-semibold">Paid</span>
-          </div>
-        </div>
-        <div class="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-          <span id="drawerSuiteMates" class="text-slate-500">Shares suite with Elena Rostova (Bed B)</span>
-          <button onclick="toggleDrawerEdit(true)" class="font-semibold text-indigo-600 hover:underline cursor-pointer">Edit Resident Allocation</button>
-        </div>
-      </div>
-
-      <!-- Edit Form State -->
-      <form id="drawerEditForm" onsubmit="saveDrawerEdit(event)" class="hidden bg-slate-50 border border-indigo-200 rounded-2xl p-4 mb-5 space-y-3">
-        <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Edit Resident & Bed Allocation</div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Resident Name</label>
-            <input id="editName" type="text" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Resident Email</label>
-            <input id="editEmail" type="email" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
-          </div>
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Which Bed is this person using? (Bed Usage Note)</label>
-          <input id="editUsageNote" type="text" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Monthly Rent ($)</label>
-            <input id="editRent" type="number" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Roommates</label>
-            <input id="editSuiteMates" type="text" class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl" />
-          </div>
-        </div>
-        <div class="pt-1 flex items-center justify-end gap-2">
-          <button type="button" onclick="toggleDrawerEdit(false)" class="px-3.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
-          <button type="submit" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-xs hover:bg-indigo-700 cursor-pointer">Save Changes</button>
-        </div>
-      </form>
-
-      <!-- Quick Controls -->
-      <div class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-800 mb-1.5">Update Bed Occupancy Status:</label>
-          <div class="grid grid-cols-4 gap-2">
-            <button onclick="updateSelectedStatus('Occupied')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-slate-900 text-white cursor-pointer">Occupied</button>
-            <button onclick="updateSelectedStatus('Reserved')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-100 cursor-pointer">Reserved</button>
-            <button onclick="updateSelectedStatus('Vacant')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-100 cursor-pointer">Vacant</button>
-            <button onclick="updateSelectedStatus('Turnover')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-100 cursor-pointer">Turnover</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <span class="text-[10px] text-slate-400 uppercase font-bold">Digital Keycard Status</span>
-            <div class="font-mono text-xs font-bold text-slate-800 mt-0.5 flex items-center justify-between">
-              <span id="drawerKeyId">Key #SK-402A</span>
-              <span class="text-emerald-600 text-[10px]">● Active</span>
-            </div>
-            <button onclick="rotateCurrentKey()" class="mt-2 text-xs font-semibold text-indigo-600 hover:underline cursor-pointer">Rotate Key Now</button>
-          </div>
-
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <span class="text-[10px] text-slate-400 uppercase font-bold">Housekeeping / SLA</span>
-            <div id="drawerSlaText" class="text-xs font-bold text-slate-800 mt-0.5">Certified Clean</div>
-            <button onclick="dispatchTurnoverCurrent()" id="drawerSlaBtn" class="mt-2 text-xs font-semibold text-amber-700 hover:underline cursor-pointer">Dispatch Turnover</button>
-          </div>
-        </div>
-
-        <div class="pt-4 flex items-center justify-between border-t border-slate-200">
-          <button onclick="deleteCurrentBed()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold cursor-pointer">Delete Bed Entry</button>
-          <button onclick="closeModal('bedDrawerModal')" class="px-5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold cursor-pointer">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 2: ALLOCATE NEW BED MODAL -->
-  <div id="addBedModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-    <div class="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-2xl overflow-hidden font-body text-slate-800">
-      <button onclick="closeModal('addBedModal')" class="absolute top-5 right-5 p-1.5 text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 cursor-pointer">✕</button>
-
-      <div class="text-indigo-600 text-xs font-semibold mb-1">+ Roster Management</div>
-      <h3 class="font-display text-3xl text-slate-900 tracking-tight">Allocate New Bed</h3>
-      <p class="text-xs text-slate-500 mt-0.5 mb-5">Register a new room suite and designate resident bed allocation.</p>
-
-      <form onsubmit="handleAddNewBed(event)" class="space-y-3.5">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold mb-1">Room / Suite</label>
-            <input id="addRoom" type="text" required value="Suite 302" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1">Floor Level</label>
-            <select id="addFloor" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl">
-              <option>Floor 1</option>
-              <option>Floor 2</option>
-              <option selected>Floor 3</option>
-              <option>Floor 4</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold mb-1">Bed Identifier</label>
-            <input id="addBedName" type="text" required value="Bed A" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1">Bed Configuration</label>
-            <input id="addBedType" type="text" required value="Queen Bed · Private Bath" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold mb-1">Resident Full Name</label>
-            <input id="addResName" type="text" required value="Alex Mercer" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1">Resident Email</label>
-            <input id="addResEmail" type="email" required value="alex.mercer@gmail.com" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold mb-1">Monthly Rate ($)</label>
-            <input id="addRent" type="number" required value="1550" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1">Initial Status</label>
-            <select id="addStatus" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl">
-              <option value="Occupied" selected>Occupied</option>
-              <option value="Reserved">Reserved</option>
-              <option value="Vacant">Vacant</option>
-              <option value="Turnover">Turnover</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="pt-3 flex items-center justify-end gap-3">
-          <button type="button" onclick="closeModal('addBedModal')" class="px-5 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
-          <button type="submit" class="px-6 py-2.5 rounded-full bg-slate-900 text-white font-semibold text-xs shadow-xs hover:bg-slate-800 cursor-pointer">Register & Allocate Bed</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 3: VIDEO ARCHITECTURE MODAL -->
-  <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 md:p-8 bg-slate-900/60 backdrop-blur-md">
-    <div class="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/20 aspect-video flex items-center justify-center">
-      <button onclick="closeModal('videoModal')" class="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white bg-black/40 hover:bg-black/70 rounded-full cursor-pointer">✕</button>
-      <video id="modalVideoPlayer" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4" controls class="w-full h-full object-cover"></video>
-    </div>
-  </div>
-
-  <!-- MODAL 4: REQUEST SERVER ACCESS MODAL -->
-  <div id="accessModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-    <div class="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-2xl overflow-hidden font-body text-slate-800">
-      <button onclick="closeModal('accessModal')" class="absolute top-5 right-5 p-1.5 text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 cursor-pointer">✕</button>
-      <div class="text-indigo-600 text-xs font-semibold mb-1">Amma Enterprise Server · Console Provisioning</div>
-      <h3 class="font-display text-3xl text-slate-900 tracking-tight">Request Server Access</h3>
-      <p class="text-xs text-slate-500 mt-1 mb-5">Access the live co-living operations console, IoT lock gateway, and auto-billing ledger.</p>
-
-      <form onsubmit="handleRequestAccess(event)" class="space-y-3.5">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-[11px] font-medium text-slate-700 mb-1">Operator Name</label>
-            <input type="text" required value="Devon Vance" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-medium text-slate-700 mb-1">Corporate Email</label>
-            <input type="email" required value="devon@company.com" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg" />
-          </div>
-        </div>
-        <div class="pt-2 flex items-center justify-end gap-3">
-          <button type="button" onclick="closeModal('accessModal')" class="rounded-full px-4 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
-          <button type="submit" class="rounded-full px-6 py-2 bg-slate-900 text-white hover:bg-slate-800 text-xs font-medium cursor-pointer shadow-xs">Generate Sandbox Keys</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT: DATA & INTERACTIVITY -->
-  <script>
-    let bedRoster = [
-      { id: "bed-402a", room: "Suite 402", floor: "Floor 4", suiteType: "2-Bed Master Suite", bedName: "Bed A", bedType: "King Bed · Private En-Suite", residentName: "Jane Doe", residentAvatar: "JD", residentEmail: "jane.doe@techcorp.io", bedUsageNote: "Occupying Bed A (Private Master En-Suite)", status: "Occupied", leasePeriod: "Oct 1, 2026 – Sep 30, 2027 (12 Mo)", smartKeyId: "Key #SK-402A", keyStatus: "Active", monthlyRate: 1850, paymentStatus: "Paid", suiteMates: "Shares suite with Elena Rostova (Bed B)" },
-      { id: "bed-402b", room: "Suite 402", floor: "Floor 4", suiteType: "2-Bed Master Suite", bedName: "Bed B", bedType: "Queen Bed · Private Balcony", residentName: "Elena Rostova", residentAvatar: "ER", residentEmail: "elena@bloomstudio.design", bedUsageNote: "Occupying Bed B (Balcony Queen)", status: "Occupied", leasePeriod: "Aug 15, 2026 – Aug 14, 2027 (12 Mo)", smartKeyId: "Key #SK-402B", keyStatus: "Active", monthlyRate: 1650, paymentStatus: "Paid", suiteMates: "Shares suite with Jane Doe (Bed A)" },
-      { id: "bed-401", room: "Suite 401", floor: "Floor 4", suiteType: "Private Executive Studio", bedName: "Solo Bed", bedType: "King Bed · Full Private Studio", residentName: "Marcus Sterling", residentAvatar: "MS", residentEmail: "marcus@stripe-infra.com", bedUsageNote: "Occupying Sole Studio Bed (Solo Occupant)", status: "Occupied", leasePeriod: "Jul 1, 2026 – Jun 30, 2027 (12 Mo)", smartKeyId: "Key #SK-401", keyStatus: "Active", monthlyRate: 2350, paymentStatus: "Auto-Pay", suiteMates: "Solo Studio (No Roommates)" },
-      { id: "bed-305a", room: "Suite 305", floor: "Floor 3", suiteType: "3-Bed Garden Penthouse", bedName: "Bed A", bedType: "King Bed · Garden View", residentName: "Sophia Patel", residentAvatar: "SP", residentEmail: "sophia.p@neuroai.org", bedUsageNote: "Occupying Bed A (Garden View King)", status: "Occupied", leasePeriod: "Sep 1, 2026 – Feb 28, 2027 (6 Mo)", smartKeyId: "Key #SK-305A", keyStatus: "Active", monthlyRate: 1750, paymentStatus: "Paid", suiteMates: "Shares with Liam Chen (Bed B) & Vacant (Bed C)" },
-      { id: "bed-305b", room: "Suite 305", floor: "Floor 3", suiteType: "3-Bed Garden Penthouse", bedName: "Bed B", bedType: "Queen Bed · Dedicated Desk", residentName: "Liam Chen", residentAvatar: "LC", residentEmail: "liam@finflow.co", bedUsageNote: "Occupying Bed B (Desk Queen)", status: "Occupied", leasePeriod: "Oct 15, 2026 – Apr 15, 2027 (6 Mo)", smartKeyId: "Key #SK-305B", keyStatus: "Active", monthlyRate: 1550, paymentStatus: "Paid", suiteMates: "Shares with Sophia Patel (Bed A) & Vacant (Bed C)" },
-      { id: "bed-305c", room: "Suite 305", floor: "Floor 3", suiteType: "3-Bed Garden Penthouse", bedName: "Bed C", bedType: "Queen Bed · Courtyard View", residentName: "Unassigned / Vacant", residentAvatar: "—", residentEmail: "Ready for move-in", bedUsageNote: "Bed C is clean, inspected & open for immediate booking", status: "Vacant", leasePeriod: "Available for 30d – 12mo lease", smartKeyId: "Key #SK-305C", keyStatus: "Unassigned", monthlyRate: 1500, paymentStatus: "Available", suiteMates: "Suite mates: Sophia Patel & Liam Chen" },
-      { id: "bed-204a", room: "Suite 204", floor: "Floor 2", suiteType: "2-Bed Terrace Suite", bedName: "Bed A", bedType: "Queen Bed · Private Terrace", residentName: "Lucas Vance", residentAvatar: "LV", residentEmail: "lucas.vance@soundlab.fm", bedUsageNote: "Occupying Bed A (Terrace Queen)", status: "Occupied", leasePeriod: "Nov 1, 2026 – Oct 31, 2027 (12 Mo)", smartKeyId: "Key #SK-204A", keyStatus: "Pending", monthlyRate: 1700, paymentStatus: "Due Nov 1", suiteMates: "Shares with Maya Lin (Bed B)" },
-      { id: "bed-204b", room: "Suite 204", floor: "Floor 2", suiteType: "2-Bed Terrace Suite", bedName: "Bed B", bedType: "Full Bed · Built-in Wardrobe", residentName: "Maya Lin", residentAvatar: "ML", residentEmail: "maya@arcdesign.studio", bedUsageNote: "Occupying Bed B (Wardrobe Suite)", status: "Occupied", leasePeriod: "Sep 1, 2026 – Aug 31, 2027 (12 Mo)", smartKeyId: "Key #SK-204B", keyStatus: "Active", monthlyRate: 1450, paymentStatus: "Paid", suiteMates: "Shares with Lucas Vance (Bed A)" },
-      { id: "bed-201a", room: "Suite 201", floor: "Floor 2", suiteType: "Pod Loft Suite (4-Bed)", bedName: "Pod Bed 1", bedType: "Lower Acoustic Sleep Pod · XL Twin", residentName: "David Kim", residentAvatar: "DK", residentEmail: "dkim@berkeley.alumni.edu", bedUsageNote: "Occupying Lower Acoustic Pod 1", status: "Occupied", leasePeriod: "Oct 1, 2026 – Jan 31, 2027 (4 Mo)", smartKeyId: "Key #SK-201-1", keyStatus: "Active", monthlyRate: 1150, paymentStatus: "Paid", suiteMates: "4-Bed Shared Co-Living Pod Loft" },
-      { id: "bed-201b", room: "Suite 201", floor: "Floor 2", suiteType: "Pod Loft Suite (4-Bed)", bedName: "Pod Bed 2", bedType: "Upper Acoustic Sleep Pod · XL Twin", residentName: "Under Turnover", residentAvatar: "🧹", residentEmail: "Housekeeping in progress", bedUsageNote: "Previous resident checked out · Deep linen sanitation active", status: "Turnover", leasePeriod: "Ready for check-in tomorrow at 2 PM", smartKeyId: "Key #SK-201-2", keyStatus: "Unassigned", monthlyRate: 1150, paymentStatus: "Available", suiteMates: "4-Bed Shared Co-Living Pod Loft" },
-      { id: "bed-201c", room: "Suite 201", floor: "Floor 2", suiteType: "Pod Loft Suite (4-Bed)", bedName: "Pod Bed 3", bedType: "Lower Acoustic Sleep Pod · XL Twin", residentName: "Oliver Thorne", residentAvatar: "OT", residentEmail: "oliver@remotehire.co", bedUsageNote: "Reserved Bed 3 (Move-in Nov 1)", status: "Reserved", leasePeriod: "Nov 1, 2026 – Apr 30, 2027 (6 Mo)", smartKeyId: "Key #SK-201-3", keyStatus: "Pending", monthlyRate: 1150, paymentStatus: "Due Nov 1", suiteMates: "4-Bed Shared Co-Living Pod Loft" },
-      { id: "bed-108", room: "Suite 108", floor: "Floor 1", suiteType: "Courtyard Studio En-Suite", bedName: "Solo Bed", bedType: "Queen Bed · ADA Accessible En-Suite", residentName: "Vacant & Cleaned", residentAvatar: "✨", residentEmail: "Ready for allocation", bedUsageNote: "Turnkey prepared · Keycard staged at reception", status: "Vacant", leasePeriod: "Immediate occupancy available", smartKeyId: "Key #SK-108", keyStatus: "Unassigned", monthlyRate: 1600, paymentStatus: "Available", suiteMates: "Private Studio (Solo Occupant)" }
-    ];
-
-    let currentStatusFilter = "All";
-    let currentFloorFilter = "All";
-    let selectedBedId = null;
-    let customPadding = 16;
-
-    // Toast alert
-    function showToast(msg) {
-      const el = document.getElementById("toastAlert");
-      const text = document.getElementById("toastText");
-      text.textContent = msg;
-      el.classList.remove("hidden");
-      setTimeout(() => el.classList.add("hidden"), 3000);
-    }
-
-    // Render Table Logic
-    function renderTable() {
-      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-      const sortField = document.getElementById("sortField").value;
-      const tbody = document.getElementById("tableBody");
-
-      const filtered = bedRoster.filter(item => {
-        const matchesSearch = item.room.toLowerCase().includes(searchTerm) ||
-          item.bedName.toLowerCase().includes(searchTerm) ||
-          item.residentName.toLowerCase().includes(searchTerm) ||
-          item.bedUsageNote.toLowerCase().includes(searchTerm);
-        const matchesStatus = currentStatusFilter === "All" || item.status === currentStatusFilter;
-        const matchesFloor = currentFloorFilter === "All" || item.floor === currentFloorFilter;
-        return matchesSearch && matchesStatus && matchesFloor;
-      }).sort((a, b) => {
-        if (sortField === "rate") return a.monthlyRate - b.monthlyRate;
-        if (sortField === "resident") return a.residentName.localeCompare(b.residentName);
-        if (sortField === "status") return a.status.localeCompare(b.status);
-        return a.room.localeCompare(b.room);
-      });
-
-      document.getElementById("tableCountBadge").textContent = `Live Roster (${filtered.length})`;
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-400">No rooms or beds matching your filter criteria.</td></tr>`;
-        return;
+      .text-balance {
+        text-wrap: balance;
       }
+    </style>
+  </head>
+  <body class="min-h-screen bg-white text-gray-900 selection:bg-[#182235] selection:text-white">
+    <!-- 3D WebGL Kinetic Sculpture Layer -->
+    <div id="sculpture-container" class="sculpture-layer pointer-events-none fixed inset-0 z-0 mix-blend-multiply" aria-hidden="true">
+      <div id="sculpture-fallback" class="sculpture-fallback pointer-events-none absolute inset-0 hidden"></div>
+      <canvas id="sculpture-canvas" class="h-full w-full"></canvas>
+    </div>
 
-      tbody.innerHTML = filtered.map(item => {
-        const statusColors = {
-          Occupied: "text-emerald-700 bg-emerald-50 border border-emerald-200",
-          Reserved: "text-amber-700 bg-amber-50 border border-amber-200",
-          Turnover: "text-purple-700 bg-purple-50 border border-purple-200",
-          Vacant: "text-blue-700 bg-blue-50 border border-blue-200"
-        };
-        const dotColors = {
-          Occupied: "bg-emerald-500",
-          Reserved: "bg-amber-500",
-          Turnover: "bg-purple-500",
-          Vacant: "bg-blue-500"
-        };
+    <!-- Navigation -->
+    <nav
+      id="main-nav"
+      aria-label="Primary navigation"
+      class="fixed left-1/2 z-50 -translate-x-1/2 px-5 py-5 transition-[top,width,padding,border-radius,background-color,box-shadow] duration-700 ease-out md:px-12 md:py-8 w-full top-0"
+    >
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-6">
+        <a href="#top" class="shrink-0 text-[10px] font-bold tracking-[0.18em] text-gray-950 md:text-xs md:tracking-[0.26em]">
+          AMMA PREMIUM CO-LIVE
+        </a>
 
-        return `
-          <tr onclick="openBedDrawer('${item.id}')" class="hover:bg-indigo-50/30 transition-colors cursor-pointer group">
-            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="font-bold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors">${item.room}</div>
-              <div class="text-xs text-slate-500 mt-0.5">${item.floor} · ${item.suiteType}</div>
-              <div class="text-[11px] text-slate-400 mt-1 truncate max-w-[160px]">${item.suiteMates}</div>
-            </td>
-            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="font-semibold text-slate-900 text-sm">${item.bedName}</div>
-              <div class="text-xs text-slate-500 mt-0.5">${item.bedType}</div>
-            </td>
-            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0">${item.residentAvatar}</div>
-                <div>
-                  <div class="font-semibold text-slate-900 text-sm">${item.residentName}</div>
-                  <div class="text-xs text-slate-500">${item.residentEmail}</div>
-                  <div class="text-xs font-semibold text-indigo-600 mt-1 bg-indigo-50 px-2 py-0.5 rounded-md inline-block">↳ ${item.bedUsageNote}</div>
-                </div>
-              </div>
-            </td>
-            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="text-xs font-semibold text-slate-800">${item.leasePeriod}</div>
-              <div class="text-xs text-slate-400 mt-1">Flexible Lease</div>
-            </td>
-            <td class="px-4 align-top" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="font-mono text-xs font-semibold text-slate-900">${item.smartKeyId}</div>
-              <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 ${item.keyStatus === 'Active' ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' : 'text-slate-500 bg-slate-100'}">● ${item.keyStatus}</span>
-            </td>
-            <td class="px-4 align-top text-right" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="font-bold text-slate-900 text-sm tabular-nums">$${item.monthlyRate.toLocaleString()}/mo</div>
-              <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 text-slate-600 bg-slate-100">${item.paymentStatus}</span>
-            </td>
-            <td class="px-4 align-top text-right" style="padding-top: ${customPadding}px; padding-bottom: ${customPadding}px;">
-              <div class="flex items-center justify-end gap-2">
-                <button onclick="event.stopPropagation(); quickRotateKey('${item.id}')" title="Rotate Key" class="p-1 rounded text-slate-400 hover:text-indigo-600 cursor-pointer">↺</button>
-                <button onclick="event.stopPropagation(); openBedDrawer('${item.id}')" class="text-[11px] font-semibold text-indigo-600 px-2 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 cursor-pointer">Manage</button>
-                <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${statusColors[item.status]}">
-                  <span class="w-2 h-2 rounded-full ${dotColors[item.status]}"></span>
-                  <span>${item.status}</span>
+        <div class="hidden items-center gap-6 md:flex" id="desktop-nav-links">
+          <!-- populated dynamically with interactive letters -->
+        </div>
+
+        <button
+          id="menu-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          class="group flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/85 text-gray-950 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all duration-300 hover:scale-105 hover:bg-gray-100"
+        >
+          <svg id="menu-icon-bars" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+          <svg id="menu-icon-close" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile dropdown -->
+      <div id="mobile-menu" class="hidden overflow-hidden transition-all duration-300 md:hidden">
+        <div class="flex flex-col gap-4 border-t border-black/5 px-2 pb-3 pt-5" id="mobile-nav-links">
+          <!-- mobile links -->
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10">
+      <!-- Hero Section -->
+      <section id="top" class="relative flex min-h-[100svh] items-end overflow-hidden px-6 pb-8 pt-32 md:px-12 md:pb-10 md:pt-40">
+        <div class="hero-grid hero-glow absolute inset-0 -z-10"></div>
+        <div class="mx-auto flex w-full max-w-7xl flex-col justify-between gap-16">
+          <div class="max-w-2xl">
+            <p class="mb-6 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-500 md:mb-8 md:text-xs">
+              Live together. Live better.
+            </p>
+
+            <h1 class="text-balance max-w-4xl text-[3.65rem] font-medium leading-[1.02] tracking-[-0.075em] text-gray-950 sm:text-7xl md:text-[5.5rem] lg:text-8xl">
+              <span class="interactive-line" data-text="Where Vision">Where Vision</span>
+              <br />
+              <span class="interactive-line text-gray-400" data-text="Meets Design.">Meets Design.</span>
+            </h1>
+
+            <p class="mt-8 max-w-sm text-base font-light leading-relaxed text-gray-500 md:mt-10 md:text-xl">
+              We craft digital experiences that inspire, engage, and elevate your brand.
+            </p>
+
+            <div class="mt-9 flex flex-wrap items-center gap-5 md:mt-12">
+              <a
+                href="#work"
+                class="group inline-flex items-center gap-4 rounded-full bg-[#0a0a0a] px-7 py-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-gray-800 md:px-8"
+              >
+                <span class="interactive-line" data-text="Explore Our Work">Explore Our Work</span>
+                <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+              <a href="#about" class="group inline-flex items-center gap-3" aria-label="Watch intro">
+                <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_8px_28px_rgba(0,0,0,0.12)]">
+                  <svg class="ml-0.5 h-3.5 w-3.5" viewBox="0 0 24 24" fill="black" stroke="currentColor" stroke-width="1.5">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
                 </span>
+                <span class="interactive-line text-[10px] font-bold uppercase tracking-[0.18em] text-gray-700" data-text="Watch Intro">Watch Intro</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-5 pb-1 sm:gap-8 md:gap-10">
+            <div class="flex items-center gap-5 sm:gap-8 md:gap-10">
+              <div>
+                <div class="text-2xl font-medium tracking-tight text-gray-950 sm:text-3xl">52</div>
+                <div class="mt-1 text-[8px] font-bold uppercase tracking-[0.15em] text-gray-400 sm:text-[9px]">Rooms</div>
               </div>
-            </td>
-          </tr>
-        `;
-      }).join("");
+              <div class="h-8 w-px bg-gray-200"></div>
+            </div>
+            <div class="flex items-center gap-5 sm:gap-8 md:gap-10">
+              <div>
+                <div class="text-2xl font-medium tracking-tight text-gray-950 sm:text-3xl">98%</div>
+                <div class="mt-1 text-[8px] font-bold uppercase tracking-[0.15em] text-gray-400 sm:text-[9px]">Occupancy</div>
+              </div>
+              <div class="h-8 w-px bg-gray-200"></div>
+            </div>
+            <div class="flex items-center gap-5 sm:gap-8 md:gap-10">
+              <div>
+                <div class="text-2xl font-medium tracking-tight text-gray-950 sm:text-3xl">24/7</div>
+                <div class="mt-1 text-[8px] font-bold uppercase tracking-[0.15em] text-gray-400 sm:text-[9px]">Resident Care</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      updateMetrics();
-    }
+      <!-- About & Roster Section -->
+      <section id="about" class="relative min-h-[72svh] px-6 py-24 md:px-12 md:py-36">
+        <div class="mx-auto grid w-full max-w-7xl gap-10 border-t border-gray-200 pt-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">More than a room.</p>
+          <div class="max-w-2xl">
+            <h2 class="text-4xl font-medium leading-tight tracking-[-0.05em] text-gray-950 md:text-6xl">
+              Amma Premium Co-Live, designed around the way you live.
+            </h2>
+            <p class="mt-8 max-w-lg text-base font-light leading-relaxed text-gray-500 md:text-lg">
+              Strategy, identity, and product move as one system. Every detail is reduced to what matters, then given room to resonate.
+            </p>
+          </div>
+        </div>
 
-    function updateMetrics() {
-      const total = bedRoster.length;
-      const occupied = bedRoster.filter(b => b.status === "Occupied").length;
-      const vacant = bedRoster.filter(b => b.status === "Vacant").length;
-      const turnover = bedRoster.filter(b => b.status === "Turnover").length;
+        <!-- Roster Table Component -->
+        <div class="mx-auto mt-16 w-full max-w-7xl overflow-hidden rounded-2xl border border-gray-200 bg-white/70 shadow-sm backdrop-blur-md">
+          <div class="flex flex-col justify-between gap-3 px-5 py-5 sm:flex-row sm:items-center sm:px-6">
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Co-Living Suites, Beds &amp; Resident Allocation Roster</p>
+              <p class="mt-2 text-xs font-light text-gray-500">Search, filter, sort, and export the live room and bed register.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
+                <svg class="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  id="roster-search"
+                  type="text"
+                  placeholder="Search room or resident"
+                  class="w-36 bg-transparent text-[10px] outline-none placeholder:text-gray-400"
+                />
+              </div>
+              <label class="sr-only" for="roster-sort">Sort roster</label>
+              <select id="roster-sort" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-[10px] font-semibold text-gray-700 outline-none">
+                <option value="Room number">Room number</option>
+                <option value="Monthly rent">Monthly rent</option>
+                <option value="Status">Status</option>
+              </select>
+              <button id="roster-export-btn" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-gray-950 px-3 py-2 text-[10px] font-semibold text-white transition-colors hover:bg-gray-800">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Export
+              </button>
+            </div>
+          </div>
 
-      document.getElementById("metricTotal").textContent = `${total} Registered Beds`;
-      document.getElementById("metricOccupied").textContent = `${occupied} Beds (${Math.round((occupied/total)*100)}%)`;
-      document.getElementById("metricVacant").textContent = `${vacant} Beds Available`;
-      document.getElementById("metricTurnover").textContent = `${turnover} Bed Cleaning`;
+          <!-- Roster Filter Tabs & Controls -->
+          <div class="border-y border-gray-100 p-3 sm:px-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1 rounded-xl bg-gray-100 p-1" id="roster-filter-tabs">
+                <button type="button" data-filter="All beds" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors">All beds</button>
+                <button type="button" data-filter="Occupied" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Occupied</button>
+                <button type="button" data-filter="Vacant" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Vacant</button>
+                <button type="button" data-filter="Reserved" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Reserved</button>
+                <button type="button" data-filter="Turnover" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Turnover</button>
+              </div>
 
-      document.getElementById("occupiedBadge").textContent = occupied;
-      document.getElementById("turnoverBadge").textContent = turnover;
-    }
+              <div class="flex flex-wrap items-center gap-2 text-[10px] text-gray-500">
+                <span>Width: <b class="text-gray-900">Wide</b></span>
+                <span class="rounded-lg border border-gray-200 px-2.5 py-1.5">
+                  Spacing:
+                  <select id="roster-spacing-select" class="bg-transparent font-semibold text-gray-900 outline-none">
+                    <option value="Compact">Compact</option>
+                    <option value="Normal" selected>Normal</option>
+                    <option value="Spacious">Spacious</option>
+                  </select>
+                </span>
+                <button id="roster-toggle-sliders" type="button" class="rounded-lg border border-gray-200 px-2.5 py-1.5 font-semibold text-gray-700 transition-colors hover:border-gray-950">
+                  ⚙ Custom sliders
+                </button>
+              </div>
+            </div>
 
-    // Filter handlers
-    function filterStatus(st) {
-      currentStatusFilter = st;
-      ["All", "Occupied", "Vacant", "Reserved", "Turnover"].forEach(name => {
-        const tab = document.getElementById("tab" + name);
-        if (tab) {
-          if (name === st) {
-            tab.className = "px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-900 cursor-pointer";
-          } else {
-            tab.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer";
-          }
-        }
-      });
-      renderTable();
-    }
+            <!-- Custom density slider panel -->
+            <div id="roster-sliders-panel" class="mt-3 hidden flex-wrap items-center gap-4 rounded-xl bg-gray-50 px-3 py-3 text-[10px] text-gray-500">
+              <label class="flex items-center gap-2">
+                Row density
+                <input id="roster-density-range" type="range" min="1" max="3" value="2" class="cursor-pointer" />
+              </label>
+              <span>Use filters and search to focus the roster.</span>
+            </div>
+          </div>
 
-    function filterFloor(fl) {
-      currentFloorFilter = fl;
-      renderTable();
-      showToast(`Filtered by: ${fl}`);
-    }
+          <!-- Table Container -->
+          <div class="overflow-x-auto">
+            <table id="roster-table" class="w-full min-w-[1080px] border-collapse text-left text-xs">
+              <thead class="bg-gray-50/80">
+                <tr class="border-b border-gray-100 text-[9px] font-bold uppercase tracking-[0.15em] text-gray-400">
+                  <th class="px-5 py-3 font-bold">Room / suite</th>
+                  <th class="px-4 py-3 font-bold">Bed &amp; configuration</th>
+                  <th class="px-4 py-3 font-bold">Assigned resident &amp; bed usage</th>
+                  <th class="px-4 py-3 font-bold">Lease period</th>
+                  <th class="px-4 py-3 font-bold">IoT keycard</th>
+                  <th class="px-4 py-3 font-bold">Monthly rent</th>
+                  <th class="px-4 py-3 font-bold">Actions &amp; status</th>
+                </tr>
+              </thead>
+              <tbody id="roster-tbody">
+                <!-- populated by JS -->
+              </tbody>
+            </table>
+            <div id="roster-empty-state" class="hidden p-10 text-center text-sm text-gray-500">
+              No rooms or beds match your filter criteria.
+            </div>
+          </div>
+        </div>
+      </section>
 
-    function resetFilters() {
-      currentStatusFilter = "All";
-      currentFloorFilter = "All";
-      document.getElementById("searchInput").value = "";
-      renderTable();
-      showToast("All filters reset.");
-    }
+      <!-- Work & Complaints Section -->
+      <section id="work" class="min-h-[55svh] px-6 pb-32 md:px-12">
+        <div class="mx-auto w-full max-w-7xl border-t border-gray-200 pt-8">
+          <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Selected direction</p>
+            <p class="max-w-sm text-sm font-light leading-relaxed text-gray-500">
+              Built for brands that want to move with precision, not noise.
+            </p>
+          </div>
+        </div>
 
-    function searchKeys() {
-      document.getElementById("searchInput").value = "Key #";
-      renderTable();
-    }
+        <!-- Complaints Table Component -->
+        <div class="mx-auto mt-16 w-full max-w-7xl overflow-hidden rounded-2xl border border-gray-200 bg-white/70 shadow-sm backdrop-blur-md">
+          <div class="flex flex-col justify-between gap-3 px-5 py-5 sm:flex-row sm:items-center sm:px-6">
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Complaints register</p>
+              <p class="mt-2 text-xs font-light text-gray-500">Filter resident concerns, assign ownership, and track resolution.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="complaints-open-count" class="rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-[10px] font-semibold text-amber-700">
+                2 open
+              </span>
+              <button id="add-complaint-btn" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-gray-950 px-3 py-2 text-[10px] font-semibold text-white transition-colors hover:bg-gray-800">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Add complaint
+              </button>
+            </div>
+          </div>
 
-    // Table Customizer Controls
-    function setWidth(w) {
-      const section = document.getElementById("roster-section");
-      const map = { standard: "1120px", wide: "1320px", expanded: "1480px", full: "100%" };
-      section.style.maxWidth = map[w];
+          <!-- Complaints Filter Tabs -->
+          <div class="flex flex-wrap gap-1 border-y border-gray-100 bg-gray-50/50 p-3" id="complaints-filter-tabs">
+            <button type="button" data-filter="All" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors">All</button>
+            <button type="button" data-filter="Open" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Open</button>
+            <button type="button" data-filter="In progress" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">In progress</button>
+            <button type="button" data-filter="Resolved" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Resolved</button>
+          </div>
 
-      ["Std", "Wide", "Exp", "Full"].forEach(id => {
-        const btn = document.getElementById("btnWidth" + id);
-        btn.className = "px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer";
-      });
-      const activeBtnMap = { standard: "btnWidthStd", wide: "btnWidthWide", expanded: "btnWidthExp", full: "btnWidthFull" };
-      document.getElementById(activeBtnMap[w]).className = "px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer";
-    }
+          <!-- Complaints Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[920px] border-collapse text-left">
+              <thead class="bg-gray-50/80">
+                <tr class="border-y border-gray-100 text-[9px] font-bold uppercase tracking-[0.15em] text-gray-400">
+                  <th class="px-5 py-3 font-bold">Complaint</th>
+                  <th class="px-4 py-3 font-bold">Resident / room</th>
+                  <th class="px-4 py-3 font-bold">Category</th>
+                  <th class="px-4 py-3 font-bold">Priority</th>
+                  <th class="px-4 py-3 font-bold">Filed</th>
+                  <th class="px-4 py-3 font-bold">Owner</th>
+                  <th class="px-4 py-3 font-bold">Status</th>
+                </tr>
+              </thead>
+              <tbody id="complaints-tbody">
+                <!-- populated by JS -->
+              </tbody>
+            </table>
+            <div id="complaints-empty-state" class="hidden p-10 text-center text-sm text-gray-500">
+              No complaints match this filter.
+            </div>
+          </div>
+        </div>
+      </section>
 
-    function setDensity(d) {
-      const map = { compact: 8, normal: 16, spacious: 24 };
-      customPadding = map[d];
-      document.getElementById("padRange").value = customPadding;
-      document.getElementById("sliderPadVal").textContent = customPadding + "px";
+      <!-- Services Section -->
+      <section id="services" class="px-6 pb-32 md:px-12">
+        <div class="mx-auto grid w-full max-w-7xl gap-8 border-t border-gray-200 pt-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Services</p>
+          <div class="grid gap-3 text-2xl font-medium tracking-[-0.04em] text-gray-950 sm:grid-cols-2 md:text-3xl">
+            <span class="transition-transform duration-300 hover:translate-x-1 cursor-default">Brand systems</span>
+            <span class="transition-transform duration-300 hover:translate-x-1 cursor-default">Digital products</span>
+            <span class="transition-transform duration-300 hover:translate-x-1 cursor-default">Creative direction</span>
+            <span class="transition-transform duration-300 hover:translate-x-1 cursor-default">Motion &amp; 3D</span>
+          </div>
+        </div>
+      </section>
 
-      ["Compact", "Normal", "Spacious"].forEach(id => {
-        const btn = document.getElementById("btnDens" + id);
-        btn.className = "px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer";
-      });
-      const activeBtnMap = { compact: "btnDensCompact", normal: "btnDensNormal", spacious: "btnDensSpacious" };
-      document.getElementById(activeBtnMap[d]).className = "px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer";
+      <!-- Portfolio Section -->
+      <section id="portfolio" class="px-6 pb-32 md:px-12">
+        <div class="mx-auto w-full max-w-7xl border-t border-gray-200 pt-8">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Portfolio</p>
+          <h2 class="mt-16 max-w-3xl text-4xl font-medium leading-tight tracking-[-0.05em] text-gray-950 md:text-6xl">
+            Selected work, reduced to the essential.
+          </h2>
+        </div>
+      </section>
 
-      renderTable();
-    }
+      <!-- Blog Section -->
+      <section id="blog" class="px-6 pb-32 md:px-12">
+        <div class="mx-auto grid w-full max-w-7xl gap-8 border-t border-gray-200 pt-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Blog</p>
+          <p class="max-w-xl text-2xl font-light leading-relaxed tracking-[-0.03em] text-gray-600 md:text-3xl">
+            Notes on making digital work feel more human, precise, and alive.
+          </p>
+        </div>
+      </section>
 
-    function setFontScale(sz) {
-      const wrapper = document.getElementById("tableWrapper");
-      wrapper.classList.remove("text-[11px]", "text-xs", "text-sm");
-      if (sz === "sm") wrapper.classList.add("text-[11px]");
-      if (sz === "md") wrapper.classList.add("text-xs");
-      if (sz === "lg") wrapper.classList.add("text-sm");
+      <!-- Contact Section -->
+      <section id="contact" class="px-6 pb-32 md:px-12">
+        <div class="mx-auto flex w-full max-w-7xl flex-col justify-between gap-12 border-t border-gray-200 pt-8 md:flex-row md:items-end">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Contact</p>
+            <h2 class="mt-12 text-4xl font-medium tracking-[-0.05em] text-gray-950 md:text-6xl">
+              Let&apos;s make the next line.
+            </h2>
+          </div>
+          <a
+            href="mailto:hello@gridline.studio"
+            class="text-sm font-semibold uppercase tracking-[0.16em] text-gray-950 underline decoration-gray-300 underline-offset-8 transition-colors hover:decoration-black"
+          >
+            hello@gridline.studio
+          </a>
+        </div>
+      </section>
+    </main>
 
-      ["Sm", "Md", "Lg"].forEach(id => {
-        const btn = document.getElementById("btnFont" + id);
-        btn.className = "px-2 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer";
-      });
-      const activeBtnMap = { sm: "btnFontSm", md: "btnFontMd", lg: "btnFontLg" };
-      document.getElementById(activeBtnMap[sz]).className = "px-2 py-1 rounded-md bg-slate-900 text-white font-semibold shadow-xs cursor-pointer";
-    }
+    <!-- Add Complaint Modal -->
+    <div id="complaint-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-950/30 px-5 backdrop-blur-sm">
+      <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl transition-all">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400">Resident care</p>
+            <h3 class="mt-2 text-xl font-semibold tracking-[-0.04em]">Add complaint</h3>
+          </div>
+          <button id="close-modal-btn" type="button" class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 transition-colors" aria-label="Close complaint form">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <form id="add-complaint-form" class="mt-5 grid gap-4 sm:grid-cols-2">
+          <label class="sm:col-span-2">
+            <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">Issue</span>
+            <input name="title" required placeholder="Describe the complaint" class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-gray-900 transition-colors" />
+          </label>
+          <label>
+            <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">Resident</span>
+            <input name="resident" required placeholder="Resident name" class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-gray-900 transition-colors" />
+          </label>
+          <label>
+            <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">Room</span>
+            <input name="room" required placeholder="A-204" class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-gray-900 transition-colors" />
+          </label>
+          <label>
+            <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">Category</span>
+            <select name="category" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-gray-900 transition-colors">
+              <option value="Maintenance">Maintenance</option>
+              <option value="Amenities">Amenities</option>
+              <option value="Community">Community</option>
+              <option value="Billing">Billing</option>
+            </select>
+          </label>
+          <label>
+            <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">Priority</span>
+            <select name="priority" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-gray-900 transition-colors">
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Low">Low</option>
+            </select>
+          </label>
+          <div class="flex justify-end gap-2 pt-2 sm:col-span-2">
+            <button id="cancel-modal-btn" type="button" class="rounded-xl px-4 py-2.5 text-xs font-semibold text-gray-500 hover:bg-gray-100 transition-colors">
+              Cancel
+            </button>
+            <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-gray-950 px-4 py-2.5 text-xs font-semibold text-white hover:bg-gray-800 transition-colors">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Save complaint
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-    function toggleSliders() {
-      const p = document.getElementById("customSlidersPanel");
-      p.classList.toggle("hidden");
-    }
+    <!-- Floating Toast Notification -->
+    <div id="toast-notice" class="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-gray-950 px-4 py-3 text-xs font-semibold text-white shadow-xl opacity-0 pointer-events-none transition-all duration-300">
+      Roster exported
+    </div>
 
-    function onCustomWidthChange(val) {
-      document.getElementById("sliderWidthVal").textContent = val + "px";
-      document.getElementById("roster-section").style.maxWidth = val + "px";
-    }
+    <!-- JavaScript Application Logic -->
+    <script type="module">
+      // 1. Data Definitions
+      const bedRecords = [
+        { room: 'A-204', block: 'Maple Block', floor: 'Floor 2', bed: 'Bed 01', configuration: 'Single', resident: 'Aarav Mehta', residentId: 'ID 0042', usage: '2 / 2 beds', lease: '01 Aug 24 — 31 Jul 25', keycard: 'Active · K-2041', rent: 18500, status: 'Occupied', dues: 0, complaints: 0 },
+        { room: 'B-108', block: 'Cedar Block', floor: 'Floor 1', bed: 'Bed 02', configuration: 'Single', resident: 'Priya Nair', residentId: 'ID 0058', usage: '1 / 1 bed', lease: '15 Sep 24 — 14 Sep 25', keycard: 'Active · K-1083', rent: 16000, status: 'Occupied', dues: 2500, complaints: 1 },
+        { room: 'A-310', block: 'Maple Block', floor: 'Floor 3', bed: 'Bed 03', configuration: 'Twin', resident: 'Available allocation', residentId: 'Ready to book', usage: '2 / 3 beds', lease: 'Immediate booking', keycard: 'Unassigned', rent: 12500, status: 'Vacant', dues: 0, complaints: 0 },
+        { room: 'C-012', block: 'Oak Block', floor: 'Ground', bed: 'Bed 01', configuration: 'Twin', resident: 'Sara Joseph', residentId: 'ID 0064', usage: '0 / 2 beds', lease: 'Move-out · 28 Oct 24', keycard: 'Hold · K-0128', rent: 14500, status: 'Turnover', dues: 4200, complaints: 2 },
+        { room: 'D-402', block: 'Pine Block', floor: 'Floor 4', bed: 'Bed 01', configuration: 'Single', resident: 'Meera Iyer', residentId: 'ID 0071', usage: '1 / 1 bed', lease: '01 Oct 24 — 30 Sep 25', keycard: 'Active · K-4022', rent: 19500, status: 'Occupied', dues: 0, complaints: 0 },
+        { room: 'C-208', block: 'Oak Block', floor: 'Floor 2', bed: 'Bed 02', configuration: 'Twin', resident: 'Reserved for intake', residentId: 'Move-in · 02 Nov 24', usage: '0 / 2 beds', lease: 'Reserved until 31 Oct', keycard: 'Pending issue', rent: 13800, status: 'Reserved', dues: 0, complaints: 0 }
+      ];
 
-    function onCustomPadChange(val) {
-      customPadding = Number(val);
-      document.getElementById("sliderPadVal").textContent = val + "px";
-      renderTable();
-    }
+      const complaints = [
+        { id: 'CMP-104', title: 'Leaking faucet in shared kitchen', detail: 'Kitchen wing', resident: 'Priya Nair', room: 'B-108 · Cedar Block', category: 'Maintenance', priority: 'High', filed: '24 Oct 24', owner: 'Housekeeping', status: 'Open' },
+        { id: 'CMP-101', title: 'Wi-Fi drops in work lounge', detail: 'Shared amenity', resident: 'Aarav Mehta', room: 'A-204 · Maple Block', category: 'Amenities', priority: 'Medium', filed: '23 Oct 24', owner: 'Ops team', status: 'In progress' },
+        { id: 'CMP-099', title: 'Noise after 11 PM', detail: 'Quiet hours', resident: 'Sara Joseph', room: 'C-012 · Oak Block', category: 'Community', priority: 'Low', filed: '21 Oct 24', owner: 'Resident care', status: 'Resolved' }
+      ];
 
-    function resetCustomSizing() {
-      setWidth("wide");
-      setDensity("normal");
-      setFontScale("md");
-      document.getElementById("widthRange").value = 1320;
-      document.getElementById("sliderWidthVal").textContent = "1320px";
-      showToast("Reset table sizing to default.");
-    }
-
-    // Modal helpers
-    function openModal(id) {
-      document.getElementById(id).classList.remove("hidden");
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.add("hidden");
-      if (id === "videoModal") {
-        document.getElementById("modalVideoPlayer").pause();
-      }
-    }
-
-    // Bed Drawer Management
-    function openBedDrawer(id) {
-      selectedBedId = id;
-      const bed = bedRoster.find(b => b.id === id);
-      if (!bed) return;
-
-      document.getElementById("drawerRoomBadge").textContent = `${bed.room} · ${bed.floor}`;
-      document.getElementById("drawerBedTitle").textContent = `${bed.bedName} Management`;
-      document.getElementById("drawerBedSub").textContent = `${bed.bedType} · ${bed.suiteType}`;
-      document.getElementById("drawerAvatar").textContent = bed.residentAvatar;
-      document.getElementById("drawerResidentName").textContent = bed.residentName;
-      document.getElementById("drawerResidentEmail").textContent = bed.residentEmail;
-      document.getElementById("drawerUsageNote").textContent = bed.bedUsageNote;
-      document.getElementById("drawerRent").textContent = `$${bed.monthlyRate.toLocaleString()}/mo`;
-      document.getElementById("drawerPaymentStatus").textContent = bed.paymentStatus;
-      document.getElementById("drawerSuiteMates").textContent = bed.suiteMates;
-      document.getElementById("drawerKeyId").textContent = bed.smartKeyId;
-
-      toggleDrawerEdit(false);
-      openModal("bedDrawerModal");
-    }
-
-    function toggleDrawerEdit(isEdit) {
-      const card = document.getElementById("drawerCardView");
-      const form = document.getElementById("drawerEditForm");
-      if (isEdit) {
-        const bed = bedRoster.find(b => b.id === selectedBedId);
-        document.getElementById("editName").value = bed.residentName;
-        document.getElementById("editEmail").value = bed.residentEmail;
-        document.getElementById("editUsageNote").value = bed.bedUsageNote;
-        document.getElementById("editRent").value = bed.monthlyRate;
-        document.getElementById("editSuiteMates").value = bed.suiteMates;
-        card.classList.add("hidden");
-        form.classList.remove("hidden");
-      } else {
-        card.classList.remove("hidden");
-        form.classList.add("hidden");
-      }
-    }
-
-    function saveDrawerEdit(e) {
-      e.preventDefault();
-      const bed = bedRoster.find(b => b.id === selectedBedId);
-      if (!bed) return;
-
-      bed.residentName = document.getElementById("editName").value;
-      bed.residentEmail = document.getElementById("editEmail").value;
-      bed.bedUsageNote = document.getElementById("editUsageNote").value;
-      bed.monthlyRate = Number(document.getElementById("editRent").value);
-      bed.suiteMates = document.getElementById("editSuiteMates").value;
-      bed.residentAvatar = bed.residentName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "RS";
-
-      renderTable();
-      openBedDrawer(selectedBedId);
-      showToast("Updated resident allocation details.");
-    }
-
-    function updateSelectedStatus(newStatus) {
-      const bed = bedRoster.find(b => b.id === selectedBedId);
-      if (!bed) return;
-      bed.status = newStatus;
-      renderTable();
-      openBedDrawer(selectedBedId);
-      showToast(`Updated status to: ${newStatus}`);
-    }
-
-    function quickRotateKey(id) {
-      const bed = bedRoster.find(b => b.id === id);
-      if (!bed) return;
-      const num = Math.floor(1000 + Math.random() * 9000);
-      bed.smartKeyId = `Key #SK-${num}`;
-      bed.keyStatus = "Active";
-      renderTable();
-      showToast(`Rotated digital key for ${bed.bedName} → Key #SK-${num}`);
-    }
-
-    function rotateCurrentKey() {
-      if (selectedBedId) quickRotateKey(selectedBedId);
-      openBedDrawer(selectedBedId);
-    }
-
-    function dispatchTurnoverCurrent() {
-      updateSelectedStatus("Turnover");
-      showToast("Housekeeping turnover dispatched.");
-    }
-
-    function deleteCurrentBed() {
-      bedRoster = bedRoster.filter(b => b.id !== selectedBedId);
-      closeModal("bedDrawerModal");
-      renderTable();
-      showToast("Bed entry removed from roster.");
-    }
-
-    // Add New Bed Handler
-    function handleAddNewBed(e) {
-      e.preventDefault();
-      const newBed = {
-        id: "bed-" + Date.now(),
-        room: document.getElementById("addRoom").value,
-        floor: document.getElementById("addFloor").value,
-        suiteType: "Shared Suite",
-        bedName: document.getElementById("addBedName").value,
-        bedType: document.getElementById("addBedType").value,
-        residentName: document.getElementById("addResName").value,
-        residentAvatar: document.getElementById("addResName").value.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "RS",
-        residentEmail: document.getElementById("addResEmail").value,
-        bedUsageNote: `Occupying ${document.getElementById("addBedName").value} in ${document.getElementById("addRoom").value}`,
-        status: document.getElementById("addStatus").value,
-        leasePeriod: "Nov 1, 2026 – Oct 31, 2027 (12 Mo)",
-        smartKeyId: `Key #SK-${Math.floor(1000 + Math.random() * 9000)}`,
-        keyStatus: "Active",
-        monthlyRate: Number(document.getElementById("addRent").value),
-        paymentStatus: "Paid",
-        suiteMates: "Shared Co-Living Suite"
+      const statusPill = {
+        Occupied: 'bg-emerald-50 text-emerald-700',
+        Vacant: 'bg-indigo-50 text-indigo-700',
+        Reserved: 'bg-amber-50 text-amber-700',
+        Turnover: 'bg-red-50 text-red-700'
       };
 
-      bedRoster.unshift(newBed);
-      closeModal("addBedModal");
-      renderTable();
-      showToast(`Allocated new bed in ${newBed.room}!`);
-    }
+      const complaintStatusPill = {
+        Open: 'bg-amber-50 text-amber-700',
+        'In progress': 'bg-indigo-50 text-indigo-700',
+        Resolved: 'bg-emerald-50 text-emerald-700'
+      };
 
-    // CSV Export
-    function exportCSV() {
-      const headers = ["Room", "Floor", "Suite Type", "Bed Name", "Bed Type", "Resident Name", "Resident Email", "Bed Usage Note", "Status", "Lease Period", "Smart Key ID", "Monthly Rate", "Payment Status"];
-      const rows = bedRoster.map(b => [b.room, b.floor, b.suiteType, b.bedName, b.bedType, b.residentName, b.residentEmail, `"${b.bedUsageNote}"`, b.status, `"${b.leasePeriod}"`, b.smartKeyId, b.monthlyRate, b.paymentStatus]);
-      const csv = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-      const encoded = encodeURI(csv);
-      const a = document.createElement("a");
-      a.href = encoded;
-      a.download = `amma-roster-${new Date().toISOString().split("T")[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast("Roster exported to CSV.");
-    }
+      const priorityPill = {
+        High: 'bg-red-50 text-red-700',
+        Medium: 'bg-amber-50 text-amber-700',
+        Low: 'bg-gray-100 text-gray-600'
+      };
 
-    // Refresh rate controller
-    function toggleRefreshMenu() {
-      document.getElementById("refreshMenu").classList.toggle("hidden");
-    }
+      const money = (value) => `₹${value.toLocaleString('en-IN')}`;
 
-    function setRefreshRate(hz) {
-      const video = document.getElementById("bgVideo");
-      document.getElementById("hzLabel").textContent = `Video Engine: ${hz}Hz ${hz === 200 ? 'Ultra-Smooth' : hz === 120 ? 'ProMotion' : 'Standard'}`;
-      if (hz === 200) {
-        video.className = "fixed inset-0 w-full h-full object-cover z-0 pointer-events-none gpu-accelerated-200hz transition-all duration-300";
-      } else {
-        video.className = "fixed inset-0 w-full h-full object-cover z-0 pointer-events-none transition-all duration-300";
+      function pillHtml(status, pillClass) {
+        return `<span class="inline-flex items-center gap-2 rounded-full px-2.5 py-1.5 text-[10px] font-semibold ${pillClass}"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>${status}</span>`;
       }
-      toggleRefreshMenu();
-      showToast(`Switched video refresh pipeline to ${hz}Hz.`);
-    }
 
-    function handleRequestAccess(e) {
-      e.preventDefault();
-      closeModal("accessModal");
-      showToast("Staging sandbox credentials generated & sent.");
-    }
+      // 2. Interactive Letter Rendering (recreates Framer Motion interactive typography)
+      function renderInteractiveLetters(text, isNav = false) {
+        return Array.from(text).map((char) => {
+          const displayChar = char === ' ' ? '&nbsp;' : char;
+          const cls = isNav ? 'interactive-letter nav-interactive-letter' : 'interactive-letter';
+          return `<span aria-hidden="true" class="${cls}">${displayChar}</span>`;
+        }).join('');
+      }
 
-    // Initial table render
-    window.onload = function() {
-      renderTable();
-    };
-  </script>
-</body>
+      document.querySelectorAll('.interactive-line').forEach((el) => {
+        const text = el.getAttribute('data-text') || el.textContent;
+        el.innerHTML = renderInteractiveLetters(text, false);
+      });
+
+      // 3. Navigation Setup
+      const navLinks = ['Home', 'About', 'Services', 'Portfolio', 'Blog', 'Contact'];
+      const desktopNavContainer = document.getElementById('desktop-nav-links');
+      const mobileNavContainer = document.getElementById('mobile-nav-links');
+
+      navLinks.forEach((link) => {
+        const href = link === 'Home' ? '#top' : `#${link.toLowerCase()}`;
+        
+        // Desktop
+        const dLink = document.createElement('a');
+        dLink.href = href;
+        dLink.className = 'text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-700 transition-colors duration-300 hover:text-black';
+        dLink.innerHTML = renderInteractiveLetters(link, true);
+        desktopNavContainer.appendChild(dLink);
+
+        // Mobile
+        const mLink = document.createElement('a');
+        mLink.href = href;
+        mLink.className = 'text-xs font-semibold uppercase tracking-[0.18em] text-gray-700 transition-colors hover:text-black';
+        mLink.innerHTML = renderInteractiveLetters(link, true);
+        mLink.addEventListener('click', () => {
+          toggleMobileMenu(false);
+        });
+        mobileNavContainer.appendChild(mLink);
+      });
+
+      // Nav scroll adaptive state
+      const mainNav = document.getElementById('main-nav');
+      function updateNavOnScroll() {
+        const scrolled = window.scrollY > 50;
+        if (scrolled) {
+          mainNav.className = 'fixed left-1/2 z-50 -translate-x-1/2 transition-[top,width,padding,border-radius,background-color,box-shadow] duration-700 ease-out rounded-full border border-white/60 bg-white/55 px-4 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl md:px-6 top-5 w-[min(80%,64rem)]';
+        } else {
+          mainNav.className = 'fixed left-1/2 z-50 -translate-x-1/2 transition-[top,width,padding,border-radius,background-color,box-shadow] duration-700 ease-out px-5 py-5 md:px-12 md:py-8 w-full top-0';
+        }
+      }
+      window.addEventListener('scroll', updateNavOnScroll, { passive: true });
+      updateNavOnScroll();
+
+      // Mobile Menu Toggle
+      const menuToggle = document.getElementById('menu-toggle');
+      const menuIconBars = document.getElementById('menu-icon-bars');
+      const menuIconClose = document.getElementById('menu-icon-close');
+      const mobileMenu = document.getElementById('mobile-menu');
+      let isMenuOpen = false;
+
+      function toggleMobileMenu(force) {
+        isMenuOpen = typeof force === 'boolean' ? force : !isMenuOpen;
+        menuToggle.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
+        menuIconBars.classList.toggle('hidden', isMenuOpen);
+        menuIconClose.classList.toggle('hidden', !isMenuOpen);
+        mobileMenu.classList.toggle('hidden', !isMenuOpen);
+      }
+      menuToggle.addEventListener('click', () => toggleMobileMenu());
+
+      // 4. Roster Table Logic
+      let rosterFilter = 'All beds';
+      let rosterQuery = '';
+      let rosterSort = 'Room number';
+      let rosterSpacing = 'Normal';
+      let showSliders = false;
+
+      const rosterSearch = document.getElementById('roster-search');
+      const rosterSortSelect = document.getElementById('roster-sort');
+      const rosterSpacingSelect = document.getElementById('roster-spacing-select');
+      const rosterTbody = document.getElementById('roster-tbody');
+      const rosterEmptyState = document.getElementById('roster-empty-state');
+      const rosterExportBtn = document.getElementById('roster-export-btn');
+      const rosterToggleSliders = document.getElementById('roster-toggle-sliders');
+      const rosterSlidersPanel = document.getElementById('roster-sliders-panel');
+      const rosterDensityRange = document.getElementById('roster-density-range');
+      const toastNotice = document.getElementById('toast-notice');
+
+      function showToast(msg) {
+        toastNotice.textContent = msg;
+        toastNotice.classList.remove('opacity-0', 'pointer-events-none');
+        toastNotice.classList.add('opacity-100');
+        setTimeout(() => {
+          toastNotice.classList.remove('opacity-100');
+          toastNotice.classList.add('opacity-0', 'pointer-events-none');
+        }, 2200);
+      }
+
+      function getFilteredRosterRows() {
+        return bedRecords.filter((row) => {
+          const matchesFilter = rosterFilter === 'All beds' || row.status === rosterFilter;
+          const searchStr = `${row.room} ${row.block} ${row.resident} ${row.residentId} ${row.keycard}`.toLowerCase();
+          const matchesQuery = searchStr.includes(rosterQuery.toLowerCase());
+          return matchesFilter && matchesQuery;
+        }).sort((a, b) => {
+          if (rosterSort === 'Monthly rent') return b.rent - a.rent;
+          if (rosterSort === 'Status') return a.status.localeCompare(b.status);
+          return a.room.localeCompare(b.room);
+        });
+      }
+
+      function renderRoster() {
+        const rows = getFilteredRosterRows();
+        const rowSpacing = rosterSpacing === 'Compact' ? 'py-3' : rosterSpacing === 'Spacious' ? 'py-6' : 'py-4';
+        const textScale = rosterSpacing === 'Compact' ? 'text-[10px]' : 'text-xs';
+        document.getElementById('roster-table').className = `w-full min-w-[1080px] border-collapse text-left ${textScale}`;
+
+        if (rows.length === 0) {
+          rosterTbody.innerHTML = '';
+          rosterEmptyState.classList.remove('hidden');
+          return;
+        }
+        rosterEmptyState.classList.add('hidden');
+
+        rosterTbody.innerHTML = rows.map((row) => `
+          <tr class="group border-b border-gray-100 transition-colors hover:bg-gray-50/80">
+            <td class="${rowSpacing} px-5">
+              <p class="font-semibold text-gray-950">${row.room}</p>
+              <p class="mt-1 text-[10px] text-gray-400">${row.block} · ${row.floor}</p>
+            </td>
+            <td class="${rowSpacing} px-4">
+              <p class="font-medium">${row.bed} · ${row.configuration}</p>
+              <p class="mt-1 text-[10px] text-gray-400">${
+                row.status === 'Vacant' ? 'Ready for allocation' :
+                row.status === 'Turnover' ? 'Turnover in progress' : 'Standard configuration'
+              }</p>
+            </td>
+            <td class="${rowSpacing} px-4">
+              <p class="font-semibold text-gray-950">${row.resident}</p>
+              <p class="mt-1 text-[10px] text-gray-400">${row.residentId} · ${row.usage}</p>
+            </td>
+            <td class="${rowSpacing} px-4 text-[10px] text-gray-500">${row.lease}</td>
+            <td class="${rowSpacing} px-4">
+              <p class="text-[10px] font-semibold ${row.keycard.startsWith('Active') ? 'text-emerald-700' : 'text-amber-700'}">${row.keycard}</p>
+              <p class="mt-1 text-[10px] text-gray-400">Key access</p>
+            </td>
+            <td class="${rowSpacing} px-4 font-semibold text-gray-950">${money(row.rent)}</td>
+            <td class="${rowSpacing} px-4">
+              ${pillHtml(row.status, statusPill[row.status])}
+              <p class="mt-1 text-[10px] text-gray-400">Dues ${money(row.dues)} · ${row.complaints} complaints</p>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      rosterSearch.addEventListener('input', (e) => {
+        rosterQuery = e.target.value;
+        renderRoster();
+      });
+
+      rosterSortSelect.addEventListener('change', (e) => {
+        rosterSort = e.target.value;
+        renderRoster();
+      });
+
+      rosterSpacingSelect.addEventListener('change', (e) => {
+        rosterSpacing = e.target.value;
+        rosterDensityRange.value = rosterSpacing === 'Compact' ? 1 : rosterSpacing === 'Normal' ? 2 : 3;
+        renderRoster();
+      });
+
+      rosterDensityRange.addEventListener('input', (e) => {
+        rosterSpacing = e.target.value === '1' ? 'Compact' : e.target.value === '3' ? 'Spacious' : 'Normal';
+        rosterSpacingSelect.value = rosterSpacing;
+        renderRoster();
+      });
+
+      rosterToggleSliders.addEventListener('click', () => {
+        showSliders = !showSliders;
+        rosterSlidersPanel.classList.toggle('hidden', !showSliders);
+        rosterSlidersPanel.classList.toggle('flex', showSliders);
+        if (showSliders) {
+          rosterToggleSliders.className = 'rounded-lg border border-gray-950 bg-gray-950 px-2.5 py-1.5 font-semibold text-white transition-colors';
+        } else {
+          rosterToggleSliders.className = 'rounded-lg border border-gray-200 px-2.5 py-1.5 font-semibold text-gray-700 transition-colors hover:border-gray-950';
+        }
+      });
+
+      document.querySelectorAll('.roster-tab').forEach((tabBtn) => {
+        tabBtn.addEventListener('click', () => {
+          document.querySelectorAll('.roster-tab').forEach(b => {
+            b.className = 'roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors';
+          });
+          tabBtn.className = 'roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors';
+          rosterFilter = tabBtn.getAttribute('data-filter');
+          renderRoster();
+        });
+      });
+
+      rosterExportBtn.addEventListener('click', () => {
+        const rows = getFilteredRosterRows();
+        const csv = [
+          'Room,Resident,Status,Rent,Dues,Complaints',
+          ...rows.map((row) => [row.room, row.resident, row.status, money(row.rent), money(row.dues), row.complaints].map(v => `"${v}"`).join(','))
+        ].join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'amma-room-roster.csv';
+        link.click();
+        URL.revokeObjectURL(url);
+        showToast('Roster exported');
+      });
+
+      renderRoster();
+
+      // 5. Complaints Register Logic
+      let complaintFilter = 'All';
+      const complaintsTbody = document.getElementById('complaints-tbody');
+      const complaintsEmptyState = document.getElementById('complaints-empty-state');
+      const complaintsOpenCount = document.getElementById('complaints-open-count');
+
+      function updateOpenComplaintsBadge() {
+        const openCount = complaints.filter(c => c.status !== 'Resolved').length;
+        complaintsOpenCount.textContent = `${openCount} open`;
+      }
+
+      function renderComplaints() {
+        updateOpenComplaintsBadge();
+        const visible = complaints.filter(c => complaintFilter === 'All' || c.status === complaintFilter);
+
+        if (visible.length === 0) {
+          complaintsTbody.innerHTML = '';
+          complaintsEmptyState.classList.remove('hidden');
+          return;
+        }
+        complaintsEmptyState.classList.add('hidden');
+
+        complaintsTbody.innerHTML = visible.map((item) => `
+          <tr class="border-b border-gray-100 transition-colors hover:bg-gray-50/80">
+            <td class="px-5 py-4">
+              <p class="font-semibold text-gray-950">${item.title}</p>
+              <p class="mt-1 text-[10px] text-gray-400">${item.id} · ${item.detail}</p>
+            </td>
+            <td class="px-4 py-4">
+              <p class="font-medium text-gray-900">${item.resident}</p>
+              <p class="mt-1 text-[10px] text-gray-400">${item.room}</p>
+            </td>
+            <td class="px-4 py-4 text-sm text-gray-500">${item.category}</td>
+            <td class="px-4 py-4">
+              <span class="rounded-full px-2.5 py-1.5 text-[10px] font-semibold ${priorityPill[item.priority]}">${item.priority}</span>
+            </td>
+            <td class="px-4 py-4 text-[10px] text-gray-500">${item.filed}</td>
+            <td class="px-4 py-4 text-[10px] text-gray-500">${item.owner}</td>
+            <td class="px-4 py-4">
+              ${pillHtml(item.status, complaintStatusPill[item.status])}
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      document.querySelectorAll('.complaint-tab').forEach((tabBtn) => {
+        tabBtn.addEventListener('click', () => {
+          document.querySelectorAll('.complaint-tab').forEach(b => {
+            b.className = 'complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors';
+          });
+          tabBtn.className = 'complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors';
+          complaintFilter = tabBtn.getAttribute('data-filter');
+          renderComplaints();
+        });
+      });
+
+      // Complaints Modal handling
+      const complaintModal = document.getElementById('complaint-modal');
+      const addComplaintBtn = document.getElementById('add-complaint-btn');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const cancelModalBtn = document.getElementById('cancel-modal-btn');
+      const addComplaintForm = document.getElementById('add-complaint-form');
+
+      function openModal() {
+        complaintModal.classList.remove('hidden');
+        complaintModal.classList.add('flex');
+      }
+
+      function closeModal() {
+        complaintModal.classList.add('hidden');
+        complaintModal.classList.remove('flex');
+        addComplaintForm.reset();
+      }
+
+      addComplaintBtn.addEventListener('click', openModal);
+      closeModalBtn.addEventListener('click', closeModal);
+      cancelModalBtn.addEventListener('click', closeModal);
+
+      complaintModal.addEventListener('click', (e) => {
+        if (e.target === complaintModal) {
+          closeModal();
+        }
+      });
+
+      addComplaintForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(addComplaintForm);
+        const newComplaint = {
+          id: `CMP-${104 + complaints.length + 1}`,
+          title: String(formData.get('title')),
+          detail: 'New resident report',
+          resident: String(formData.get('resident')),
+          room: String(formData.get('room')),
+          category: String(formData.get('category')),
+          priority: String(formData.get('priority')),
+          filed: 'Today',
+          owner: 'Resident care',
+          status: 'Open'
+        };
+        complaints.unshift(newComplaint);
+        renderComplaints();
+        closeModal();
+        showToast('Complaint recorded');
+      });
+
+      renderComplaints();
+
+      // 6. Three.js Kinetic 3D Sculpture
+      const fallbackEl = document.getElementById('sculpture-fallback');
+      const canvasEl = document.getElementById('sculpture-canvas');
+
+      const isWebGlAvailable = (() => {
+        try {
+          const probe = document.createElement('canvas');
+          return Boolean(window.WebGLRenderingContext && (probe.getContext('webgl2') || probe.getContext('webgl')));
+        } catch (_) {
+          return false;
+        }
+      })();
+
+      if (!isWebGlAvailable) {
+        fallbackEl.classList.remove('hidden');
+        canvasEl.classList.add('hidden');
+      } else {
+        // Load Three.js dynamically to prevent Vite dev-server interference
+        const loadModule = (u) => (new Function('u', 'return import(u)'))(u);
+
+        Promise.all([
+          loadModule('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js'),
+          loadModule('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/geometries/RoundedBoxGeometry.js').catch(() => null)
+        ]).then(([THREE, roundedGeomMod]) => {
+          initThreeScene(THREE, roundedGeomMod?.RoundedBoxGeometry);
+        }).catch((err) => {
+          console.warn('Three.js failed to load, activating visual fallback:', err);
+          fallbackEl.classList.remove('hidden');
+          canvasEl.classList.add('hidden');
+        });
+      }
+
+      function initThreeScene(THREE, RoundedBoxGeometry) {
+        const PANEL_COUNT = 150;
+        const SPRING_RADIUS = 3.5;
+        const COILS = 2;
+        const VERTICAL_SPAN = 22;
+
+        function pointOnRibbon(t, offset = 0) {
+          const angle = t * Math.PI * 2 * COILS;
+          return new THREE.Vector3(
+            Math.sin(angle) * SPRING_RADIUS + 4 + offset,
+            (0.5 - t) * VERTICAL_SPAN,
+            Math.cos(angle) * SPRING_RADIUS
+          );
+        }
+
+        const renderer = new THREE.WebGLRenderer({
+          canvas: canvasEl,
+          antialias: true,
+          alpha: true,
+          preserveDrawingBuffer: true
+        });
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setClearColor(0xffffff, 1);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#ffffff');
+
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(10, 1, 18);
+        camera.lookAt(0, 0, 0);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+        scene.add(ambientLight);
+
+        const dirLight1 = new THREE.DirectionalLight(0xffffff, 3.0);
+        dirLight1.position.set(10, 20, 15);
+        dirLight1.castShadow = true;
+        dirLight1.shadow.mapSize.width = 2048;
+        dirLight1.shadow.mapSize.height = 2048;
+        dirLight1.shadow.camera.top = 22;
+        dirLight1.shadow.camera.bottom = -22;
+        dirLight1.shadow.camera.left = -22;
+        dirLight1.shadow.camera.right = 22;
+        dirLight1.shadow.bias = -0.0005;
+        scene.add(dirLight1);
+
+        const dirLight2 = new THREE.DirectionalLight(0xf8fafc, 1.5);
+        dirLight2.position.set(-10, -10, -10);
+        scene.add(dirLight2);
+
+        const dirLight3 = new THREE.DirectionalLight(0xffffff, 1.5);
+        dirLight3.position.set(0, 0, 15);
+        scene.add(dirLight3);
+
+        // Geometry: RoundedBoxGeometry with fallback to BoxGeometry
+        const geometry = RoundedBoxGeometry
+          ? new RoundedBoxGeometry(4, 0.3, 4, 2, 0.02)
+          : new THREE.BoxGeometry(4, 0.3, 4);
+
+        const material = new THREE.MeshPhysicalMaterial({
+          color: '#ffffff',
+          roughness: 0.15,
+          metalness: 0.1,
+          clearcoat: 1,
+          clearcoatRoughness: 0.1
+        });
+
+        const instancedMesh = new THREE.InstancedMesh(geometry, material, PANEL_COUNT);
+        instancedMesh.castShadow = true;
+        instancedMesh.receiveShadow = true;
+        scene.add(instancedMesh);
+
+        const dummy = new THREE.Object3D();
+        const target = new THREE.Vector3();
+
+        function resize() {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+          renderer.setSize(width, height);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+          requestAnimationFrame(animate);
+
+          const time = clock.getElapsedTime();
+          const isMobile = window.innerWidth < 768;
+          const mobileOffset = isMobile ? 4.5 : 0;
+
+          for (let i = 0; i < PANEL_COUNT; i++) {
+            const baseT = i / PANEL_COUNT;
+            const t = (baseT + time * 0.003) % 1;
+            const t2 = (t + 0.001) % 1;
+
+            const position = pointOnRibbon(t, mobileOffset);
+            target.copy(pointOnRibbon(t2, mobileOffset));
+
+            dummy.position.copy(position);
+            dummy.lookAt(target);
+            dummy.rotateX(Math.PI / 2);
+            dummy.rotateY(t * Math.PI * 4 - time * 0.005);
+
+            const edgeFade = Math.sin(Math.PI * t);
+            const scale = Math.max(0.025, Math.pow(Math.max(0, edgeFade), 0.72));
+            dummy.scale.setScalar(scale * (isMobile ? 0.82 : 1));
+            dummy.updateMatrix();
+
+            instancedMesh.setMatrixAt(i, dummy.matrix);
+          }
+
+          instancedMesh.instanceMatrix.needsUpdate = true;
+          renderer.render(scene, camera);
+        }
+
+        animate();
+      }
+    </script>
+  </body>
 </html>
