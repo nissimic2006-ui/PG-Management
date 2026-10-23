@@ -14,6 +14,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Three.js CDN importmap -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+    </script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -101,8 +111,27 @@
         background: radial-gradient(circle at 72% 38%, rgba(17, 24, 39, 0.055), transparent 30%);
       }
 
+      #sculpture-container {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        width: 100dvw;
+        height: 100vh;
+        height: 100dvh;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      #sculpture-canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
       .sculpture-layer {
         opacity: 0.9;
+        transition: opacity 0.5s ease;
       }
 
       @media (max-width: 767px) {
@@ -117,7 +146,7 @@
     </style>
   </head>
   <body class="min-h-screen bg-white text-gray-900 selection:bg-[#182235] selection:text-white">
-    <!-- 3D WebGL Kinetic Sculpture Layer -->
+    <!-- 3D WebGL Kinetic Sculpture Layer (Full-screen background projection on Phone, Tablet, PC) -->
     <div id="sculpture-container" class="sculpture-layer pointer-events-none fixed inset-0 z-0 mix-blend-multiply" aria-hidden="true">
       <div id="sculpture-fallback" class="sculpture-fallback pointer-events-none absolute inset-0 hidden"></div>
       <canvas id="sculpture-canvas" class="h-full w-full"></canvas>
@@ -168,28 +197,28 @@
     <!-- Main Content -->
     <main class="relative z-10">
       <!-- Hero Section -->
-      <section id="top" class="relative flex min-h-[100svh] items-end overflow-hidden px-6 pb-8 pt-32 md:px-12 md:pb-10 md:pt-40">
+      <section id="top" class="relative flex min-h-[100svh] items-end overflow-hidden px-4 pb-8 pt-28 sm:px-6 sm:pb-10 sm:pt-36 md:px-12 md:pb-12 md:pt-40">
         <div class="hero-grid hero-glow absolute inset-0 -z-10"></div>
-        <div class="mx-auto flex w-full max-w-7xl flex-col justify-between gap-16">
+        <div class="mx-auto flex w-full max-w-7xl flex-col justify-between gap-12 sm:gap-16">
           <div class="max-w-2xl">
-            <p class="mb-6 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-500 md:mb-8 md:text-xs">
+            <p class="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-gray-500 sm:mb-6 sm:text-xs md:mb-8">
               Live together. Live better.
             </p>
 
-            <h1 class="text-balance max-w-4xl text-[3.65rem] font-medium leading-[1.02] tracking-[-0.075em] text-gray-950 sm:text-7xl md:text-[5.5rem] lg:text-8xl">
+            <h1 class="text-balance max-w-4xl text-[2.75rem] font-medium leading-[1.03] tracking-[-0.07em] text-gray-950 sm:text-6xl md:text-[5.25rem] lg:text-8xl">
               <span class="interactive-line" data-text="Where Vision">Where Vision</span>
               <br />
               <span class="interactive-line text-gray-400" data-text="Meets Design.">Meets Design.</span>
             </h1>
 
-            <p class="mt-8 max-w-sm text-base font-light leading-relaxed text-gray-500 md:mt-10 md:text-xl">
+            <p class="mt-6 max-w-sm text-sm font-light leading-relaxed text-gray-500 sm:mt-8 sm:text-base md:mt-10 md:text-xl">
               We craft digital experiences that inspire, engage, and elevate your brand.
             </p>
 
-            <div class="mt-9 flex flex-wrap items-center gap-5 md:mt-12">
+            <div class="mt-8 flex flex-wrap items-center gap-4 sm:mt-9 sm:gap-5 md:mt-12">
               <a
                 href="#work"
-                class="group inline-flex items-center gap-4 rounded-full bg-[#0a0a0a] px-7 py-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-gray-800 md:px-8"
+                class="group inline-flex items-center gap-3 rounded-full bg-[#0a0a0a] px-6 py-3.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-gray-800 sm:px-7 sm:py-4 md:px-8"
               >
                 <span class="interactive-line" data-text="Explore Our Work">Explore Our Work</span>
                 <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -198,7 +227,7 @@
                 </svg>
               </a>
               <a href="#about" class="group inline-flex items-center gap-3" aria-label="Watch intro">
-                <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_8px_28px_rgba(0,0,0,0.12)]">
+                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_8px_28px_rgba(0,0,0,0.12)] sm:h-14 sm:w-14">
                   <svg class="ml-0.5 h-3.5 w-3.5" viewBox="0 0 24 24" fill="black" stroke="currentColor" stroke-width="1.5">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                   </svg>
@@ -208,24 +237,24 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-5 pb-1 sm:gap-8 md:gap-10">
-            <div class="flex items-center gap-5 sm:gap-8 md:gap-10">
+          <div class="flex flex-wrap items-center gap-4 pb-1 sm:gap-8 md:gap-10">
+            <div class="flex items-center gap-4 sm:gap-8 md:gap-10">
               <div>
-                <div class="text-2xl font-medium tracking-tight text-gray-950 sm:text-3xl">52</div>
+                <div class="text-xl font-medium tracking-tight text-gray-950 sm:text-2xl md:text-3xl">52</div>
                 <div class="mt-1 text-[8px] font-bold uppercase tracking-[0.15em] text-gray-400 sm:text-[9px]">Rooms</div>
               </div>
-              <div class="h-8 w-px bg-gray-200"></div>
+              <div class="h-7 w-px bg-gray-200 sm:h-8"></div>
             </div>
-            <div class="flex items-center gap-5 sm:gap-8 md:gap-10">
+            <div class="flex items-center gap-4 sm:gap-8 md:gap-10">
               <div>
-                <div class="text-2xl font-medium tracking-tight text-gray-950 sm:text-3xl">98%</div>
+                <div class="text-xl font-medium tracking-tight text-gray-950 sm:text-2xl md:text-3xl">98%</div>
                 <div class="mt-1 text-[8px] font-bold uppercase tracking-[0.15em] text-gray-400 sm:text-[9px]">Occupancy</div>
               </div>
-              <div class="h-8 w-px bg-gray-200"></div>
+              <div class="h-7 w-px bg-gray-200 sm:h-8"></div>
             </div>
-            <div class="flex items-center gap-5 sm:gap-8 md:gap-10">
+            <div class="flex items-center gap-4 sm:gap-8 md:gap-10">
               <div>
-                <div class="text-2xl font-medium tracking-tight text-gray-950 sm:text-3xl">24/7</div>
+                <div class="text-xl font-medium tracking-tight text-gray-950 sm:text-2xl md:text-3xl">24/7</div>
                 <div class="mt-1 text-[8px] font-bold uppercase tracking-[0.15em] text-gray-400 sm:text-[9px]">Resident Care</div>
               </div>
             </div>
@@ -286,13 +315,13 @@
 
           <!-- Roster Filter Tabs & Controls -->
           <div class="border-y border-gray-100 p-3 sm:px-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div class="flex flex-wrap gap-1 rounded-xl bg-gray-100 p-1" id="roster-filter-tabs">
-                <button type="button" data-filter="All beds" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors">All beds</button>
-                <button type="button" data-filter="Occupied" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Occupied</button>
-                <button type="button" data-filter="Vacant" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Vacant</button>
-                <button type="button" data-filter="Reserved" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Reserved</button>
-                <button type="button" data-filter="Turnover" class="roster-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Turnover</button>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 max-w-full rounded-xl bg-gray-100 p-1" id="roster-filter-tabs">
+                <button type="button" data-filter="All beds" class="roster-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors">All beds</button>
+                <button type="button" data-filter="Occupied" class="roster-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Occupied</button>
+                <button type="button" data-filter="Vacant" class="roster-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Vacant</button>
+                <button type="button" data-filter="Reserved" class="roster-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Reserved</button>
+                <button type="button" data-filter="Turnover" class="roster-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Turnover</button>
               </div>
 
               <div class="flex flex-wrap items-center gap-2 text-[10px] text-gray-500">
@@ -347,7 +376,7 @@
       </section>
 
       <!-- Work & Complaints Section -->
-      <section id="work" class="min-h-[55svh] px-6 pb-32 md:px-12">
+      <section id="work" class="min-h-[55svh] px-4 pb-24 sm:px-6 sm:pb-32 md:px-12">
         <div class="mx-auto w-full max-w-7xl border-t border-gray-200 pt-8">
           <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Selected direction</p>
@@ -379,11 +408,11 @@
           </div>
 
           <!-- Complaints Filter Tabs -->
-          <div class="flex flex-wrap gap-1 border-y border-gray-100 bg-gray-50/50 p-3" id="complaints-filter-tabs">
-            <button type="button" data-filter="All" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors">All</button>
-            <button type="button" data-filter="Open" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Open</button>
-            <button type="button" data-filter="In progress" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">In progress</button>
-            <button type="button" data-filter="Resolved" class="complaint-tab rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Resolved</button>
+          <div class="flex items-center gap-1 overflow-x-auto border-y border-gray-100 bg-gray-50/50 p-3" id="complaints-filter-tabs">
+            <button type="button" data-filter="All" class="complaint-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold bg-white text-gray-950 shadow-sm transition-colors">All</button>
+            <button type="button" data-filter="Open" class="complaint-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Open</button>
+            <button type="button" data-filter="In progress" class="complaint-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">In progress</button>
+            <button type="button" data-filter="Resolved" class="complaint-tab shrink-0 rounded-lg px-3 py-2 text-[10px] font-semibold text-gray-500 hover:text-gray-950 transition-colors">Resolved</button>
           </div>
 
           <!-- Complaints Table -->
@@ -412,7 +441,7 @@
       </section>
 
       <!-- Services Section -->
-      <section id="services" class="px-6 pb-32 md:px-12">
+      <section id="services" class="px-4 pb-24 sm:px-6 sm:pb-32 md:px-12">
         <div class="mx-auto grid w-full max-w-7xl gap-8 border-t border-gray-200 pt-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
           <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Services</p>
           <div class="grid gap-3 text-2xl font-medium tracking-[-0.04em] text-gray-950 sm:grid-cols-2 md:text-3xl">
@@ -425,37 +454,37 @@
       </section>
 
       <!-- Portfolio Section -->
-      <section id="portfolio" class="px-6 pb-32 md:px-12">
+      <section id="portfolio" class="px-4 pb-24 sm:px-6 sm:pb-32 md:px-12">
         <div class="mx-auto w-full max-w-7xl border-t border-gray-200 pt-8">
           <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Portfolio</p>
-          <h2 class="mt-16 max-w-3xl text-4xl font-medium leading-tight tracking-[-0.05em] text-gray-950 md:text-6xl">
+          <h2 class="mt-12 sm:mt-16 max-w-3xl text-3xl sm:text-4xl md:text-6xl font-medium leading-tight tracking-[-0.05em] text-gray-950">
             Selected work, reduced to the essential.
           </h2>
         </div>
       </section>
 
       <!-- Blog Section -->
-      <section id="blog" class="px-6 pb-32 md:px-12">
+      <section id="blog" class="px-4 pb-24 sm:px-6 sm:pb-32 md:px-12">
         <div class="mx-auto grid w-full max-w-7xl gap-8 border-t border-gray-200 pt-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
           <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Blog</p>
-          <p class="max-w-xl text-2xl font-light leading-relaxed tracking-[-0.03em] text-gray-600 md:text-3xl">
+          <p class="max-w-xl text-xl sm:text-2xl md:text-3xl font-light leading-relaxed tracking-[-0.03em] text-gray-600">
             Notes on making digital work feel more human, precise, and alive.
           </p>
         </div>
       </section>
 
       <!-- Contact Section -->
-      <section id="contact" class="px-6 pb-32 md:px-12">
-        <div class="mx-auto flex w-full max-w-7xl flex-col justify-between gap-12 border-t border-gray-200 pt-8 md:flex-row md:items-end">
+      <section id="contact" class="px-4 pb-24 sm:px-6 sm:pb-32 md:px-12">
+        <div class="mx-auto flex w-full max-w-7xl flex-col justify-between gap-10 border-t border-gray-200 pt-8 md:flex-row md:items-end">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Contact</p>
-            <h2 class="mt-12 text-4xl font-medium tracking-[-0.05em] text-gray-950 md:text-6xl">
+            <h2 class="mt-8 sm:mt-12 text-3xl sm:text-4xl md:text-6xl font-medium tracking-[-0.05em] text-gray-950">
               Let&apos;s make the next line.
             </h2>
           </div>
           <a
             href="mailto:hello@gridline.studio"
-            class="text-sm font-semibold uppercase tracking-[0.16em] text-gray-950 underline decoration-gray-300 underline-offset-8 transition-colors hover:decoration-black"
+            class="text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-gray-950 underline decoration-gray-300 underline-offset-8 transition-colors hover:decoration-black"
           >
             hello@gridline.studio
           </a>
@@ -464,8 +493,8 @@
     </main>
 
     <!-- Add Complaint Modal -->
-    <div id="complaint-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-950/30 px-5 backdrop-blur-sm">
-      <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl transition-all">
+    <div id="complaint-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-950/30 p-4 sm:p-5 backdrop-blur-sm overflow-y-auto">
+      <div class="w-full max-w-lg rounded-2xl bg-white p-5 sm:p-6 shadow-2xl transition-all my-auto max-h-[92vh] overflow-y-auto">
         <div class="flex items-start justify-between">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400">Resident care</p>
@@ -952,16 +981,35 @@
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setClearColor(0xffffff, 1);
         renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
 
         const scene = new THREE.Scene();
         scene.background = new THREE.Color('#ffffff');
 
+        // Preserved original studio perspective: 3/4 oblique angle looking at origin
         const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.set(10, 1, 18);
         camera.lookAt(0, 0, 0);
 
-        // Lights
+        function updateResponsiveDimensions() {
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          const aspect = w / h;
+
+          // Adapt vertical FOV on portrait displays (phone & tablet) so ribbon stays fully in frame
+          // without ever altering the 3D camera vector or perspective angle
+          if (aspect < 1.0) {
+            camera.fov = Math.min(50, 42 / Math.pow(aspect, 0.42));
+          } else {
+            camera.fov = 42;
+          }
+
+          camera.aspect = aspect;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h, false);
+        }
+
+        // Lights matching original ThreeCanvas setup
         const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
         scene.add(ambientLight);
 
@@ -1006,15 +1054,11 @@
         const dummy = new THREE.Object3D();
         const target = new THREE.Vector3();
 
-        function resize() {
-          const width = window.innerWidth;
-          const height = window.innerHeight;
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-          renderer.setSize(width, height);
-        }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', updateResponsiveDimensions);
+        window.addEventListener('orientationchange', () => {
+          setTimeout(updateResponsiveDimensions, 100);
+        });
+        updateResponsiveDimensions();
 
         const clock = new THREE.Clock();
 
@@ -1022,16 +1066,24 @@
           requestAnimationFrame(animate);
 
           const time = clock.getElapsedTime();
-          const isMobile = window.innerWidth < 768;
-          const mobileOffset = isMobile ? 4.5 : 0;
+          const w = window.innerWidth;
+          const isMobile = w < 768;
+          const isTablet = w >= 768 && w < 1024;
+
+          // Responsive ribbon horizontal placement:
+          // Desktop: 0 (x=4 on right flank)
+          // Tablet: -1.0 (balanced right-center)
+          // Phone: -2.0 (centered backdrop)
+          const ribbonOffset = isMobile ? -2.0 : (isTablet ? -1.0 : 0);
+          const scaleMultiplier = isMobile ? 0.82 : (isTablet ? 0.92 : 1.0);
 
           for (let i = 0; i < PANEL_COUNT; i++) {
             const baseT = i / PANEL_COUNT;
             const t = (baseT + time * 0.003) % 1;
             const t2 = (t + 0.001) % 1;
 
-            const position = pointOnRibbon(t, mobileOffset);
-            target.copy(pointOnRibbon(t2, mobileOffset));
+            const position = pointOnRibbon(t, ribbonOffset);
+            target.copy(pointOnRibbon(t2, ribbonOffset));
 
             dummy.position.copy(position);
             dummy.lookAt(target);
@@ -1040,7 +1092,7 @@
 
             const edgeFade = Math.sin(Math.PI * t);
             const scale = Math.max(0.025, Math.pow(Math.max(0, edgeFade), 0.72));
-            dummy.scale.setScalar(scale * (isMobile ? 0.82 : 1));
+            dummy.scale.setScalar(scale * scaleMultiplier);
             dummy.updateMatrix();
 
             instancedMesh.setMatrixAt(i, dummy.matrix);
